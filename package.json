@@ -1,0 +1,41 @@
+{
+  "name": "ditto",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "android": "react-native run-android",
+    "ios": "react-native run-ios",
+    "start": "react-native start",
+    "test": "jest",
+    "lint": "eslint .",
+    "web": "cd web && webpack-dev-server"
+  },
+  "dependencies": {
+    "react": "16.13.1",
+    "react-dom": "^16.13.1",
+    "react-native": "0.63.2",
+    "react-native-web": "^0.13.9"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.11.4",
+    "@babel/runtime": "^7.11.2",
+    "@react-native-community/eslint-config": "^2.0.0",
+    "@types/react": "^16.9.48",
+    "@types/react-native": "^0.63.10",
+    "babel-jest": "^26.3.0",
+    "eslint": "^7.7.0",
+    "html-webpack-plugin": "^4.3.0",
+    "jest": "^26.4.2",
+    "metro-react-native-babel-preset": "^0.63.0",
+    "react-native-typescript-transformer": "^1.2.13",
+    "react-test-renderer": "16.13.1",
+    "ts-loader": "^8.0.3",
+    "typescript": "^4.0.2",
+    "webpack": "^4.44.1",
+    "webpack-cli": "^3.3.12",
+    "webpack-dev-server": "^3.11.0"
+  },
+  "jest": {
+    "preset": "react-native"
+  }
+}
