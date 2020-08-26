@@ -18,8 +18,20 @@ module.exports = {
     rules: [
       {
         test: /\.(tsx|ts|jsx|js|mjs)$/,
-        exclude: /node_modules/,
-        loader: 'ts-loader',
+        loader: 'babel-loader',
+        options: {
+          presets: [
+            '@babel/preset-env',
+            '@babel/preset-react',
+            '@babel/preset-typescript',
+            'module:metro-react-native-babel-preset',
+          ],
+          plugins: [
+            'transform-class-properties',
+            '@babel/plugin-proposal-export-default-from',
+            'react-native-web',
+          ],
+        },
       },
     ],
   },
@@ -30,6 +42,7 @@ module.exports = {
     new webpack.HotModuleReplacementPlugin(),
   ],
   resolve: {
+    modules: ['node_modules'],
     extensions: [
       '.web.tsx',
       '.web.ts',
