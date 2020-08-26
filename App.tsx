@@ -1,5 +1,8 @@
 import React from 'react';
 import {Dimensions, StyleSheet, Text, View} from 'react-native';
+import {matrix} from '@rn-matrix/core';
+
+matrix.initAuth();
 
 const {height} = Dimensions.get('screen');
 
