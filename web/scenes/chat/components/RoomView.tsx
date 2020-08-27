@@ -67,6 +67,6 @@ export default function RoomView({currentRoom: room}: any) {
 
 const styles = StyleSheet.create({
   wrapper: {
-    flex: 3.5,
+    flex: 3,
   },
 });

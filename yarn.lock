@@ -1458,10 +1458,10 @@
   resolved "https://registry.yarnpkg.com/@react-native-community/eslint-plugin/-/eslint-plugin-1.1.0.tgz#e42b1bef12d2415411519fd528e64b593b1363dc"
   integrity sha512-W/J0fNYVO01tioHjvYWQ9m6RgndVtbElzYozBq1ZPrHO/iCzlqoySHl4gO/fpCl9QEFjvJfjPgtPMTMlsoq5DQ==
 
-"@rn-matrix/core@^0.0.12":
-  version "0.0.12"
-  resolved "https://registry.yarnpkg.com/@rn-matrix/core/-/core-0.0.12.tgz#879ccbeb7423cff070287df1dea971c3297de504"
-  integrity sha512-l1u9qwKzD2rnnvfBBA94U+hkD1MLuWGyRPbVMNqKkgTg8zgWOOVuA0yudiUCDPE1Z7XbFfujx371ncpPnl/gOQ==
+"@rn-matrix/core@^0.0.13":
+  version "0.0.13"
+  resolved "https://registry.yarnpkg.com/@rn-matrix/core/-/core-0.0.13.tgz#03d65f34b58ef4faf5014b928d2f212b0ab5431f"
+  integrity sha512-dcqeHMl43b3EDxWeHummfyHxY5wd3ahb4Ij5sQizaHvEJCAeKXiIa3j7XNOT+aFgGjw1sFgUgoU5vpz542jJLg==
   dependencies:
     "@react-native-community/async-storage" "^1.12.0"
     asyncstorage-down "^4.2.0"
