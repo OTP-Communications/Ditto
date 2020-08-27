@@ -7,7 +7,7 @@ const webpackEnv = process.env.NODE_ENV || 'development';
 module.exports = {
   mode: webpackEnv,
   entry: {
-    app: path.join(rootDir, './index.web.ts'),
+    app: path.join(rootDir, './index.js'),
   },
   output: {
     path: path.resolve(rootDir, 'dist'),
@@ -55,6 +55,7 @@ module.exports = {
     ], // read files in fillowing order
     alias: Object.assign({
       'react-native$': 'react-native-web',
+      fs: 'react-native-level-fs',
     }),
   },
 };

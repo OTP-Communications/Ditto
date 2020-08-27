@@ -1,24 +1,16 @@
 import React from 'react';
-import {Dimensions, StyleSheet, View} from 'react-native';
 import {matrix} from '@rn-matrix/core';
 import AppNavigator from './web/AppNavigator';
+import {Dimensions, View} from 'react-native';
 
 matrix.initAuth();
 
-const {height} = Dimensions.get('screen');
+const {height} = Dimensions.get('window');
 
-const App = () => {
+export default function App() {
   return (
-    <View style={styles.container}>
+    <View style={{height}}>
       <AppNavigator />
     </View>
   );
-};
-
-const styles = StyleSheet.create({
-  container: {
-    height,
-  },
-});
-
-export default App;
+}

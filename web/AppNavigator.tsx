@@ -3,6 +3,7 @@ import {View, Text, ActivityIndicator} from 'react-native';
 import {useObservableState} from 'observable-hooks';
 import {matrix} from '@rn-matrix/core';
 import AuthScreen from './scenes/auth/AuthScreen';
+import {Layout} from '@ui-kitten/components';
 
 export default function AppNavigator() {
   const authLoaded = useObservableState(matrix.authIsLoaded$());
@@ -11,9 +12,11 @@ export default function AppNavigator() {
 
   if (!authLoaded || (authLoggedIn && !matrixReady)) {
     return (
-      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+      <Layout
+        level="3"
+        style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
         <ActivityIndicator size="large" />
-      </View>
+      </Layout>
     );
   } else if (authLoggedIn) {
     return (
