@@ -4,6 +4,7 @@ import {useObservableState} from 'observable-hooks';
 import {matrix} from '@rn-matrix/core';
 import AuthScreen from './scenes/auth/AuthScreen';
 import {Layout} from '@ui-kitten/components';
+import AppScreen from './scenes/chat/AppScreen';
 
 export default function AppNavigator() {
   const authLoaded = useObservableState(matrix.authIsLoaded$());
@@ -19,11 +20,7 @@ export default function AppNavigator() {
       </Layout>
     );
   } else if (authLoggedIn) {
-    return (
-      <View>
-        <Text>app</Text>
-      </View>
-    );
+    return <AppScreen />;
   } else {
     return <AuthScreen />;
   }
