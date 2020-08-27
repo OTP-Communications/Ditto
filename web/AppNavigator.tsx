@@ -16,12 +16,12 @@ export default function AppNavigator() {
       </View>
     );
   } else if (authLoggedIn) {
-    return <AuthScreen />;
-  } else {
     return (
       <View>
-        <Text>loginnnn</Text>
+        <Text>app</Text>
       </View>
     );
+  } else {
+    return <AuthScreen />;
   }
 }
