@@ -1,7 +1,8 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {View, Text, StyleSheet, FlatList} from 'react-native';
 import {useObservableState} from 'observable-hooks';
 import MessageItem from './message/MessageItem';
+import Composer from './Composer';
 
 export default function RoomView({currentRoom: room}: any) {
   const [isLoading, setIsLoading] = useState(false);
@@ -37,6 +38,14 @@ export default function RoomView({currentRoom: room}: any) {
     );
   };
 
+  const renderComposer = () => {
+    return <Composer room={room} />;
+  };
+
+  useEffect(() => {
+    room.fetchPreviousMessages();
+  }, []);
+
   useEffect(() => {
     // mark as read
     room.sendReadReceipt();
@@ -55,11 +64,13 @@ export default function RoomView({currentRoom: room}: any) {
     <View style={styles.wrapper}>
       <FlatList
         inverted
+        disableVirtualization={true}
         data={timeline}
         renderItem={renderMessageItem}
         onEndReached={handleEndReached}
         onEndReachedThreshold={0.5}
         keyExtractor={(item) => item}
+        ListHeaderComponent={renderComposer}
       />
     </View>
   );

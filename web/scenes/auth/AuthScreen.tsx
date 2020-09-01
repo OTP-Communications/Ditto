@@ -7,8 +7,10 @@ export default function AuthScreen() {
   const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [error, setError] = useState<string>('');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const login = async () => {
+    setIsLoading(true);
     const result = await matrix.loginWithPassword(
       username,
       password,
@@ -17,12 +19,15 @@ export default function AuthScreen() {
     );
     if (result.error) {
       setError(result.message);
+      setIsLoading(false);
     }
   };
 
   const Footer = (props: any) => (
     <View {...props} style={[props.style, {alignItems: 'flex-end'}]}>
-      <Button onPress={login}>Login</Button>
+      <Button onPress={login} disabled={isLoading}>
+        {isLoading ? 'Loading...' : 'Login'}
+      </Button>
     </View>
   );
 
@@ -39,6 +44,7 @@ export default function AuthScreen() {
           returnKeyType="next"
           autoCapitalize="none"
           style={{marginBottom: 12}}
+          disabled={isLoading}
         />
         <Input
           label="Password"
@@ -48,8 +54,10 @@ export default function AuthScreen() {
           value={password}
           onChangeText={setPassword}
           autoCapitalize="none"
+          onSubmitEditing={login}
+          disabled={isLoading}
         />
-        {error}
+        <Text>{error}</Text>
       </Card>
     </Layout>
   );

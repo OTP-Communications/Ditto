@@ -1,7 +1,7 @@
 import {useObservableState} from 'observable-hooks';
 import React from 'react';
 import {EventStatus} from 'matrix-js-sdk';
-import {Text, View, Pressable} from 'react-native';
+import {View, Pressable} from 'react-native';
 import {SenderText, BubbleWrapper} from '../MessageItem';
 // import { isIos } from '../../../utilities/misc';
 // import { isEmoji } from '../../../utilities/emojis';
@@ -9,9 +9,8 @@ import {SenderText, BubbleWrapper} from '../MessageItem';
 // import {colors} from '../../../constants';
 // import Icon from '../Icon';
 import {matrix} from '@rn-matrix/core';
-import Color from 'color';
 import {isIos} from '../../../../../../shared/utilities';
-import {useTheme} from '@ui-kitten/components';
+import {useTheme, Text} from '@ui-kitten/components';
 
 // const debug = require('debug')('rnm:views:components:messageTypes:TextMessage');
 
@@ -63,6 +62,8 @@ export default function TextMessage({
         isMe={isMe}
         status={status}
         message={message}
+        prevSame={prevSame}
+        nextSame={nextSame}
         showReactions={showReactions}>
         {isEmoji(content?.text) ? (
           <Emoji
@@ -76,8 +77,8 @@ export default function TextMessage({
             <View style={{flexDirection: 'row', alignItems: 'flex-end'}}>
               <Pressable
                 {...props}
-                onPress={onPress ? _onPress : null}
-                onLongPress={onLongPress ? _onLongPress : null}
+                // onPress={onPress ? _onPress : null}
+                // onLongPress={onLongPress ? _onLongPress : null}
                 delayLongPress={200}
                 style={({pressed}) => [
                   bubbleStyles(isMe, prevSame, nextSame),
@@ -94,7 +95,10 @@ export default function TextMessage({
                     alignItems: 'flex-end',
                     flexWrap: 'wrap',
                   }}>
-                  <Text>{content?.text}</Text>
+                  <Text
+                    style={{maxWidth: 500, color: isMe ? 'white' : 'black'}}>
+                    {content?.text}
+                  </Text>
                   {/* <Html html={content?.html} isMe={isMe} accentColor={accentColor} /> */}
                   {isMe && (
                     <View style={{marginLeft: 12, marginRight: -6}}>
@@ -115,7 +119,6 @@ export default function TextMessage({
           </View>
         )}
       </BubbleWrapper>
-
       {!prevSame && <SenderText isMe={isMe}>{senderName}</SenderText>}
     </>
   );

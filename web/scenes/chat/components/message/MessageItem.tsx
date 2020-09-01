@@ -2,12 +2,13 @@ import React from 'react';
 import {matrix, Message} from '@rn-matrix/core';
 // import EventMessage from './messageTypes/EventMessage';
 // import NoticeMessage from './messageTypes/NoticeMessage';
-import {View, Text, ActivityIndicator} from 'react-native';
+import {View, ActivityIndicator} from 'react-native';
 // import ImageMessage from './messageTypes/ImageMessage';
 // import VideoMessage from './messageTypes/VideoMessage';
 import TextMessage from './messageTypes/TextMessage';
 // import { TypingAnimation } from 'react-native-typing-animation';
 import {useObservableState} from 'observable-hooks';
+import {Text} from '@ui-kitten/components';
 // import Swipeable from 'react-native-swipeable';
 // import Icon from './Icon';
 // import ReadReceipts from './ReadReceipts';
@@ -97,6 +98,8 @@ export function BubbleWrapper({
   isMe,
   status,
   message,
+  prevSame = false,
+  nextSame = false,
   showReactions = false,
 }) {
   const reactions = message ? useObservableState(message.reactions$) : null;
@@ -109,12 +112,29 @@ export function BubbleWrapper({
   };
 
   return (
-    <View style={{marginHorizontal: 12}}>
+    <View
+      style={[
+        {marginHorizontal: 8},
+        !(!isMe && !nextSame) ? {marginLeft: 54} : {},
+      ]}>
       <View
         style={{
           flexDirection: isMe ? 'row-reverse' : 'row',
           alignItems: 'center',
         }}>
+        {!isMe && !nextSame && (
+          <View
+            style={{
+              backgroundColor: '#666',
+              width: 40,
+              height: 40,
+              borderRadius: 100,
+              marginRight: 6,
+              marginBottom: 4,
+              alignSelf: 'flex-end',
+            }}
+          />
+        )}
         {children}
         {/* {receipts && isMe && <ReadReceipts isMe={isMe} receipts={receipts} />} */}
       </View>
@@ -136,7 +156,8 @@ export function SenderText({isMe, children}) {
       style={{
         fontSize: 14,
         fontWeight: '400',
-        marginHorizontal: 22,
+        marginLeft: 66,
+        marginRight: 22,
         marginTop: 8,
         opacity: 0.6,
         ...(isMe ? {textAlign: 'right'} : {}),
