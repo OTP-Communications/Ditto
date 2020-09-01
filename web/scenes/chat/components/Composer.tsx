@@ -7,18 +7,13 @@ export default function Composer({room}) {
 
   const [value, setValue] = useState<string>('');
 
-  const inputRef = useRef();
-
   const SendIcon = (props) => <Icon {...props} name="arrowhead-up" />;
 
   const sendMessage = () => {
     room.sendMessage(value, 'm.text');
-    inputRef?.current?.focus();
   };
 
-  useEffect(() => {
-    inputRef?.current?.focus();
-  });
+  useEffect(() => {});
 
   return (
     <View
@@ -27,16 +22,15 @@ export default function Composer({room}) {
         alignItems: 'center',
         borderTopWidth: 2,
         borderTopColor: theme['background-basic-color-2'],
-        marginTop: 16,
       }}>
       <TextInput
-        ref={inputRef}
         style={[styles.input, {color: theme['color-basic-200']}]}
         value={value}
         onChangeText={setValue}
         onSubmitEditing={sendMessage}
+        multiline
       />
-      <Button appearance="ghost" status="danger" accessoryLeft={SendIcon} />
+      <Button appearance="ghost" status="primary" accessoryLeft={SendIcon} />
     </View>
   );
 }

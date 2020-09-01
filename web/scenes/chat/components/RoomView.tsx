@@ -70,8 +70,9 @@ export default function RoomView({currentRoom: room}: any) {
         onEndReached={handleEndReached}
         onEndReachedThreshold={0.5}
         keyExtractor={(item) => item}
-        ListHeaderComponent={renderComposer}
+        ListHeaderComponent={() => <View style={{height: 12}} />}
       />
+      {renderComposer()}
     </View>
   );
 }
