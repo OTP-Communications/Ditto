@@ -10,7 +10,8 @@
     "test": "jest",
     "lint": "eslint .",
     "web": "cd web && webpack-dev-server",
-    "build:web": "cd web && webpack"
+    "build:web": "cd web && webpack",
+    "postinstall": "sed -i '' '$s/}/,\"browser\":{\"fs\":\"react-native-level-fs\"}}/' node_modules/olm/package.json"
   },
   "dependencies": {
     "@eva-design/eva": "^2.0.0",

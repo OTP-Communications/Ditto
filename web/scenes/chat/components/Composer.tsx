@@ -1,9 +1,10 @@
-import React, {useState, useRef, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {View, TextInput, StyleSheet} from 'react-native';
 import {useTheme, Button, Icon} from '@ui-kitten/components';
 
 export default function Composer({room}) {
   const theme = useTheme();
+  const inputRef = useRef(null);
 
   const [value, setValue] = useState<string>('');
 
@@ -11,6 +12,8 @@ export default function Composer({room}) {
 
   const sendMessage = () => {
     room.sendMessage(value, 'm.text');
+    setValue('');
+    inputRef?.current?.focus();
   };
 
   useEffect(() => {});
@@ -24,11 +27,11 @@ export default function Composer({room}) {
         borderTopColor: theme['background-basic-color-2'],
       }}>
       <TextInput
+        ref={inputRef}
         style={[styles.input, {color: theme['color-basic-200']}]}
         value={value}
         onChangeText={setValue}
         onSubmitEditing={sendMessage}
-        multiline
       />
       <Button appearance="ghost" status="primary" accessoryLeft={SendIcon} />
     </View>
