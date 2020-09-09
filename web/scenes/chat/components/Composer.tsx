@@ -13,7 +13,6 @@ export default function Composer({room}) {
   const sendMessage = () => {
     room.sendMessage(value, 'm.text');
     setValue('');
-    inputRef?.current?.focus();
   };
 
   useEffect(() => {});
@@ -32,6 +31,7 @@ export default function Composer({room}) {
         value={value}
         onChangeText={setValue}
         onSubmitEditing={sendMessage}
+        blurOnSubmit={false}
       />
       <Button appearance="ghost" status="primary" accessoryLeft={SendIcon} />
     </View>
