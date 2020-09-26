@@ -1,7 +1,7 @@
 import {createStackNavigator} from '@react-navigation/stack';
 import {matrix} from '@rn-matrix/core';
 import {useObservableState} from 'observable-hooks';
-import React from 'react';
+import React, {useContext} from 'react';
 import {ActivityIndicator, Pressable} from 'react-native';
 
 // import ChatStack from './ChatStack';
@@ -17,6 +17,7 @@ import LandingScreen from './scenes/auth/LandingScreen';
 import LoginScreen from './scenes/auth/LoginScreen';
 import ChatScreen from './scenes/chat/ChatScreen';
 import SettingsScreen from './scenes/settings/SettingsScreen';
+import {ThemeContext} from '../shared/themes/ThemeProvider';
 
 enableScreens();
 
@@ -26,6 +27,8 @@ const NativeStack = createNativeStackNavigator();
 const Stack = createStackNavigator();
 
 export default function AppNavigator() {
+  const theme = useTheme();
+
   const authLoaded = useObservableState(matrix.authIsLoaded$());
   const authLoggedIn = useObservableState(matrix.isLoggedIn$());
   const matrixReady = useObservableState(matrix.isReady$());
@@ -44,7 +47,7 @@ export default function AppNavigator() {
       <Layout
         level="3"
         style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-        <ActivityIndicator size="large" color="#fff" />
+        <ActivityIndicator size="large" color={theme['color-basic-100']} />
       </Layout>
     );
   } else if (authLoggedIn) {
@@ -80,8 +83,14 @@ function ChatStack({navigation}) {
   const avatar = useObservableState(myUser.avatar$);
   const name: string | undefined = useObservableState(myUser.name$);
 
+  const {themeId, setTheme} = useContext(ThemeContext);
+
   const navToSettings = () => {
     navigation.navigate('Settings');
+  };
+
+  const toggleTheme = () => {
+    setTheme(themeId === 'light' ? 'dark' : 'light');
   };
 
   return (
@@ -110,9 +119,39 @@ function ChatStack({navigation}) {
                   backgroundColor: theme['background-basic-color-3'],
                 }}
               />
-              <Text style={{position: 'absolute', opacity: 0.2}} category="h6">
-                {name?.charAt(0)}
-              </Text>
+              {!avatar && (
+                <Text
+                  style={{position: 'absolute', opacity: 0.2}}
+                  category="h6">
+                  {name?.charAt(0)}
+                </Text>
+              )}
+            </Pressable>
+          ),
+          headerRight: () => (
+            <Pressable
+              onPress={toggleTheme}
+              style={({pressed}) => ({
+                position: 'relative',
+                justifyContent: 'center',
+                alignItems: 'center',
+                marginRight: 18,
+                opacity: pressed ? 0.6 : 1,
+              })}>
+              <Avatar
+                source={{uri: matrix.getHttpUrl(avatar)}}
+                size="small"
+                style={{
+                  backgroundColor: theme['background-basic-color-3'],
+                }}
+              />
+              {!avatar && (
+                <Text
+                  style={{position: 'absolute', opacity: 0.2}}
+                  category="h6">
+                  {name?.charAt(0)}
+                </Text>
+              )}
             </Pressable>
           ),
         }}
@@ -124,6 +163,32 @@ function ChatStack({navigation}) {
         options={({route}) => ({
           title: route.params?.chat.name$.getValue() || 'Chat',
           headerStyle: {backgroundColor: theme['background-basic-color-4']},
+          headerRight: () => (
+            <Pressable
+              onPress={toggleTheme}
+              style={({pressed}) => ({
+                position: 'relative',
+                justifyContent: 'center',
+                alignItems: 'center',
+                marginRight: 18,
+                opacity: pressed ? 0.6 : 1,
+              })}>
+              <Avatar
+                source={{uri: matrix.getHttpUrl(avatar)}}
+                size="small"
+                style={{
+                  backgroundColor: theme['background-basic-color-3'],
+                }}
+              />
+              {!avatar && (
+                <Text
+                  style={{position: 'absolute', opacity: 0.2}}
+                  category="h6">
+                  {name?.charAt(0)}
+                </Text>
+              )}
+            </Pressable>
+          ),
         })}
       />
     </Stack.Navigator>

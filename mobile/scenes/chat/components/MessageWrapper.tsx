@@ -1,8 +1,11 @@
+import {useObservableState} from 'observable-hooks';
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
+import Reactions from './Reactions';
 
 export default function MessageWrapper({children, ...props}) {
-  const {isMe, nextSame} = props;
+  const {isMe, message, nextSame} = props;
+
   return (
     <View
       style={[
@@ -13,6 +16,9 @@ export default function MessageWrapper({children, ...props}) {
         },
       ]}>
       <View style={{maxWidth: '85%'}}>{children}</View>
+      <View style={{maxWidth: '85%'}}>
+        <Reactions message={message} isMe={isMe} />
+      </View>
     </View>
   );
 }

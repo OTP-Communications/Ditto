@@ -67,7 +67,7 @@ export default function ChatScreen({navigation, route}) {
     <SafeAreaView
       style={{
         flex: 1,
-        backgroundColor: theme['color-basic-1100'],
+        backgroundColor: theme['background-basic-color-5'],
       }}>
       <List
         inverted
@@ -77,7 +77,7 @@ export default function ChatScreen({navigation, route}) {
         style={{
           marginTop: -insets.top,
           marginHorizontal: 6,
-          backgroundColor: theme['color-basic-1100'],
+          backgroundColor: theme['background-basic-color-5'],
         }}
       />
       <Composer chat={chat} />

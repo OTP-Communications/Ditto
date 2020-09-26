@@ -69,7 +69,7 @@ export default function ChatListItem({chat}) {
       description={ChatDescription}
       accessoryLeft={ChatAvatar}
       // accessoryRight={renderItemAccessory}
-      style={{backgroundColor: theme['color-basic-1100']}}
+      style={{backgroundColor: theme['background-basic-color-5']}}
       onPress={openChat}
       activeOpacity={0.4}
     />

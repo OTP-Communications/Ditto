@@ -6,6 +6,7 @@ import {matrix} from '@rn-matrix/core';
 import {useObservableState} from 'observable-hooks';
 import Html from '../Html';
 import {getNameColor} from '../../../../../shared/utilities/misc';
+import Color from 'color';
 
 export default function TextMessage(props) {
   const {message, prevSame, nextSame, onPress = () => {}} = props;
@@ -16,7 +17,6 @@ export default function TextMessage(props) {
   const content = useObservableState(message.content$);
   const senderName = useObservableState(message.sender.name$);
   const status = useObservableState(message.status$);
-  const reactions = useObservableState(message.reactions$);
   const isMe = myUser?.id === message.sender.id;
 
   if (!content) return null;
@@ -25,7 +25,9 @@ export default function TextMessage(props) {
     if (isMe) {
       return pressed ? theme['color-primary-700'] : theme['color-primary-600'];
     } else {
-      return pressed ? theme['color-basic-1000'] : theme['color-basic-900'];
+      return pressed
+        ? Color(theme['background-basic-color-3']).darken(0.2).hex()
+        : theme['background-basic-color-3'];
     }
   };
 
@@ -36,6 +38,10 @@ export default function TextMessage(props) {
         style={({pressed}) => [
           styles.bubble,
           {backgroundColor: bubbleBackground(pressed)},
+          prevSame && isMe ? {borderTopRightRadius: 6} : {},
+          prevSame && !isMe ? {borderTopLeftRadius: 6} : {},
+          nextSame && isMe ? {borderBottomRightRadius: 6} : {},
+          nextSame && !isMe ? {borderBottomLeftRadius: 6} : {},
         ]}>
         {!isMe && (
           <Text

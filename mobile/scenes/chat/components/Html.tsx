@@ -1,4 +1,4 @@
-import {Text} from '@ui-kitten/components';
+import {Text, useTheme} from '@ui-kitten/components';
 // import { useTheme } from '@ui-kitten/components'
 import React, {useEffect, useState} from 'react';
 import {Linking, View} from 'react-native';
@@ -12,9 +12,10 @@ const parseHtml = (html: string) => {
   return htmlEmojis(html?.includes('href') ? html : htmlLinks(html));
 };
 
-export default function Html({html, isMe = false, accentColor = 'orange'}) {
+export default function Html({html, isMe = false}) {
   // const styles = getHtmlStyles(theme)
-  const styles = getHtmlStyles({isMe, accentColor});
+  const theme = useTheme();
+  const styles = getHtmlStyles({isMe, theme});
   const [parsedHtml, setParsedHtml] = useState(parseHtml(html));
 
   //* *******************************************************************************
@@ -79,23 +80,25 @@ const unorderedListRenderer = (
   ));
 };
 
-const getHtmlStyles = ({isMe, accentColor}) => ({
+const getHtmlStyles = ({isMe, theme}) => ({
   baseFontStyle: {
-    color: isMe ? '#fff' : '#fff',
+    color: isMe ? theme['color-basic-100'] : theme['text-basic-color'],
     fontSize: 16,
     letterSpacing: 0.3,
     fontWeight: '400',
   },
   tagsStyles: {
     blockquote: {
-      borderLeftColor: accentColor,
+      borderLeftColor: theme['color-primary-500'],
       borderLeftWidth: 3,
       paddingLeft: 10,
       marginVertical: 10,
       opacity: 0.75,
     },
     a: {
-      color: isMe ? '#fff' : '#fff',
+      color: isMe
+        ? theme['color-basic-100']
+        : theme['background-basic-color-1'],
       textDecorationLine: 'underline',
     },
     code: {

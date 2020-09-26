@@ -38,7 +38,6 @@ export default function ChatListScreen() {
     <List
       data={chatList}
       renderItem={renderChatItem}
-      style={{backgroundColor: theme['color-basic-1100']}}
       ListHeaderComponent={InviteList}
     />
   );
