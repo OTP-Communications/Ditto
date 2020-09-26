@@ -35,6 +35,7 @@ export default function ChatScreen({navigation, route}) {
       <MessageItem
         key={item}
         chatId={chat.id}
+        chat={chat}
         messageId={item}
         prevMessageId={messageList[index + 1] ? messageList[index + 1] : null}
         nextMessageId={messageList[index - 1] ? messageList[index - 1] : null}
@@ -75,6 +76,7 @@ export default function ChatScreen({navigation, route}) {
         onEndReached={handleEndReached}
         style={{
           marginTop: -insets.top,
+          marginHorizontal: 6,
           backgroundColor: theme['color-basic-1100'],
         }}
       />

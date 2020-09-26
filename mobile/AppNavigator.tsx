@@ -2,12 +2,12 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {matrix} from '@rn-matrix/core';
 import {useObservableState} from 'observable-hooks';
 import React from 'react';
-import {ActivityIndicator} from 'react-native';
+import {ActivityIndicator, Pressable} from 'react-native';
 
 // import ChatStack from './ChatStack';
 // import LandingScreen from '../scenes/auth/LandingScreen';
 // import LoginScreen from '../scenes/auth/LoginScreen';
-import {Layout, useTheme} from '@ui-kitten/components';
+import {Avatar, Layout, Text, useTheme} from '@ui-kitten/components';
 // import SettingsScreen from '../scenes/settings/SettingsScreen';
 // import NewChatScreen from '../scenes/newChat/NewChatScreen';
 import {enableScreens} from 'react-native-screens';
@@ -16,6 +16,7 @@ import ChatListScreen from './scenes/chatList/ChatListScreen';
 import LandingScreen from './scenes/auth/LandingScreen';
 import LoginScreen from './scenes/auth/LoginScreen';
 import ChatScreen from './scenes/chat/ChatScreen';
+import SettingsScreen from './scenes/settings/SettingsScreen';
 
 enableScreens();
 
@@ -51,6 +52,7 @@ export default function AppNavigator() {
       <NativeStack.Navigator
         screenOptions={{headerShown: false, stackPresentation: 'modal'}}>
         <NativeStack.Screen name="ChatStack" component={ChatStack} />
+        <NativeStack.Screen name="Settings" component={SettingsScreen} />
         {/* <NativeStack.Screen name="Settings" component={SettingsScreen} />
         <NativeStack.Screen
           name="NewChat"
@@ -72,8 +74,15 @@ export default function AppNavigator() {
  * STACKS
  ***********************************************/
 
-function ChatStack() {
+function ChatStack({navigation}) {
   const theme = useTheme();
+  const myUser = matrix.getMyUser();
+  const avatar = useObservableState(myUser.avatar$);
+  const name: string | undefined = useObservableState(myUser.name$);
+
+  const navToSettings = () => {
+    navigation.navigate('Settings');
+  };
 
   return (
     <Stack.Navigator headerMode="screen">
@@ -81,7 +90,31 @@ function ChatStack() {
         name="ChatList"
         options={{
           title: 'Chats',
-          headerStyle: {backgroundColor: theme['background-basic-color-4']},
+          headerStyle: {
+            backgroundColor: theme['background-basic-color-4'],
+          },
+          headerLeft: () => (
+            <Pressable
+              onPress={navToSettings}
+              style={({pressed}) => ({
+                position: 'relative',
+                justifyContent: 'center',
+                alignItems: 'center',
+                marginLeft: 18,
+                opacity: pressed ? 0.6 : 1,
+              })}>
+              <Avatar
+                source={{uri: matrix.getHttpUrl(avatar)}}
+                size="small"
+                style={{
+                  backgroundColor: theme['background-basic-color-3'],
+                }}
+              />
+              <Text style={{position: 'absolute', opacity: 0.2}} category="h6">
+                {name?.charAt(0)}
+              </Text>
+            </Pressable>
+          ),
         }}
         component={ChatListScreen}
       />

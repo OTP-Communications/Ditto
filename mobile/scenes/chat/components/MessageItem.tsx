@@ -3,6 +3,7 @@ import React from 'react';
 import {ActivityIndicator, View} from 'react-native';
 import {matrix, Message} from '@rn-matrix/core';
 import {useObservableState} from 'observable-hooks';
+import TextMessage from './messages/TextMessage';
 
 export default function MessageItem({
   chatId,
@@ -45,9 +46,9 @@ export default function MessageItem({
   //   return <EventMessage {...props} />;
   // }
 
-  // if (Message.isTextMessage(messageType)) {
-  //   return <TextMessage {...props} />;
-  // }
+  if (Message.isTextMessage(messageType)) {
+    return <TextMessage {...props} />;
+  }
   // if (Message.isImageMessage(messageType)) {
   //   return <ImageMessage {...props} />;
   // }
