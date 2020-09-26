@@ -1,6 +1,8 @@
 /**
  * @format
  */
+import './shared/i18n';
+
 import React from 'react';
 import {AppRegistry, Platform} from 'react-native';
 import App from './App';
@@ -9,6 +11,9 @@ import ThemeProvider, {ThemeContext} from './shared/themes/ThemeProvider';
 import {ApplicationProvider, IconRegistry} from '@ui-kitten/components';
 import {EvaIconsPack} from '@ui-kitten/eva-icons';
 import * as eva from '@eva-design/eva';
+
+const debug = require('debug');
+debug.enable('ditto:*,rnm:*');
 
 function AppWrapper() {
   return (

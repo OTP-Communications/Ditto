@@ -1,4 +1,5 @@
 require('node-libs-react-native/globals');
+import 'react-native-url-polyfill/auto';
 import 'react-native-gesture-handler';
 
 import React from 'react';

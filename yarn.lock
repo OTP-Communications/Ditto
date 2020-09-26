@@ -1505,10 +1505,10 @@
     color "^3.1.2"
     react-native-iphone-x-helper "^1.2.1"
 
-"@rn-matrix/core@^0.0.20":
-  version "0.0.20"
-  resolved "https://registry.yarnpkg.com/@rn-matrix/core/-/core-0.0.20.tgz#28485ed3333fc0dac859925528039966309d755d"
-  integrity sha512-ZH6PNe/7sN6XTFNJ9j+vyB674gQgP5JLLTaTltcTFJOo1DK00egnVe+Q8o6Kk+ADONRxsG40LCyPp+fLpDFsFQ==
+"@rn-matrix/core@^0.0.22":
+  version "0.0.22"
+  resolved "https://registry.yarnpkg.com/@rn-matrix/core/-/core-0.0.22.tgz#65b67ec267580cda34fb5ed1a75f78e6ae6aa02d"
+  integrity sha512-545ORdmCI7FUFKg3TRv9vP1NjjGonDf6gKrDJ0Ykum49gsK6+T1sKlKtmw9Ii85WLmwHNzgcrpKnJAE+qxxVMA==
   dependencies:
     "@react-native-community/async-storage" "^1.12.0"
     asyncstorage-down "^4.2.0"
@@ -3042,7 +3042,7 @@ buffer@^4.3.0, buffer@^4.9.1:
     ieee754 "^1.1.4"
     isarray "^1.0.0"
 
-buffer@^5.0.6:
+buffer@^5.0.6, buffer@^5.4.3:
   version "5.6.0"
   resolved "https://registry.yarnpkg.com/buffer/-/buffer-5.6.0.tgz#a31749dc7d81d84db08abf937b6b8c4033f62786"
   integrity sha512-/gDYp/UtU0eA1ys8bOs9J6a+E/KWIY+DZ+Q2WESNUA0jFRsJOc0SNUO6xJ5SGA1xueg3NL65W6s+NY5l9cunuw==
@@ -8793,6 +8793,13 @@ react-native-typescript-transformer@^1.2.13:
     semver "^5.4.1"
     source-map "^0.5.6"
 
+react-native-url-polyfill@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/react-native-url-polyfill/-/react-native-url-polyfill-1.2.0.tgz#cfc9c91d2d62cf66d968c6fe94d091dc668ca9a3"
+  integrity sha512-hpLZ8RyS3oGVyTOe/HjoqVoCOSkeJvrCoEB3bJsY7t9uh7kpQDV6kgvdlECEafYpxe3RzMrKLVcmWRbPU7CuAw==
+  dependencies:
+    whatwg-url-without-unicode "8.0.0-3"
+
 react-native-web@^0.13.9:
   version "0.13.9"
   resolved "https://registry.yarnpkg.com/react-native-web/-/react-native-web-0.13.9.tgz#2b410a358ce73def0303c7cfc14b81f736193666"
@@ -10853,6 +10860,15 @@ whatwg-mimetype@^2.3.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/whatwg-mimetype/-/whatwg-mimetype-2.3.0.tgz#3d4b1e0312d2079879f826aff18dbeeca5960fbf"
   integrity sha512-M4yMwr6mAnQz76TbJm914+gPpB/nCwvZbJU28cUD6dR004SAxDLOOSUaB1JDRqLtaOV/vi0IC5lEAGFgrjGv/g==
+
+whatwg-url-without-unicode@8.0.0-3:
+  version "8.0.0-3"
+  resolved "https://registry.yarnpkg.com/whatwg-url-without-unicode/-/whatwg-url-without-unicode-8.0.0-3.tgz#ab6df4bf6caaa6c85a59f6e82c026151d4bb376b"
+  integrity sha512-HoKuzZrUlgpz35YO27XgD28uh/WJH4B0+3ttFqRo//lmq+9T/mIOJ6kqmINI9HpUpz1imRC/nR/lxKpJiv0uig==
+  dependencies:
+    buffer "^5.4.3"
+    punycode "^2.1.1"
+    webidl-conversions "^5.0.0"
 
 whatwg-url@^8.0.0, whatwg-url@^8.1.0:
   version "8.2.1"

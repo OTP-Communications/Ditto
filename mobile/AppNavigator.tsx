@@ -7,7 +7,7 @@ import {ActivityIndicator} from 'react-native';
 // import ChatStack from './ChatStack';
 // import LandingScreen from '../scenes/auth/LandingScreen';
 // import LoginScreen from '../scenes/auth/LoginScreen';
-import {Layout} from '@ui-kitten/components';
+import {Layout, useTheme} from '@ui-kitten/components';
 // import SettingsScreen from '../scenes/settings/SettingsScreen';
 // import NewChatScreen from '../scenes/newChat/NewChatScreen';
 import {enableScreens} from 'react-native-screens';
@@ -15,6 +15,7 @@ import {createNativeStackNavigator} from 'react-native-screens/native-stack';
 import ChatListScreen from './scenes/chatList/ChatListScreen';
 import LandingScreen from './scenes/auth/LandingScreen';
 import LoginScreen from './scenes/auth/LoginScreen';
+import ChatScreen from './scenes/chat/ChatScreen';
 
 enableScreens();
 
@@ -59,10 +60,10 @@ export default function AppNavigator() {
     );
   } else {
     return (
-      <Stack.Navigator headerMode="none">
-        <Stack.Screen name="Landing" component={LandingScreen} />
-        <Stack.Screen name="Login" component={LoginScreen} />
-      </Stack.Navigator>
+      <NativeStack.Navigator headerMode="none">
+        <NativeStack.Screen name="Landing" component={LandingScreen} />
+        <NativeStack.Screen name="Login" component={LoginScreen} />
+      </NativeStack.Navigator>
     );
   }
 }
@@ -71,20 +72,26 @@ export default function AppNavigator() {
  * STACKS
  ***********************************************/
 
-const ChatStackNavigator = createStackNavigator();
 function ChatStack() {
+  const theme = useTheme();
+
   return (
-    <Stack.Navigator headerMode="screen">
-      <Stack.Screen
+    <NativeStack.Navigator headerMode="screen">
+      <NativeStack.Screen
         name="ChatList"
-        // options={{ header: HomeHeader }}
+        options={{
+          title: 'Chats',
+          headerStyle: {backgroundColor: theme['background-basic-color-4']},
+        }}
         component={ChatListScreen}
       />
-      {/* <Stack.Screen
-        name='Chat'
-        // options={{ headerShown: false }}
+      <NativeStack.Screen
+        name="Chat"
         component={ChatScreen}
-      /> */}
-    </Stack.Navigator>
+        options={({route}) => ({
+          title: route.params?.chat.name$.getValue() || 'Blah',
+        })}
+      />
+    </NativeStack.Navigator>
   );
 }

@@ -14,7 +14,7 @@ import {
   useTheme,
 } from '@ui-kitten/components';
 import React, {useEffect, useRef, useState} from 'react';
-// import { useTranslation } from 'react-i18next'
+import {useTranslation} from 'react-i18next';
 import {
   Keyboard,
   SafeAreaView,
@@ -33,13 +33,13 @@ import {SCREEN_HEIGHT, SCREEN_WIDTH, isIos} from '../../../shared/utilities';
 const topBlob = require('../../../shared/assets/images/blob4.png');
 const bottomBlob = require('../../../shared/assets/images/blob5.png');
 
-// const debug = require('debug')('ditto:scenes:auth:LoginScreen')
+const debug = require('debug')('ditto:scenes:auth:LoginScreen');
 
 export default function LoginScreen({navigation}) {
   const passwordInput = useRef(null);
   const homeserverInput = useRef(null);
   const theme = useTheme();
-  // const { t } = useTranslation('auth')
+  const {t} = useTranslation('auth');
 
   // State
   const [usernameValue, setUsernameValue] = useState('');
@@ -64,10 +64,11 @@ export default function LoginScreen({navigation}) {
   const handleLoginPress = async () => {
     Keyboard.dismiss();
     if (usernameValue.length === 0) {
-      // setErrorText(t('login.missingUsernameError'));
+      setErrorText(t('login.missingUsernameError'));
     } else if (passwordValue.length === 0) {
-      // setErrorText(t('login.missingPasswordError'));
+      setErrorText(t('login.missingPasswordError'));
     } else {
+      debug('username: ', usernameValue);
       setErrorText('');
       setIsLoading(true);
       const response = await matrix.loginWithPassword(
@@ -122,8 +123,7 @@ export default function LoginScreen({navigation}) {
     <Layout level="4" style={{flex: 1}}>
       <SafeAreaView>
         <TopNavigation
-          // title={t('login.title')}
-          title={'Loginnn'}
+          title={t('login.title')}
           alignment="center"
           titleStyle={{fontSize: 25}}
           style={{backgroundColor: 'transparent'}}
@@ -138,10 +138,8 @@ export default function LoginScreen({navigation}) {
         contentContainerStyle={styles.scrollview}>
         <View style={{position: 'relative'}}>
           <Input
-            // label={t('login.usernameOrMatrixIdInputLabel')}
-            // placeholder={t('login.usernameOrMatrixIdInputPlaceholder')}
-            label="MXID or username"
-            placeholder={'placeholder'}
+            label={t('login.usernameOrMatrixIdInputLabel')}
+            placeholder={t('login.usernameOrMatrixIdInputPlaceholder')}
             autoFocus
             size={isIos() ? 'large' : 'medium'}
             onChangeText={setUsernameValue}
@@ -187,13 +185,11 @@ export default function LoginScreen({navigation}) {
           <Text
             category="c2"
             style={{color: '#7F7F7F', marginTop: 12, marginBottom: 4}}>
-            {/* {t('login.passwordInputLabel')} */}
-            password
+            {t('login.passwordInputLabel')}
           </Text>
           <View style={{position: 'relative'}}>
             <TextInput
-              // placeholder={t('login.passwordInputPlaceholder')}
-              placeholder={'asdfasdf'}
+              placeholder={t('login.passwordInputPlaceholder')}
               style={[
                 styles.dittoInput,
                 {
@@ -223,12 +219,10 @@ export default function LoginScreen({navigation}) {
             <Text
               category="c2"
               style={{color: '#7F7F7F', marginTop: 12, marginBottom: 4}}>
-              {/* {t('login.homeserverInputLabel')} */}
-              homeserver input
+              {t('login.homeserverInputLabel')}
             </Text>
             <TextInput
-              // placeholder={t('login.homeserverInputPlaceholder')}
-              placeholder={'homeserver input'}
+              placeholder={t('login.homeserverInputPlaceholder')}
               style={[
                 styles.dittoInput,
                 {
@@ -246,9 +240,8 @@ export default function LoginScreen({navigation}) {
               autoCorrect={false}
               placeholderTextColor="#808080"
               onSubmitEditing={handleLoginPress}
-              returnKeyType="go">
-              <Text>https://</Text>
-            </TextInput>
+              returnKeyType="go"
+            />
           </View>
         )}
 
@@ -257,16 +250,14 @@ export default function LoginScreen({navigation}) {
             appearance="ghost"
             style={{marginTop: 12, alignSelf: 'center'}}
             onPress={() => setShowAdvanced(false)}>
-            {/* {t('login.basicLabel')} */}
-            basic label
+            {t('login.basicLabel')}
           </Button>
         ) : (
           <Button
             appearance="ghost"
             style={{marginTop: 12, alignSelf: 'center'}}
             onPress={() => setShowAdvanced(true)}>
-            {/* {t('login.advancedLabel')} */}
-            advanced label
+            {t('login.advancedLabel')}
           </Button>
         )}
 
@@ -288,16 +279,14 @@ export default function LoginScreen({navigation}) {
               size="giant"
               status="info"
               style={{borderRadius: 50}}>
-              {/* {t('login.loginButtonLabel')} */}
-              login button
+              {t('login.loginButtonLabel')}
             </Button>
           )}
         </View>
 
         {errorText.length > 0 && (
           <Text status="danger" style={{textAlign: 'center', marginTop: 15}}>
-            {/* {t('login.somethingWrongError', {errorText: errorText})} */}
-            some thing wrong
+            {t('login.somethingWrongError', {errorText: errorText})}
           </Text>
         )}
         <View style={{height: SCREEN_HEIGHT / 2}} />
