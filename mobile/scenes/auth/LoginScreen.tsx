@@ -75,6 +75,7 @@ export default function LoginScreen({navigation}) {
         usernameValue,
         passwordValue,
         homeserverValue,
+        true,
       );
       if (response.error) {
         setIsLoading(false);

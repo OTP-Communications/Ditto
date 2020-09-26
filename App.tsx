@@ -10,6 +10,8 @@ import {
 } from '@react-navigation/native';
 import AppNavigator from './mobile/AppNavigator';
 
+console.disableYellowBox = true;
+
 matrix.initAuth();
 
 const App = () => {

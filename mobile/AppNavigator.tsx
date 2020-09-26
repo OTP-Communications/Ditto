@@ -76,8 +76,8 @@ function ChatStack() {
   const theme = useTheme();
 
   return (
-    <NativeStack.Navigator headerMode="screen">
-      <NativeStack.Screen
+    <Stack.Navigator headerMode="screen">
+      <Stack.Screen
         name="ChatList"
         options={{
           title: 'Chats',
@@ -85,13 +85,14 @@ function ChatStack() {
         }}
         component={ChatListScreen}
       />
-      <NativeStack.Screen
+      <Stack.Screen
         name="Chat"
         component={ChatScreen}
         options={({route}) => ({
-          title: route.params?.chat.name$.getValue() || 'Blah',
+          title: route.params?.chat.name$.getValue() || 'Chat',
+          headerStyle: {backgroundColor: theme['background-basic-color-4']},
         })}
       />
-    </NativeStack.Navigator>
+    </Stack.Navigator>
   );
 }
