@@ -1,20 +1,10 @@
-import {
-  Icon,
-  Input,
-  List,
-  ListItem,
-  Text,
-  useTheme,
-} from '@ui-kitten/components';
+import {List, useTheme} from '@ui-kitten/components';
 import {useObservableState} from 'observable-hooks';
 import React, {useEffect, useState} from 'react';
-import {Pressable, StyleSheet, View} from 'react-native';
-import {TextInput} from 'react-native-gesture-handler';
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 import Composer from './components/Composer';
 import MessageItem from './components/MessageItem';
 import {Message} from '@rn-matrix/core';
-import ActionSheet from '../../components/ActionSheet';
 import {isIos} from '../../../shared/utilities/misc';
 import ChatActionSheet from './components/ChatActionSheet';
 
@@ -119,6 +109,7 @@ export default function ChatScreen({navigation, route}) {
         visible={actionSheetVisible}
         setVisible={setActionSheetVisible}
         activeMessage={activeMessage}
+        setActiveMessage={setActiveMessage}
         editMessage={editMessage}
       />
     </>

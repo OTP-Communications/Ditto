@@ -43,24 +43,19 @@ export default function SettingsScreen() {
         styles.wrapper,
         {backgroundColor: theme['background-basic-color-5']},
       ]}>
-      <View
-        style={{flexDirection: 'row', alignItems: 'center', marginBottom: 48}}>
-        <Avatar
-          source={{uri: matrix.getHttpUrl(avatar)}}
-          style={{width: 100, height: 100, marginRight: 24}}
-        />
-        <View>
-          <Text category="h4" style={{maxWidth: 250}} numberOfLines={1}>
-            {name}
-          </Text>
-          <Text
-            category="h6"
-            style={{opacity: 0.3, maxWidth: 250}}
-            numberOfLines={1}>
-            {myUser.id}
-          </Text>
-        </View>
-      </View>
+      <Avatar
+        source={{uri: matrix.getHttpUrl(avatar)}}
+        style={{width: 100, height: 100, marginBottom: 12}}
+      />
+      <Text category="h4" style={{maxWidth: 250}} numberOfLines={1}>
+        {name}
+      </Text>
+      <Text
+        category="h6"
+        style={{opacity: 0.3, maxWidth: 250, marginBottom: 48}}
+        numberOfLines={1}>
+        {myUser.id}
+      </Text>
       <Text
         category="h6"
         style={{alignSelf: 'flex-start', marginLeft: 16, marginBottom: 12}}>

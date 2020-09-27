@@ -7,7 +7,14 @@ import {getNameColor} from '../../../../../shared/utilities/misc';
 import {ThemeContext} from '../../../../../shared/themes/ThemeProvider';
 
 export default function ImageMessage(props) {
-  const {message, prevSame, nextSame, isMe, onPress = () => {}} = props;
+  const {
+    message,
+    prevSame,
+    nextSame,
+    isMe,
+    onPress = () => {},
+    onLongPress = () => {},
+  } = props;
 
   const theme = useTheme();
   const {themeId} = useContext(ThemeContext);
@@ -32,6 +39,7 @@ export default function ImageMessage(props) {
     <MessageWrapper {...props}>
       <Pressable
         onPress={onPress}
+        onLongPress={onLongPress}
         style={({pressed}) => ({opacity: pressed ? 0.5 : 1})}>
         <Image source={{uri: content.thumb.url}} style={imageStyles} />
       </Pressable>

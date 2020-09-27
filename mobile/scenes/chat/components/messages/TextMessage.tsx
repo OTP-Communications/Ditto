@@ -46,7 +46,7 @@ export default function TextMessage(props) {
           onPress={onPress}
           onLongPress={onLongPress}
           delayLongPress={200}
-          style={({pressed}) => ({opacity: pressed ? 0.5 : 1, marginLeft: 14})}>
+          style={({pressed}) => ({opacity: pressed ? 0.5 : 1})}>
           <Emoji
             style={!isIos() ? {fontFamily: 'NotoColorEmoji'} : {}}
             isMe={isMe}
@@ -89,7 +89,6 @@ const Emoji = ({style, isMe, children}) => (
     style={{
       ...style,
       fontSize: 45,
-      marginBottom: 4,
     }}>
     {children}
   </Text>

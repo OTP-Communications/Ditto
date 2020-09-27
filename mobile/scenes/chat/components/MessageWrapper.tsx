@@ -38,23 +38,17 @@ export default function MessageWrapper({children, ...props}) {
       ]}>
       <View
         style={{maxWidth: '85%', flexDirection: 'row', alignItems: 'flex-end'}}>
-        {showAvatar ? (
-          <Avatar
-            size="small"
-            source={{uri: matrix.getHttpUrl(senderAvatar)}}
-            style={{
-              backgroundColor: theme['background-basic-color-3'],
-              marginRight: 6,
-              marginBottom: 3,
-            }}
-          />
-        ) : (
-          <Avatar
-            size="small"
-            source={{uri: ''}}
-            style={{backgroundColor: 'transparent', marginRight: 6}}
-          />
-        )}
+        <Avatar
+          size="small"
+          source={{uri: showAvatar ? matrix.getHttpUrl(senderAvatar) : ''}}
+          style={{
+            backgroundColor: showAvatar
+              ? theme['background-basic-color-3']
+              : 'transparent',
+            marginRight: 8,
+            marginBottom: 3,
+          }}
+        />
         <View>
           {showSenderName && (
             <Text

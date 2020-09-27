@@ -72,8 +72,8 @@ export default function AppNavigator() {
 function ChatStack({navigation}) {
   const theme = useTheme();
   const myUser = matrix.getMyUser();
-  const avatar = useObservableState(myUser.avatar$);
-  const name: string | undefined = useObservableState(myUser.name$);
+  const avatar = useObservableState(myUser?.avatar$);
+  const name: string | undefined = useObservableState(myUser?.name$);
 
   const {themeId, setTheme} = useContext(ThemeContext);
 

@@ -104,5 +104,6 @@ const getHtmlStyles = ({isMe, theme}) => ({
     code: {
       backgroundColor: '#00000025',
     },
+    p: {},
   },
 });
