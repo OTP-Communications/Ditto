@@ -1,29 +1,37 @@
 import {Text, useTheme} from '@ui-kitten/components';
-import React from 'react';
+import React, {useContext} from 'react';
 import {View, Pressable, StyleSheet} from 'react-native';
 import MessageWrapper from '../MessageWrapper';
 import {matrix} from '@rn-matrix/core';
 import {useObservableState} from 'observable-hooks';
 import Html from '../Html';
-import {getNameColor} from '../../../../../shared/utilities/misc';
+import {getNameColor, isIos} from '../../../../../shared/utilities/misc';
+import {isEmoji} from '../../../../../shared/utilities/emoji';
 import Color from 'color';
+import {ThemeContext} from '../../../../../shared/themes/ThemeProvider';
 
 export default function TextMessage(props) {
-  const {message, prevSame, nextSame, onPress = () => {}} = props;
+  const {
+    message,
+    prevSame,
+    nextSame,
+    isMe,
+    onPress = () => {},
+    onLongPress = () => {},
+  } = props;
 
   const theme = useTheme();
+  const {themeId} = useContext(ThemeContext);
 
-  const myUser = matrix.getMyUser();
   const content = useObservableState(message.content$);
   const senderName = useObservableState(message.sender.name$);
   const status = useObservableState(message.status$);
-  const isMe = myUser?.id === message.sender.id;
 
   if (!content) return null;
 
   const bubbleBackground = (pressed) => {
     if (isMe) {
-      return pressed ? theme['color-primary-700'] : theme['color-primary-600'];
+      return pressed ? theme['color-primary-600'] : theme['color-primary-500'];
     } else {
       return pressed
         ? Color(theme['background-basic-color-3']).darken(0.2).hex()
@@ -32,28 +40,60 @@ export default function TextMessage(props) {
   };
 
   return (
-    <MessageWrapper {...props} isMe={isMe}>
-      <Pressable
-        onPress={onPress}
-        style={({pressed}) => [
-          styles.bubble,
-          {backgroundColor: bubbleBackground(pressed)},
-          prevSame && isMe ? {borderTopRightRadius: 6} : {},
-          prevSame && !isMe ? {borderTopLeftRadius: 6} : {},
-          nextSame && isMe ? {borderBottomRightRadius: 6} : {},
-          nextSame && !isMe ? {borderBottomLeftRadius: 6} : {},
-        ]}>
-        {!isMe && (
-          <Text
-            style={[styles.sender, {color: getNameColor(message.sender.id)}]}>
-            {senderName}
-          </Text>
-        )}
-        <Html html={content?.html} isMe={isMe} />
-      </Pressable>
+    <MessageWrapper {...props}>
+      {isEmoji(content?.text) ? (
+        <Pressable
+          onPress={onPress}
+          onLongPress={onLongPress}
+          delayLongPress={200}
+          style={({pressed}) => ({opacity: pressed ? 0.5 : 1, marginLeft: 14})}>
+          <Emoji
+            style={!isIos() ? {fontFamily: 'NotoColorEmoji'} : {}}
+            isMe={isMe}
+            {...props}>
+            {content.text}
+          </Emoji>
+        </Pressable>
+      ) : (
+        <Pressable
+          onPress={onPress}
+          onLongPress={onLongPress}
+          delayLongPress={200}
+          style={({pressed}) => [
+            styles.bubble,
+            {backgroundColor: bubbleBackground(pressed)},
+            prevSame && isMe ? {borderTopRightRadius: 6} : {},
+            prevSame && !isMe ? {borderTopLeftRadius: 6} : {},
+            nextSame && isMe ? {borderBottomRightRadius: 6} : {},
+            nextSame && !isMe ? {borderBottomLeftRadius: 6} : {},
+          ]}>
+          {!isMe && !prevSame && (
+            <Text
+              style={{
+                fontWeight: 'bold',
+                marginBottom: 3,
+                color: getNameColor(message.sender.id, themeId),
+              }}>
+              {senderName}
+            </Text>
+          )}
+          <Html html={content.html} isMe={isMe} />
+        </Pressable>
+      )}
     </MessageWrapper>
   );
 }
+
+const Emoji = ({style, isMe, children}) => (
+  <Text
+    style={{
+      ...style,
+      fontSize: 45,
+      marginBottom: 4,
+    }}>
+    {children}
+  </Text>
+);
 
 const styles = StyleSheet.create({
   bubble: {

@@ -4,12 +4,7 @@ import {useObservableState} from 'observable-hooks';
 import React, {useContext} from 'react';
 import {ActivityIndicator, Pressable} from 'react-native';
 
-// import ChatStack from './ChatStack';
-// import LandingScreen from '../scenes/auth/LandingScreen';
-// import LoginScreen from '../scenes/auth/LoginScreen';
 import {Avatar, Layout, Text, useTheme} from '@ui-kitten/components';
-// import SettingsScreen from '../scenes/settings/SettingsScreen';
-// import NewChatScreen from '../scenes/newChat/NewChatScreen';
 import {enableScreens} from 'react-native-screens';
 import {createNativeStackNavigator} from 'react-native-screens/native-stack';
 import ChatListScreen from './scenes/chatList/ChatListScreen';
@@ -18,6 +13,7 @@ import LoginScreen from './scenes/auth/LoginScreen';
 import ChatScreen from './scenes/chat/ChatScreen';
 import SettingsScreen from './scenes/settings/SettingsScreen';
 import {ThemeContext} from '../shared/themes/ThemeProvider';
+import LightboxScreen from './scenes/chat/LightboxScreen';
 
 enableScreens();
 
@@ -55,17 +51,13 @@ export default function AppNavigator() {
       <NativeStack.Navigator
         screenOptions={{headerShown: false, stackPresentation: 'modal'}}>
         <NativeStack.Screen name="ChatStack" component={ChatStack} />
-        <NativeStack.Screen name="Settings" component={SettingsScreen} />
-        {/* <NativeStack.Screen name="Settings" component={SettingsScreen} />
-        <NativeStack.Screen
-          name="NewChat"
-          component={NewChatScreen}
-        /> */}
+        <NativeStack.Screen name="Lightbox" component={LightboxScreen} />
+        <NativeStack.Screen name="Settings" component={SettingsStack} />
       </NativeStack.Navigator>
     );
   } else {
     return (
-      <NativeStack.Navigator headerMode="none">
+      <NativeStack.Navigator screenOptions={{headerShown: false}}>
         <NativeStack.Screen name="Landing" component={LandingScreen} />
         <NativeStack.Screen name="Login" component={LoginScreen} />
       </NativeStack.Navigator>
@@ -116,33 +108,7 @@ function ChatStack({navigation}) {
                 source={{uri: matrix.getHttpUrl(avatar)}}
                 size="small"
                 style={{
-                  backgroundColor: theme['background-basic-color-3'],
-                }}
-              />
-              {!avatar && (
-                <Text
-                  style={{position: 'absolute', opacity: 0.2}}
-                  category="h6">
-                  {name?.charAt(0)}
-                </Text>
-              )}
-            </Pressable>
-          ),
-          headerRight: () => (
-            <Pressable
-              onPress={toggleTheme}
-              style={({pressed}) => ({
-                position: 'relative',
-                justifyContent: 'center',
-                alignItems: 'center',
-                marginRight: 18,
-                opacity: pressed ? 0.6 : 1,
-              })}>
-              <Avatar
-                source={{uri: matrix.getHttpUrl(avatar)}}
-                size="small"
-                style={{
-                  backgroundColor: theme['background-basic-color-3'],
+                  backgroundColor: theme['background-basic-color-2'],
                 }}
               />
               {!avatar && (
@@ -174,22 +140,57 @@ function ChatStack({navigation}) {
                 opacity: pressed ? 0.6 : 1,
               })}>
               <Avatar
-                source={{uri: matrix.getHttpUrl(avatar)}}
+                source={{
+                  uri: matrix.getHttpUrl(route.params?.chat.avatar$.getValue()),
+                }}
                 size="small"
                 style={{
-                  backgroundColor: theme['background-basic-color-3'],
+                  backgroundColor: theme['background-basic-color-2'],
                 }}
               />
-              {!avatar && (
+              {!route.params?.chat.avatar$.getValue() && (
                 <Text
                   style={{position: 'absolute', opacity: 0.2}}
                   category="h6">
-                  {name?.charAt(0)}
+                  {route.params?.chat.name$.getValue()?.charAt(0)}
                 </Text>
               )}
             </Pressable>
           ),
         })}
+      />
+    </Stack.Navigator>
+  );
+}
+
+function SettingsStack() {
+  const theme = useTheme();
+  return (
+    <Stack.Navigator headerMode="screen">
+      <Stack.Screen
+        name="Settings"
+        options={({navigation}) => ({
+          title: '',
+          headerStyle: {
+            backgroundColor: theme['background-basic-color-5'],
+            borderBottomWidth: 0,
+            elevation: 0,
+            shadowColor: 'transparent',
+          },
+          headerRight: () => (
+            <Pressable
+              onPress={navigation.goBack}
+              style={({pressed}) => ({
+                marginRight: 18,
+                opacity: pressed ? 0.4 : 1,
+              })}>
+              <Text category="s1" style={{fontSize: 18}}>
+                Done
+              </Text>
+            </Pressable>
+          ),
+        })}
+        component={SettingsScreen}
       />
     </Stack.Navigator>
   );

@@ -22,9 +22,9 @@ export default function Reactions({message, isMe}) {
       {Object.keys(reactions).map((key: any) => {
         const isSelected = !!reactions[key][myUserId];
         const selectedStyle = {
-          backgroundColor: theme['color-primary-600'],
+          backgroundColor: theme['color-primary-500'],
           borderWidth: 1.8,
-          borderColor: theme['color-primary-700'],
+          borderColor: theme['color-primary-600'],
         };
         const toggle = () => toggleReaction(key);
         return (
@@ -35,8 +35,8 @@ export default function Reactions({message, isMe}) {
                 isSelected
                   ? selectedStyle
                   : {
-                      backgroundColor: theme['color-basic-900'],
-                      borderColor: theme['color-basic-1000'],
+                      backgroundColor: theme['background-basic-color-3'],
+                      borderColor: theme['background-basic-color-2'],
                     },
               ]}>
               <Text
@@ -53,7 +53,9 @@ export default function Reactions({message, isMe}) {
               </Text>
               <Text
                 style={{
-                  color: theme['color-basic-100'],
+                  color: isSelected
+                    ? theme['color-basic-100']
+                    : theme['text-basic-color'],
                   fontSize: 16,
                 }}>
                 &nbsp;{`${Object.keys(reactions[key]).length}`}

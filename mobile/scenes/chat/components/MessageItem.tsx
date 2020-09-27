@@ -4,14 +4,19 @@ import {ActivityIndicator, View} from 'react-native';
 import {matrix, Message} from '@rn-matrix/core';
 import {useObservableState} from 'observable-hooks';
 import TextMessage from './messages/TextMessage';
+import EventMessage from './messages/EventMessage';
+import ImageMessage from './messages/ImageMessage';
 
 export default function MessageItem({
   chatId,
   messageId,
   prevMessageId,
   nextMessageId,
+  onPress,
+  onLongPress,
   ...otherProps
 }) {
+  const myUser = matrix.getMyUser();
   if (messageId === 'loading') {
     return <ActivityIndicator />;
   }
@@ -38,29 +43,41 @@ export default function MessageItem({
       : null;
   const prevSame = isSameSender(message, prevMessage);
   const nextSame = isSameSender(message, nextMessage);
-  const props = {...otherProps, message, prevSame, nextSame};
+  const isMe = myUser?.id === message.sender.id;
+
+  const onMessagePress = () => onPress(message);
+  const onMessageLongPress = () => onLongPress(message);
+
+  const props = {
+    ...otherProps,
+    onPress: onMessagePress,
+    onLongPress: onMessageLongPress,
+    message,
+    prevSame,
+    nextSame,
+    isMe,
+  };
 
   const messageType = useObservableState(message.type$);
 
-  // if (message.redacted$.getValue()) {
-  //   return <EventMessage {...props} />;
-  // }
+  if (message.redacted$.getValue()) {
+    return null;
+    return <EventMessage {...props} />;
+  }
 
   if (Message.isTextMessage(messageType)) {
     return <TextMessage {...props} />;
   }
-  // if (Message.isImageMessage(messageType)) {
-  //   return <ImageMessage {...props} />;
-  // }
+  if (Message.isImageMessage(messageType)) {
+    return <ImageMessage {...props} />;
+  }
   // if (Message.isVideoMessage(messageType) || Message.isFileMessage(messageType)) {
   //   return <FileMessage {...props} />;
   // }
   // if (Message.isNoticeMessage(messageType)) {
   //   return <NoticeMessage {...props} />;
   // }
-  // return <EventMessage {...props} />;
-
-  return <Text>messageeee</Text>;
+  return <EventMessage {...props} />;
 }
 
 function isSameSender(messageA, messageB) {

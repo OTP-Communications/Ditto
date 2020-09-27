@@ -1,11 +1,22 @@
-import {Input, List, Text, useTheme} from '@ui-kitten/components';
+import {
+  Icon,
+  Input,
+  List,
+  ListItem,
+  Text,
+  useTheme,
+} from '@ui-kitten/components';
 import {useObservableState} from 'observable-hooks';
 import React, {useEffect, useState} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {Pressable, StyleSheet, View} from 'react-native';
 import {TextInput} from 'react-native-gesture-handler';
 import {SafeAreaView, useSafeAreaInsets} from 'react-native-safe-area-context';
 import Composer from './components/Composer';
 import MessageItem from './components/MessageItem';
+import {Message} from '@rn-matrix/core';
+import ActionSheet from '../../components/ActionSheet';
+import {isIos} from '../../../shared/utilities/misc';
+import ChatActionSheet from './components/ChatActionSheet';
 
 export default function ChatScreen({navigation, route}) {
   const chat = route.params?.chat;
@@ -21,6 +32,8 @@ export default function ChatScreen({navigation, route}) {
   const atStart = useObservableState(chat.atStart$);
   const [timeline, setTimeline] = useState(messageList);
   const [isLoading, setIsLoading] = useState(false);
+  const [actionSheetVisible, setActionSheetVisible] = useState(false);
+  const [activeMessage, setActiveMessage] = useState(null);
 
   const handleEndReached = async () => {
     if (!atStart && !isLoading) {
@@ -39,8 +52,25 @@ export default function ChatScreen({navigation, route}) {
         messageId={item}
         prevMessageId={messageList[index + 1] ? messageList[index + 1] : null}
         nextMessageId={messageList[index - 1] ? messageList[index - 1] : null}
+        onPress={onPress}
+        onLongPress={onLongPress}
       />
     );
+  };
+
+  const onPress = (message) => {
+    if (Message.isImageMessage(message.type$.getValue())) {
+      navigation.navigate('Lightbox', {message});
+    }
+  };
+
+  const onLongPress = (message) => {
+    setActiveMessage(message);
+    setActionSheetVisible(true);
+  };
+
+  const editMessage = () => {
+    //
   };
 
   useEffect(() => {
@@ -64,23 +94,33 @@ export default function ChatScreen({navigation, route}) {
   }, [isLoading, messageList, chat, typing]);
 
   return (
-    <SafeAreaView
-      style={{
-        flex: 1,
-        backgroundColor: theme['background-basic-color-5'],
-      }}>
-      <List
-        inverted
-        data={timeline}
-        renderItem={renderMessageItem}
-        onEndReached={handleEndReached}
+    <>
+      <SafeAreaView
         style={{
-          marginTop: -insets.top,
-          marginHorizontal: 6,
+          flex: 1,
           backgroundColor: theme['background-basic-color-5'],
-        }}
+        }}>
+        <List
+          inverted
+          keyboardDismissMode={isIos() ? 'interactive' : 'on-drag'}
+          keyboardShouldPersistTaps="handled"
+          data={timeline}
+          renderItem={renderMessageItem}
+          onEndReached={handleEndReached}
+          style={{
+            marginTop: -insets.top,
+            marginHorizontal: 6,
+            backgroundColor: theme['background-basic-color-5'],
+          }}
+        />
+        <Composer chat={chat} />
+      </SafeAreaView>
+      <ChatActionSheet
+        visible={actionSheetVisible}
+        setVisible={setActionSheetVisible}
+        activeMessage={activeMessage}
+        editMessage={editMessage}
       />
-      <Composer chat={chat} />
-    </SafeAreaView>
+    </>
   );
 }

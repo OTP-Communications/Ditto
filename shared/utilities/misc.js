@@ -18,12 +18,15 @@ export function htmlLinks(html) {
   return html ? html.replace(urlRegex, '<a href="$&">$&</a>') : html;
 }
 
-export function getNameColor(name) {
+export function getNameColor(name, themeId = 'light') {
   const code = hashCode(name);
   const hex = intToHex(code);
   let col = Color(`#${hex}`);
-  if (col.isDark()) {
-    col = col.lighten(0.7);
+  if (col.isDark() && themeId === 'dark') {
+    col = col.lighten(0.4);
+  }
+  if (col.isLight() && themeId === 'light') {
+    col = col.darken(0.4);
   }
   return col.hex();
 }

@@ -41,7 +41,6 @@ export default function Composer({chat}) {
     <KeyboardAvoidingView
       style={{
         paddingHorizontal: 6,
-        backgroundColor: theme['color-basic-1100'],
         flexDirection: 'row',
         alignItems: 'flex-end',
       }}
