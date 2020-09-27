@@ -49,7 +49,7 @@ export default function MessageWrapper({children, ...props}) {
             marginBottom: 3,
           }}
         />
-        <View>
+        <View style={{maxWidth: '85%'}}>
           {showSenderName && (
             <Text
               style={{
