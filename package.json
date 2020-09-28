@@ -34,6 +34,7 @@
     "react-native": "0.63.2",
     "react-native-actions-sheet": "^0.3.5",
     "react-native-gesture-handler": "^1.8.0",
+    "react-native-haptic-feedback": "^1.10.0",
     "react-native-image-pan-zoom": "^2.1.12",
     "react-native-level-fs": "^3.0.1",
     "react-native-localize": "^1.4.1",

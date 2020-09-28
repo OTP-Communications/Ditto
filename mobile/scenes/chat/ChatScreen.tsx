@@ -6,7 +6,9 @@ import Composer from './components/Composer';
 import MessageItem from './components/MessageItem';
 import {Message} from '@rn-matrix/core';
 import {isIos} from '../../../shared/utilities/misc';
+import {lightHaptic} from '../../../shared/utilities/haptic';
 import ChatActionSheet from './components/ChatActionSheet';
+import {Keyboard} from 'react-native';
 
 export default function ChatScreen({navigation, route}) {
   const chat = route.params?.chat;
@@ -24,6 +26,7 @@ export default function ChatScreen({navigation, route}) {
   const [isLoading, setIsLoading] = useState(false);
   const [actionSheetVisible, setActionSheetVisible] = useState(false);
   const [activeMessage, setActiveMessage] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
 
   const handleEndReached = async () => {
     if (!atStart && !isLoading) {
@@ -55,12 +58,10 @@ export default function ChatScreen({navigation, route}) {
   };
 
   const onLongPress = (message) => {
+    lightHaptic();
+    Keyboard.dismiss();
     setActiveMessage(message);
     setActionSheetVisible(true);
-  };
-
-  const editMessage = () => {
-    //
   };
 
   useEffect(() => {
@@ -103,14 +104,20 @@ export default function ChatScreen({navigation, route}) {
             backgroundColor: theme['background-basic-color-5'],
           }}
         />
-        <Composer chat={chat} />
+        <Composer
+          chat={chat}
+          activeMessage={activeMessage}
+          setActiveMessage={setActiveMessage}
+          isEditing={isEditing}
+          setIsEditing={setIsEditing}
+        />
       </SafeAreaView>
       <ChatActionSheet
         visible={actionSheetVisible}
         setVisible={setActionSheetVisible}
         activeMessage={activeMessage}
         setActiveMessage={setActiveMessage}
-        editMessage={editMessage}
+        setIsEditing={setIsEditing}
       />
     </>
   );

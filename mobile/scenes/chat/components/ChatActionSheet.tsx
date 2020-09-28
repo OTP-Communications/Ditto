@@ -1,6 +1,6 @@
 import {Icon, ListItem, Text, useTheme} from '@ui-kitten/components';
 import React from 'react';
-import {Pressable, View} from 'react-native';
+import {Alert, Pressable, View} from 'react-native';
 import ActionSheet from '../../../components/ActionSheet';
 import {matrix, Message} from '@rn-matrix/core';
 import Clipboard from '@react-native-community/clipboard';
@@ -10,7 +10,7 @@ export default function ChatActionSheet({
   setVisible,
   activeMessage,
   setActiveMessage,
-  editMessage,
+  setIsEditing,
 }) {
   const theme = useTheme();
   const myUserId = matrix.getMyUser().id;
@@ -23,12 +23,40 @@ export default function ChatActionSheet({
 
   const copyMessage = () => {
     Clipboard.setString(content.text);
+    hideSheet();
+  };
+
+  const editMessage = () => {
+    setIsEditing(true);
     setVisible(false);
-    setTimeout(() => setActiveMessage(null), 1000);
   };
 
   const deleteMessage = () => {
-    //
+    Alert.alert(
+      'Delete message?',
+      `\"${content.text}\"`,
+      [
+        {
+          text: 'Cancel',
+          onPress: () => console.log('Cancel Pressed'),
+          style: 'cancel',
+        },
+        {
+          text: 'Delete',
+          onPress: () => {
+            matrix.deleteMessage(activeMessage);
+            hideSheet();
+          },
+          style: 'destructive',
+        },
+      ],
+      {cancelable: false},
+    );
+  };
+
+  const hideSheet = () => {
+    setVisible(false);
+    setTimeout(() => setActiveMessage(null), 100);
   };
 
   return (
@@ -38,11 +66,6 @@ export default function ChatActionSheet({
       innerScrollEnabled={false}
       style={{minHeight: 100, paddingTop: 12, paddingBottom: 48}}
       onClose={() => setVisible(false)}>
-      {/* <EmojiButtons
-      message={selectedMessage}
-      setActionSheetVisible={setActionSheetVisible}
-      setSelectedMessage={setSelectedMessage}
-    /> */}
       <Text
         numberOfLines={2}
         category="s2"
@@ -52,9 +75,10 @@ export default function ChatActionSheet({
         }}>
         {content?.text}
       </Text>
+      <EmojiButtons message={activeMessage} hideSheet={hideSheet} />
       <View
         style={{
-          backgroundColor: theme['background-basic-color-3'],
+          backgroundColor: theme['background-basic-color-4'],
           borderRadius: 8,
         }}>
         {Message.isTextMessage(type) && (
@@ -62,7 +86,7 @@ export default function ChatActionSheet({
             onPress={copyMessage}
             style={({pressed}) => ({
               backgroundColor: pressed
-                ? theme['background-basic-color-4']
+                ? theme['background-basic-color-5']
                 : 'transparent',
             })}>
             <ListItem
@@ -73,6 +97,20 @@ export default function ChatActionSheet({
             />
           </Pressable>
         )}
+        <Pressable
+          onPress={copyMessage}
+          style={({pressed}) => ({
+            backgroundColor: pressed
+              ? theme['background-basic-color-4']
+              : 'transparent',
+          })}>
+          <ListItem
+            title="Reply"
+            disabled
+            accessoryLeft={(props) => <Icon {...props} name="undo" />}
+            style={{backgroundColor: 'transparent'}}
+          />
+        </Pressable>
         {Message.isImageMessage(type) && (
           <Pressable
             onPress={copyMessage}
@@ -125,5 +163,49 @@ export default function ChatActionSheet({
         )}
       </View>
     </ActionSheet>
+  );
+}
+
+const emojis = ['👍', '❤️', '🎉', '😂', '😭', '😅'];
+
+function EmojiButtons({message, hideSheet}) {
+  return (
+    <View
+      style={{
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginVertical: 12,
+      }}>
+      {emojis.map((e) => (
+        <EmojiButton
+          key={e}
+          onPress={() => {
+            message.toggleReaction(e);
+            hideSheet();
+          }}>
+          <Text style={{fontSize: 24}}>{e}</Text>
+        </EmojiButton>
+      ))}
+    </View>
+  );
+}
+
+function EmojiButton({children, onPress}) {
+  const theme = useTheme();
+  return (
+    <Pressable
+      onPress={onPress}
+      style={({pressed}) => ({
+        backgroundColor: theme['background-basic-color-3'],
+        borderRadius: 80,
+        padding: 12,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginHorizontal: 6,
+        opacity: pressed ? 0.5 : 1,
+      })}>
+      {children}
+    </Pressable>
   );
 }

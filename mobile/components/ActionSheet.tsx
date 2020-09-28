@@ -50,7 +50,7 @@ export default function ActionSheet({
       gestureEnabled={gestureEnabled}
       onClose={onClose}
       containerStyle={{
-        backgroundColor: theme['background-basic-color-3'],
+        backgroundColor: theme['background-basic-color-4'],
         borderTopLeftRadius: 16,
         borderTopRightRadius: 16,
         overflow: 'hidden',
