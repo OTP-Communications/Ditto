@@ -1,8 +1,9 @@
 import {Text, useTheme} from '@ui-kitten/components';
 // import { useTheme } from '@ui-kitten/components'
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {Linking, View} from 'react-native';
 import HtmlRenderer from 'react-native-render-html';
+import {ThemeContext} from '../../../../shared/themes/ThemeProvider';
 import {htmlEmojis} from '../../../../shared/utilities/emoji';
 import {htmlLinks} from '../../../../shared/utilities/misc';
 
@@ -89,7 +90,9 @@ const getHtmlStyles = ({isMe, theme}) => ({
   },
   tagsStyles: {
     blockquote: {
-      borderLeftColor: theme['color-primary-500'],
+      borderLeftColor: isMe
+        ? theme['color-basic-100']
+        : theme['color-primary-500'],
       borderLeftWidth: 3,
       paddingLeft: 10,
       marginVertical: 10,

@@ -1,7 +1,7 @@
 import {useNavigation} from '@react-navigation/native';
 import {Button, Layout, useTheme} from '@ui-kitten/components';
 import React from 'react';
-// import { useTranslation } from 'react-i18next'
+import {useTranslation} from 'react-i18next';
 import {StatusBar, StyleSheet, Image, Text} from 'react-native';
 
 import Wordmark from '../../../shared/assets/svg/wordmark.svg';
@@ -13,16 +13,21 @@ const bottomBlob = require('../../../shared/assets/images/blob3.png');
 StatusBar.setBarStyle('light-content');
 
 export default function LandingScreen() {
+  const theme = useTheme();
   const navigation = useNavigation();
 
-  // const { t } = useTranslation('auth')
+  const {t} = useTranslation('auth');
 
   const handleLoginPress = () => navigation.navigate('Login');
 
   return (
     <Layout
-      level="4"
-      style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+      style={{
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: theme['color-basic-1000'],
+      }}>
       <Image source={topBlob} style={blobs.top} />
       <Image source={middleBlob} style={blobs.middle} />
       <Image source={bottomBlob} style={blobs.bottom} />
@@ -45,8 +50,7 @@ export default function LandingScreen() {
           width: 200,
           marginTop: 300,
         }}>
-        {/* {t('landing.loginButtonLabel')} */}
-        LOGIN
+        {t('landing.loginButtonLabel')}
       </Button>
     </Layout>
   );

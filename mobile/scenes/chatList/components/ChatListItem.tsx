@@ -27,8 +27,8 @@ export default function ChatListItem({chat}) {
           props.style,
           {
             tintColor: null,
-            width: 50,
-            height: 50,
+            width: 60,
+            height: 60,
             backgroundColor: theme['background-basic-color-3'],
           },
         ]}
@@ -54,7 +54,10 @@ export default function ChatListItem({chat}) {
   );
 
   const ChatDescription = (props) => (
-    <Text {...props} style={[props.style, {fontSize: 14, marginTop: 3}]}>
+    <Text
+      {...props}
+      style={[props.style, {fontSize: 14, marginTop: 3}]}
+      numberOfLines={2}>
       {snippet?.content}
     </Text>
   );
@@ -72,6 +75,7 @@ export default function ChatListItem({chat}) {
       style={{
         width: '100%',
         backgroundColor: theme['background-basic-color-5'],
+        paddingVertical: 12,
       }}
       onPress={openChat}
       activeOpacity={0.4}

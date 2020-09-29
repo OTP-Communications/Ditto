@@ -37,7 +37,6 @@ const debug = require('debug')('ditto:scenes:auth:LoginScreen');
 
 export default function LoginScreen({navigation}) {
   const passwordInput = useRef(null);
-  const homeserverInput = useRef(null);
   const theme = useTheme();
   const {t} = useTranslation('auth');
 
@@ -87,30 +86,26 @@ export default function LoginScreen({navigation}) {
   const handleBackPress = () => navigation.goBack();
 
   const renderIcon = (props) => (
-    <View style={{position: 'absolute', right: 14, bottom: '23%'}}>
-      <TouchableWithoutFeedback onPress={toggleUsernameTooltip}>
-        <Icon
-          fill="#7F7F7F60"
-          width={24}
-          height={24}
-          name="question-mark-circle-outline"
-        />
-      </TouchableWithoutFeedback>
-    </View>
+    <TouchableWithoutFeedback onPress={toggleUsernameTooltip}>
+      <Icon
+        fill="#7F7F7F60"
+        width={24}
+        height={24}
+        name="question-mark-circle-outline"
+      />
+    </TouchableWithoutFeedback>
   );
 
   const renderToggleSecureIcon = (props) => (
-    <View style={{position: 'absolute', right: 14, bottom: '23%'}}>
-      <TouchableWithoutFeedback
-        onPress={() => setSecurePassword(!securePassword)}>
-        <Icon
-          fill="#7F7F7F60"
-          width={24}
-          height={24}
-          name={securePassword ? 'eye-off-outline' : 'eye-outline'}
-        />
-      </TouchableWithoutFeedback>
-    </View>
+    <TouchableWithoutFeedback
+      onPress={() => setSecurePassword(!securePassword)}>
+      <Icon
+        fill="#7F7F7F60"
+        width={24}
+        height={24}
+        name={securePassword ? 'eye-off-outline' : 'eye-outline'}
+      />
+    </TouchableWithoutFeedback>
   );
 
   // ********************************************************************************
@@ -121,12 +116,22 @@ export default function LoginScreen({navigation}) {
   }, [usernameValue, passwordValue]);
 
   return (
-    <Layout level="4" style={{flex: 1}}>
+    <Layout
+      style={{
+        flex: 1,
+        backgroundColor: theme['color-basic-1000'],
+      }}>
       <SafeAreaView>
         <TopNavigation
-          title={t('login.title')}
+          title={(props) => (
+            <Text
+              {...props}
+              category="h5"
+              style={{color: theme['color-basic-100']}}>
+              {t('login.title')}
+            </Text>
+          )}
           alignment="center"
-          titleStyle={{fontSize: 25}}
           style={{backgroundColor: 'transparent'}}
           leftControl={<BackAction onPress={handleBackPress} />}
         />
@@ -137,19 +142,21 @@ export default function LoginScreen({navigation}) {
       <ScrollView
         keyboardShouldPersistTaps="handled"
         contentContainerStyle={styles.scrollview}>
-        <View style={{position: 'relative'}}>
-          <Input
-            label={t('login.usernameOrMatrixIdInputLabel')}
-            placeholder={t('login.usernameOrMatrixIdInputPlaceholder')}
-            autoFocus
-            size={isIos() ? 'large' : 'medium'}
-            onChangeText={setUsernameValue}
-            returnKeyType="next"
-            onSubmitEditing={() => passwordInput.current.focus()}
-            autoCapitalize="none"
-          />
-          {renderIcon()}
-        </View>
+        <Input
+          style={{
+            backgroundColor: theme['color-basic-800'],
+          }}
+          textStyle={{color: theme['color-basic-100']}}
+          label={t('login.usernameOrMatrixIdInputLabel')}
+          placeholder={t('login.usernameOrMatrixIdInputPlaceholder')}
+          autoFocus
+          size={'large'}
+          onChangeText={setUsernameValue}
+          returnKeyType="next"
+          onSubmitEditing={() => passwordInput.current.focus()}
+          autoCapitalize="none"
+          accessoryRight={renderIcon}
+        />
 
         <Modal
           visible={usernameTooltipVisible}
@@ -182,68 +189,44 @@ export default function LoginScreen({navigation}) {
           </TouchableWithoutFeedback>
         </Modal>
 
-        <View>
-          <Text
-            category="c2"
-            style={{color: '#7F7F7F', marginTop: 12, marginBottom: 4}}>
-            {t('login.passwordInputLabel')}
-          </Text>
-          <View style={{position: 'relative'}}>
-            <TextInput
-              placeholder={t('login.passwordInputPlaceholder')}
-              style={[
-                styles.dittoInput,
-                {
-                  backgroundColor: passwordIsFocused
-                    ? theme['color-basic-700']
-                    : theme['color-basic-800'],
-                  borderColor: passwordIsFocused ? '#9C37D4' : '#20122D',
-                },
-              ]}
-              onFocus={() => setPasswordIsFocused(true)}
-              onBlur={() => setPasswordIsFocused(false)}
-              ref={passwordInput}
-              secureTextEntry={securePassword}
-              value={passwordValue}
-              onChangeText={setPasswordValue}
-              autoCapitalize="none"
-              placeholderTextColor="#808080"
-              onSubmitEditing={handleLoginPress}
-              returnKeyType="go"
-            />
-            {renderToggleSecureIcon()}
-          </View>
-        </View>
+        <Input
+          style={{
+            marginTop: 12,
+            backgroundColor: theme['color-basic-800'],
+          }}
+          textStyle={{color: theme['color-basic-100']}}
+          label={t('login.passwordInputLabel')}
+          placeholder={t('login.passwordInputPlaceholder')}
+          size={'large'}
+          accessoryRight={renderToggleSecureIcon}
+          ref={passwordInput}
+          secureTextEntry={securePassword}
+          value={passwordValue}
+          onChangeText={setPasswordValue}
+          autoCapitalize="none"
+          onSubmitEditing={handleLoginPress}
+          returnKeyType="go"
+        />
 
         {showAdvanced && (
-          <View>
-            <Text
-              category="c2"
-              style={{color: '#7F7F7F', marginTop: 12, marginBottom: 4}}>
-              {t('login.homeserverInputLabel')}
-            </Text>
-            <TextInput
-              placeholder={t('login.homeserverInputPlaceholder')}
-              style={[
-                styles.dittoInput,
-                {
-                  backgroundColor: homeserverIsFocused
-                    ? theme['color-basic-700']
-                    : theme['color-basic-800'],
-                  borderColor: homeserverIsFocused ? '#9C37D4' : '#20122D',
-                },
-              ]}
-              onFocus={() => setHomeserverIsFocused(true)}
-              onBlur={() => setHomeserverIsFocused(false)}
-              ref={homeserverInput}
-              onChangeText={setHomeserverValue}
-              autoCapitalize="none"
-              autoCorrect={false}
-              placeholderTextColor="#808080"
-              onSubmitEditing={handleLoginPress}
-              returnKeyType="go"
-            />
-          </View>
+          <Input
+            style={{
+              marginTop: 12,
+              backgroundColor: theme['color-basic-800'],
+            }}
+            textStyle={{color: theme['color-basic-100']}}
+            label={t('login.homeserverInputLabel')}
+            placeholder={t('login.homeserverInputPlaceholder')}
+            size="large"
+            onFocus={() => setHomeserverIsFocused(true)}
+            onBlur={() => setHomeserverIsFocused(false)}
+            onChangeText={setHomeserverValue}
+            autoCapitalize="none"
+            autoCorrect={false}
+            placeholderTextColor="#808080"
+            onSubmitEditing={handleLoginPress}
+            returnKeyType="go"
+          />
         )}
 
         {showAdvanced ? (
@@ -263,26 +246,17 @@ export default function LoginScreen({navigation}) {
         )}
 
         <View style={{marginTop: 40}}>
-          {isLoading ? (
-            <Layout
-              style={{
-                justifyContent: 'center',
-                alignItems: 'center',
-                height: 58,
-                borderRadius: 50,
-                backgroundColor: theme['color-info-500'],
-              }}>
-              <Spinner status="basic" />
-            </Layout>
-          ) : (
-            <Button
-              onPress={handleLoginPress}
-              size="giant"
-              status="info"
-              style={{borderRadius: 50}}>
-              {t('login.loginButtonLabel')}
-            </Button>
-          )}
+          <Button
+            disabled={isLoading}
+            accessoryLeft={() =>
+              isLoading ? <Spinner status="basic" /> : null
+            }
+            onPress={handleLoginPress}
+            size="giant"
+            status="info"
+            style={{borderRadius: 50}}>
+            {t('login.loginButtonLabel')}
+          </Button>
         </View>
 
         {errorText.length > 0 && (

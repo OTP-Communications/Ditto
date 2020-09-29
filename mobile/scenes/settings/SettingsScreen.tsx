@@ -37,6 +37,10 @@ export default function SettingsScreen() {
   const PersonIcon = (props) => <Icon {...props} name="person" />;
   const ItemChevron = (props) => <Icon {...props} name="chevron-right" />;
 
+  const logout = () => {
+    matrix.logout();
+  };
+
   return (
     <Layout
       style={[
@@ -67,7 +71,7 @@ export default function SettingsScreen() {
         accessoryRight={ThemeToggle}
         style={{backgroundColor: theme['background-basic-color-4']}}
       />
-      <Text
+      {/* <Text
         category="h6"
         style={{
           alignSelf: 'flex-start',
@@ -82,7 +86,17 @@ export default function SettingsScreen() {
         accessoryLeft={PersonIcon}
         accessoryRight={ItemChevron}
         style={{backgroundColor: theme['background-basic-color-4']}}
-      />
+      /> */}
+      <ListItem
+        onPress={logout}
+        style={{
+          backgroundColor: theme['background-basic-color-4'],
+          width: '100%',
+          justifyContent: 'center',
+          marginTop: 48,
+        }}>
+        <Text status="danger">Logout</Text>
+      </ListItem>
     </Layout>
   );
 }

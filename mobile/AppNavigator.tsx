@@ -129,34 +129,34 @@ function ChatStack({navigation}) {
         options={({route}) => ({
           title: route.params?.chat.name$.getValue() || 'Chat',
           headerStyle: {backgroundColor: theme['background-basic-color-4']},
-          headerRight: () => (
-            <Pressable
-              onPress={toggleTheme}
-              style={({pressed}) => ({
-                position: 'relative',
-                justifyContent: 'center',
-                alignItems: 'center',
-                marginRight: 18,
-                opacity: pressed ? 0.6 : 1,
-              })}>
-              <Avatar
-                source={{
-                  uri: matrix.getHttpUrl(route.params?.chat.avatar$.getValue()),
-                }}
-                size="small"
-                style={{
-                  backgroundColor: theme['background-basic-color-2'],
-                }}
-              />
-              {!route.params?.chat.avatar$.getValue() && (
-                <Text
-                  style={{position: 'absolute', opacity: 0.2}}
-                  category="h6">
-                  {route.params?.chat.name$.getValue()?.charAt(0)}
-                </Text>
-              )}
-            </Pressable>
-          ),
+          //   headerRight: () => (
+          //     <Pressable
+          //       onPress={toggleTheme}
+          //       style={({pressed}) => ({
+          //         position: 'relative',
+          //         justifyContent: 'center',
+          //         alignItems: 'center',
+          //         marginRight: 18,
+          //         opacity: pressed ? 0.6 : 1,
+          //       })}>
+          //       <Avatar
+          //         source={{
+          //           uri: matrix.getHttpUrl(route.params?.chat.avatar$.getValue()),
+          //         }}
+          //         size="small"
+          //         style={{
+          //           backgroundColor: theme['background-basic-color-2'],
+          //         }}
+          //       />
+          //       {!route.params?.chat.avatar$.getValue() && (
+          //         <Text
+          //           style={{position: 'absolute', opacity: 0.2}}
+          //           category="h6">
+          //           {route.params?.chat.name$.getValue()?.charAt(0)}
+          //         </Text>
+          //       )}
+          //     </Pressable>
+          //   ),
         })}
       />
     </Stack.Navigator>

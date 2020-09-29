@@ -40,7 +40,12 @@ export default function ChatListScreen() {
         data={chatList}
         renderItem={renderChatItem}
         ListHeaderComponent={InviteList}
-        style={{backgroundColor: theme['background-basic-color-5']}}
+        ListFooterComponent={<View style={{height: 80}} />}
+        style={{
+          backgroundColor: theme['background-basic-color-5'],
+          paddingTop: 12,
+        }}
+        inset
       />
     </View>
   );

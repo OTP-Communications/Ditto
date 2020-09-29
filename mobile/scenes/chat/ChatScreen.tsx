@@ -27,6 +27,7 @@ export default function ChatScreen({navigation, route}) {
   const [actionSheetVisible, setActionSheetVisible] = useState(false);
   const [activeMessage, setActiveMessage] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
+  const [isReplying, setIsReplying] = useState(false);
 
   const handleEndReached = async () => {
     if (!atStart && !isLoading) {
@@ -63,6 +64,10 @@ export default function ChatScreen({navigation, route}) {
     setActiveMessage(message);
     setActionSheetVisible(true);
   };
+
+  useEffect(() => {
+    handleEndReached();
+  }, []);
 
   useEffect(() => {
     navigation.setOptions({
@@ -110,6 +115,8 @@ export default function ChatScreen({navigation, route}) {
           setActiveMessage={setActiveMessage}
           isEditing={isEditing}
           setIsEditing={setIsEditing}
+          isReplying={isReplying}
+          setIsReplying={setIsReplying}
         />
       </SafeAreaView>
       <ChatActionSheet
@@ -118,6 +125,7 @@ export default function ChatScreen({navigation, route}) {
         activeMessage={activeMessage}
         setActiveMessage={setActiveMessage}
         setIsEditing={setIsEditing}
+        setIsReplying={setIsReplying}
       />
     </>
   );

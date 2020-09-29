@@ -13,17 +13,28 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {matrix} from '@rn-matrix/core';
 import {TextInput} from 'react-native-gesture-handler';
 
+type Props = {
+  chat: any;
+  activeMessage: any;
+  setActiveMessage: (message: any) => void;
+  isEditing: boolean;
+  setIsEditing: (value: boolean) => void;
+  isReplying: boolean;
+  setIsReplying: (value: boolean) => void;
+};
+
 export default function Composer({
   chat,
   activeMessage,
   setActiveMessage,
   isEditing,
   setIsEditing,
-}) {
+  isReplying,
+  setIsReplying,
+}: Props) {
   const theme = useTheme();
   const {t} = useTranslation('messages');
   const headerHeight = useHeaderHeight();
-  const insets = useSafeAreaInsets();
   const [isFocused, setIsFocused] = useState(false);
 
   const [value, setValue] = useState('');
@@ -34,9 +45,9 @@ export default function Composer({
     if (isEditing) {
       confirmEdit();
     } else {
-      if (false) {
-        // room.sendReply(selectedMessage, value);
-        // onCancelReply();
+      if (isReplying) {
+        chat.sendReply(activeMessage, value);
+        endEditingAndReplying();
       } else {
         chat.sendMessage(value, 'm.text');
       }
@@ -46,11 +57,12 @@ export default function Composer({
 
   const confirmEdit = () => {
     matrix.send(value, 'm.edit', chat.id, activeMessage.id);
-    endEditing();
+    endEditingAndReplying();
   };
 
-  const endEditing = () => {
+  const endEditingAndReplying = () => {
     setIsEditing(false);
+    setIsReplying(false);
     setActiveMessage(null);
   };
 
@@ -63,13 +75,15 @@ export default function Composer({
   );
 
   useEffect(() => {
-    if (isEditing) {
-      setValue(activeMessage.content$.getValue().text);
+    if (isEditing || isReplying) {
+      if (isEditing) {
+        setValue(activeMessage.content$.getValue().text);
+      }
       setTimeout(() => inputRef.current.focus(), 200);
     } else {
       setValue('');
     }
-  }, [isEditing]);
+  }, [isEditing, isReplying]);
 
   return (
     <KeyboardAvoidingView
@@ -77,8 +91,12 @@ export default function Composer({
       keyboardVerticalOffset={
         (StatusBar?.currentHeight || 0) + headerHeight + 6
       }>
-      {isEditing && (
-        <EditView activeMessage={activeMessage} endEditing={endEditing} />
+      {(isEditing || isReplying) && (
+        <EditReplyView
+          isReplying={isReplying}
+          activeMessage={activeMessage}
+          endEditingAndReplying={endEditingAndReplying}
+        />
       )}
       <View
         style={{
@@ -120,7 +138,7 @@ export default function Composer({
   );
 }
 
-function EditView({activeMessage, endEditing}) {
+function EditReplyView({isReplying, activeMessage, endEditingAndReplying}) {
   const theme = useTheme();
   return (
     <View
@@ -139,14 +157,14 @@ function EditView({activeMessage, endEditing}) {
           marginLeft: 22,
         }}>
         <Text status="primary" category="s2" style={{marginBottom: 3}}>
-          Editing
+          {isReplying ? 'Replying' : 'Editing'}
         </Text>
         <Text category="s1" numberOfLines={1}>
           {activeMessage.content$.getValue().text}
         </Text>
       </View>
       <Button
-        onPress={endEditing}
+        onPress={endEditingAndReplying}
         appearance="ghost"
         accessoryLeft={(props) => (
           <Icon {...props} name="close" width={30} height={30} />
@@ -159,7 +177,6 @@ function EditView({activeMessage, endEditing}) {
 const styles = StyleSheet.create({
   input: {
     flex: 1,
-    // marginTop: 12,
     borderRadius: 20,
     marginRight: 6,
     paddingHorizontal: 18,

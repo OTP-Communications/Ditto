@@ -11,6 +11,7 @@ export default function ChatActionSheet({
   activeMessage,
   setActiveMessage,
   setIsEditing,
+  setIsReplying,
 }) {
   const theme = useTheme();
   const myUserId = matrix.getMyUser().id;
@@ -28,6 +29,11 @@ export default function ChatActionSheet({
 
   const editMessage = () => {
     setIsEditing(true);
+    setVisible(false);
+  };
+
+  const replyMessage = () => {
+    setIsReplying(true);
     setVisible(false);
   };
 
@@ -106,7 +112,7 @@ export default function ChatActionSheet({
           })}>
           <ListItem
             title="Reply"
-            disabled
+            onPress={replyMessage}
             accessoryLeft={(props) => <Icon {...props} name="undo" />}
             style={{backgroundColor: 'transparent'}}
           />
