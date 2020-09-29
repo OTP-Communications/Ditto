@@ -1,9 +1,10 @@
 require('node-libs-react-native/globals');
 import 'react-native-url-polyfill/auto';
 import 'react-native-gesture-handler';
+import '@rn-matrix/core/shim';
 
 import React, {useContext} from 'react';
-import {matrix} from '@rn-matrix/core';
+import {matrix, matrixSdk} from '@rn-matrix/core';
 import {
   DefaultTheme,
   DarkTheme,
@@ -12,6 +13,11 @@ import {
 import AppNavigator from './mobile/AppNavigator';
 import {ThemeContext} from './shared/themes/ThemeProvider';
 import {StatusBar} from 'react-native';
+import r from 'xmlhttp-request';
+
+matrixSdk.request(r);
+
+console.log('request ', matrixSdk.getRequest());
 
 console.disableYellowBox = true;
 
