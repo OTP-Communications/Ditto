@@ -1,0 +1,51 @@
+fastlane_version '2.151.1'
+xcversion(version: "12.2")
+project_name = 'ditto'
+
+before_all do
+  # ensure_git_branch
+  # ensure_git_status_clean
+  git_pull
+end
+
+platform :ios do
+   # iOS Lanes
+    desc 'Fetch certificates and provisioning profiles'
+      lane :certificates do
+        match(app_identifier: 'chat.ditto.ios', type: 'development', readonly: false)
+        match(app_identifier: 'chat.ditto.ios', type: 'appstore', readonly: false)
+      end
+
+    desc 'Build the iOS application.'
+      private_lane :build do
+        certificates
+        increment_build_number(xcodeproj: "./ios/#{project_name}.xcodeproj")
+        gym(scheme: 'ditto', clean: true, workspace: "./ios/#{project_name}.xcworkspace")
+      end
+
+    desc 'Ship to Testflight.'
+      lane :beta do
+        build
+        pilot
+        commit_version_bump(message: 'Bump build', xcodeproj: './ios/#{project_name}.xcodeproj')
+        push_to_git_remote
+      end
+end
+
+platform :android do
+  # Android Lanes
+  desc 'Build the Android application.'
+    private_lane :build do
+      gradle(task: 'clean', project_dir: 'android/')
+      gradle(task: 'incrementVersionCode', project_dir: 'android/')
+      gradle(task: 'assemble', build_type: 'Release', project_dir: 'android/')
+    end
+
+  desc 'Ship to Playstore Beta.'
+    lane :beta do
+      build
+      supply(track: 'beta', track_promote_to: 'beta', json_key: 'android/serviceAccountKey.json', package_name: 'chat.ditto.and')
+      git_commit(path: ['./android/gradle.properties'], message: 'Bump versionCode')
+      push_to_git_remote
+    end
+end

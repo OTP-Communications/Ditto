@@ -9,9 +9,11 @@
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint .",
+    "bi": "npx react-native bundle --entry-file=index.js --platform=ios --dev=false --bundle-output ios/main.jsbundle --assets-dest=ios",
     "web": "cd web && webpack-dev-server",
     "build:web": "cd web && webpack",
-    "postinstall": "sed -i '' '$s/}/,\"browser\":{\"fs\":\"react-native-level-fs\"}}/' node_modules/olm/package.json"
+    "postinstall": "sed -i '' '$s/}/,\"browser\":{\"fs\":\"react-native-level-fs\"}}/' node_modules/olm/package.json",
+    "beta": "./release.sh"
   },
   "dependencies": {
     "@eva-design/eva": "^2.0.0",

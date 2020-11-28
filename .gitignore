@@ -60,3 +60,5 @@ buck-out/
 
 .cache
 /dist
+
+ditto.app.*
