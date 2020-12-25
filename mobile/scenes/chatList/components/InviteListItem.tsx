@@ -31,9 +31,11 @@ export default function InviteListItem({invite}) {
           props.style,
           {
             tintColor: null,
-            width: 50,
-            height: 50,
+            width: 60,
+            height: 60,
             backgroundColor: theme['background-basic-color-3'],
+            borderWidth: 2,
+            borderColor: theme['color-primary-default'],
           },
         ]}
         source={{uri: matrix.getHttpUrl(avatar)}}
@@ -52,7 +54,7 @@ export default function InviteListItem({invite}) {
   );
 
   const ChatTitle = (props) => (
-    <Text {...props} style={[props.style, {fontSize: 18}]}>
+    <Text {...props} style={[props.style, {fontSize: 18, fontWeight: '800'}]}>
       {name}
     </Text>
   );

@@ -4,6 +4,7 @@ import React from 'react';
 import {View} from 'react-native';
 import {matrix} from '@rn-matrix/core';
 import {useNavigation} from '@react-navigation/native';
+import moment from 'moment';
 
 export default function ChatListItem({chat}) {
   const theme = useTheme();
@@ -11,6 +12,7 @@ export default function ChatListItem({chat}) {
   const name: string | undefined = useObservableState(chat.name$);
   const snippet: string | undefined = useObservableState(chat.snippet$);
   const avatar = useObservableState(chat.avatar$);
+  const readState = useObservableState(chat.readState$);
 
   const navigation = useNavigation();
 
@@ -30,6 +32,11 @@ export default function ChatListItem({chat}) {
             width: 60,
             height: 60,
             backgroundColor: theme['background-basic-color-3'],
+            borderWidth: 2,
+            borderColor:
+              readState === 'unread'
+                ? theme['color-primary-default']
+                : 'transparent',
           },
         ]}
         source={{uri: matrix.getHttpUrl(avatar)}}
@@ -48,17 +55,41 @@ export default function ChatListItem({chat}) {
   );
 
   const ChatTitle = (props) => (
-    <Text {...props} style={[props.style, {fontSize: 18}]}>
-      {name}
-    </Text>
+    <View
+      style={{
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+      }}>
+      <Text
+        {...props}
+        style={[
+          props.style,
+          {fontSize: 18, fontWeight: readState === 'unread' ? '800' : '400'},
+        ]}>
+        {name}
+      </Text>
+      <Text
+        {...props}
+        style={[props.style, {opacity: 0.4, fontSize: 14, fontWeight: '400'}]}>
+        {moment(snippet?.timestamp).fromNow()}
+      </Text>
+    </View>
   );
 
   const ChatDescription = (props) => (
     <Text
       {...props}
-      style={[props.style, {fontSize: 14, marginTop: 3}]}
+      style={[
+        props.style,
+        {
+          fontSize: 14,
+          marginTop: 3,
+          fontWeight: readState === 'unread' ? '700' : '400',
+        },
+      ]}
       numberOfLines={2}>
-      {snippet?.content.trim()}
+      {snippet?.content?.trim()}
     </Text>
   );
 

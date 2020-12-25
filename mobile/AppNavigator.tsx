@@ -4,7 +4,7 @@ import {useObservableState} from 'observable-hooks';
 import React, {useContext} from 'react';
 import {ActivityIndicator, Pressable} from 'react-native';
 
-import {Avatar, Layout, Text, useTheme} from '@ui-kitten/components';
+import {Avatar, Icon, Layout, Text, useTheme} from '@ui-kitten/components';
 import {enableScreens} from 'react-native-screens';
 import {createNativeStackNavigator} from 'react-native-screens/native-stack';
 import ChatListScreen from './scenes/chatList/ChatListScreen';
@@ -12,8 +12,8 @@ import LandingScreen from './scenes/auth/LandingScreen';
 import LoginScreen from './scenes/auth/LoginScreen';
 import ChatScreen from './scenes/chat/ChatScreen';
 import SettingsScreen from './scenes/settings/SettingsScreen';
-import {ThemeContext} from '../shared/themes/ThemeProvider';
 import LightboxScreen from './scenes/chat/LightboxScreen';
+import NewChatScreen from './scenes/newChat/NewChatScreen';
 
 enableScreens();
 
@@ -53,6 +53,7 @@ export default function AppNavigator() {
         <NativeStack.Screen name="ChatStack" component={ChatStack} />
         <NativeStack.Screen name="Lightbox" component={LightboxScreen} />
         <NativeStack.Screen name="Settings" component={SettingsStack} />
+        <NativeStack.Screen name="NewChat" component={NewChatScreen} />
       </NativeStack.Navigator>
     );
   } else {
@@ -75,14 +76,12 @@ function ChatStack({navigation}) {
   const avatar = useObservableState(myUser?.avatar$);
   const name: string | undefined = useObservableState(myUser?.name$);
 
-  const {themeId, setTheme} = useContext(ThemeContext);
-
   const navToSettings = () => {
     navigation.navigate('Settings');
   };
 
-  const toggleTheme = () => {
-    setTheme(themeId === 'light' ? 'dark' : 'light');
+  const navToNewChat = () => {
+    navigation.navigate('NewChat');
   };
 
   return (
@@ -118,6 +117,24 @@ function ChatStack({navigation}) {
                   {name?.charAt(0)}
                 </Text>
               )}
+            </Pressable>
+          ),
+          headerRight: () => (
+            <Pressable
+              onPress={navToNewChat}
+              style={({pressed}) => ({
+                position: 'relative',
+                justifyContent: 'center',
+                alignItems: 'center',
+                marginRight: 18,
+                opacity: pressed ? 0.6 : 1,
+                padding: 8,
+              })}>
+              <Icon
+                style={{width: 30, height: 30}}
+                fill={theme['color-primary-default']}
+                name="edit-2-outline"
+              />
             </Pressable>
           ),
         }}

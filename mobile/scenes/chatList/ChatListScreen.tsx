@@ -9,7 +9,7 @@ import InviteListItem from './components/InviteListItem';
 export default function ChatListScreen() {
   const theme = useTheme();
 
-  const chatList = useObservableState(matrix.getRooms$());
+  const chatList = useObservableState(matrix.getRooms$(true));
   const inviteList = useObservableState(matrix.getRoomsByType$('invites'));
   const isReady = useObservableState(matrix.isReady$());
   const isSynced = useObservableState(matrix.isSynced$());

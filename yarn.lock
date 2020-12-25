@@ -1515,10 +1515,10 @@
     color "^3.1.2"
     react-native-iphone-x-helper "^1.2.1"
 
-"@rn-matrix/core@^0.0.24":
-  version "0.0.24"
-  resolved "https://registry.yarnpkg.com/@rn-matrix/core/-/core-0.0.24.tgz#6863e0ee64c72048b881f95f921da7d5b565e42b"
-  integrity sha512-LmXo2iO6zFx/8mTxRoFLkMz8C6QGrLcQcEblyVL/ZXW5Z5zJrLotaL0mZWaqYvY2yCKUdULCQ+FiOknYTwhLBw==
+"@rn-matrix/core@^0.0.29":
+  version "0.0.29"
+  resolved "https://registry.yarnpkg.com/@rn-matrix/core/-/core-0.0.29.tgz#4fa18f645c3e10207298766202871a5d195bdbf4"
+  integrity sha512-lVKGOC19GHBFpxiCd92XximWOruSsYGlHsRYOJ1VopSSo3RFZjBpPYE55Xp7ItI4ZID7IhimVZ8C4uD/JypFjw==
   dependencies:
     "@react-native-community/async-storage" "^1.12.0"
     asyncstorage-down "^4.2.0"

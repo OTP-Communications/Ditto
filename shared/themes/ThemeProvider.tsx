@@ -9,6 +9,8 @@ const themes = {
   dark: {...eva.dark, ...dittoDarkTheme},
 };
 
+console.log({eva});
+
 const initialTheme = 'dark';
 
 export const ThemeContext = React.createContext({
