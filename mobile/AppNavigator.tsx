@@ -127,7 +127,7 @@ function ChatStack({navigation}) {
         name="Chat"
         component={ChatScreen}
         options={({route}) => ({
-          title: route.params?.chat.name$.getValue() || 'Chat',
+          title: route.params?.chatName || 'Chat',
           headerStyle: {backgroundColor: theme['background-basic-color-4']},
           //   headerRight: () => (
           //     <Pressable

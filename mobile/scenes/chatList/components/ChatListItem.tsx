@@ -58,12 +58,15 @@ export default function ChatListItem({chat}) {
       {...props}
       style={[props.style, {fontSize: 14, marginTop: 3}]}
       numberOfLines={2}>
-      {snippet?.content}
+      {snippet?.content.trim()}
     </Text>
   );
 
   const openChat = () => {
-    navigation.navigate('Chat', {chat});
+    navigation.navigate('Chat', {
+      chatId: chat.id,
+      chatName: chat.name$.getValue(),
+    });
   };
 
   return (

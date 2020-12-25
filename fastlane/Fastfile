@@ -3,6 +3,8 @@ xcversion(version: "12.2")
 project_name = 'ditto'
 
 before_all do
+  ENV["FASTLANE_TEAM_NAME"] = "Annie Mathis"
+  ENV["FASTLANE_ITC_TEAM_ID"] = "119429355"
   # ensure_git_branch
   # ensure_git_status_clean
   git_pull
@@ -27,7 +29,7 @@ platform :ios do
       lane :beta do
         build
         pilot
-        commit_version_bump(message: 'Bump build', xcodeproj: './ios/#{project_name}.xcodeproj')
+        commit_version_bump(message: 'Bump build', xcodeproj: '../ios/#{project_name}.xcodeproj')
         push_to_git_remote
       end
 end

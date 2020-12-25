@@ -9,9 +9,10 @@ import {isIos} from '../../../shared/utilities/misc';
 import {lightHaptic} from '../../../shared/utilities/haptic';
 import ChatActionSheet from './components/ChatActionSheet';
 import {Keyboard} from 'react-native';
+import {matrix} from '@rn-matrix/core';
 
 export default function ChatScreen({navigation, route}) {
-  const chat = route.params?.chat;
+  const chat = matrix.getRoomById(route.params?.chatId);
   if (!chat) {
     navigation.goBack();
   }
