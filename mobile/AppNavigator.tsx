@@ -2,7 +2,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {matrix} from '@rn-matrix/core';
 import {useObservableState} from 'observable-hooks';
 import React, {useContext} from 'react';
-import {ActivityIndicator, Pressable} from 'react-native';
+import {ActivityIndicator, Pressable, View} from 'react-native';
 
 import {Avatar, Icon, Layout, Text, useTheme} from '@ui-kitten/components';
 import {enableScreens} from 'react-native-screens';
@@ -14,6 +14,8 @@ import ChatScreen from './scenes/chat/ChatScreen';
 import SettingsScreen from './scenes/settings/SettingsScreen';
 import LightboxScreen from './scenes/chat/LightboxScreen';
 import NewChatScreen from './scenes/newChat/NewChatScreen';
+import Spacing from '../shared/styles/Spacing';
+import ChatSettingsScreen from './scenes/chatSettings/ChatSettingsScreen';
 
 enableScreens();
 
@@ -54,6 +56,10 @@ export default function AppNavigator() {
         <NativeStack.Screen name="Lightbox" component={LightboxScreen} />
         <NativeStack.Screen name="Settings" component={SettingsStack} />
         <NativeStack.Screen name="NewChat" component={NewChatScreen} />
+        <NativeStack.Screen
+          name="ChatSettings"
+          component={ChatSettingsScreen}
+        />
       </NativeStack.Navigator>
     );
   } else {
@@ -82,6 +88,10 @@ function ChatStack({navigation}) {
 
   const navToNewChat = () => {
     navigation.navigate('NewChat');
+  };
+
+  const navToChatSettings = () => {
+    navigation.navigate('ChatSettings');
   };
 
   return (
@@ -146,34 +156,40 @@ function ChatStack({navigation}) {
         options={({route}) => ({
           title: route.params?.chatName || 'Chat',
           headerStyle: {backgroundColor: theme['background-basic-color-4']},
-          //   headerRight: () => (
-          //     <Pressable
-          //       onPress={toggleTheme}
-          //       style={({pressed}) => ({
-          //         position: 'relative',
-          //         justifyContent: 'center',
-          //         alignItems: 'center',
-          //         marginRight: 18,
-          //         opacity: pressed ? 0.6 : 1,
-          //       })}>
-          //       <Avatar
-          //         source={{
-          //           uri: matrix.getHttpUrl(route.params?.chat.avatar$.getValue()),
-          //         }}
-          //         size="small"
-          //         style={{
-          //           backgroundColor: theme['background-basic-color-2'],
-          //         }}
-          //       />
-          //       {!route.params?.chat.avatar$.getValue() && (
-          //         <Text
-          //           style={{position: 'absolute', opacity: 0.2}}
-          //           category="h6">
-          //           {route.params?.chat.name$.getValue()?.charAt(0)}
-          //         </Text>
-          //       )}
-          //     </Pressable>
-          //   ),
+          headerRight: () => (
+            <Pressable
+              onPress={navToChatSettings}
+              style={({pressed}) => ({
+                marginRight: 18,
+                opacity: pressed ? 0.6 : 1,
+                padding: Spacing.m,
+                paddingRight: 0,
+              })}>
+              <View
+                style={{
+                  position: 'relative',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <Avatar
+                  source={{
+                    uri: matrix.getHttpUrl(route.params?.chatAvatar),
+                  }}
+                  size="small"
+                  style={{
+                    backgroundColor: theme['background-basic-color-2'],
+                  }}
+                />
+                {!route.params?.chatAvatar && (
+                  <Text
+                    style={{position: 'absolute', opacity: 0.2}}
+                    category="h6">
+                    {route.params?.chatName.charAt(0)}
+                  </Text>
+                )}
+              </View>
+            </Pressable>
+          ),
         })}
       />
     </Stack.Navigator>

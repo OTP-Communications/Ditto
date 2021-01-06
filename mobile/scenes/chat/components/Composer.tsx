@@ -2,7 +2,9 @@ import {Button, Icon, Input, Text, useTheme} from '@ui-kitten/components';
 import React, {useEffect, useRef, useState} from 'react';
 import {
   KeyboardAvoidingView,
+  LayoutAnimation,
   Platform,
+  Pressable,
   StatusBar,
   StyleSheet,
   View,
@@ -12,6 +14,7 @@ import {useHeaderHeight} from '@react-navigation/stack';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {matrix} from '@rn-matrix/core';
 import {TextInput} from 'react-native-gesture-handler';
+import ThemeType from '../../../../shared/themes/themeType';
 
 type Props = {
   chat: any;
@@ -32,7 +35,7 @@ export default function Composer({
   isReplying,
   setIsReplying,
 }: Props) {
-  const theme = useTheme();
+  const theme: ThemeType = useTheme();
   const {t} = useTranslation('messages');
   const headerHeight = useHeaderHeight();
   const [isFocused, setIsFocused] = useState(false);
@@ -40,6 +43,13 @@ export default function Composer({
   const [value, setValue] = useState('');
 
   const inputRef = useRef();
+
+  const setNewValue = (val) => {
+    if (val.length === 1 || val.length === 0) {
+      LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+    }
+    setValue(val);
+  };
 
   const sendMessage = () => {
     if (isEditing) {
@@ -65,14 +75,6 @@ export default function Composer({
     setIsReplying(false);
     setActiveMessage(null);
   };
-
-  const SendIcon = (props) => (
-    <Icon
-      {...props}
-      style={[props.style, {width: 25, height: 25}]}
-      name="arrowhead-up"
-    />
-  );
 
   useEffect(() => {
     if (isEditing || isReplying) {
@@ -123,16 +125,31 @@ export default function Composer({
           placeholder={t('composer.placeholder')}
           placeholderTextColor={theme['background-basic-color-1']}
           value={value}
-          onChangeText={setValue}
+          onChangeText={setNewValue}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
         />
-        <Button
-          style={{borderRadius: 80, width: 25, height: 25}}
-          status="primary"
-          accessoryLeft={SendIcon}
-          onPress={sendMessage}
-        />
+        {value.length > 0 && (
+          <Pressable
+            onPress={sendMessage}
+            style={({pressed}) => ({
+              borderRadius: 80,
+              backgroundColor: pressed
+                ? theme['color-primary-active']
+                : theme['color-primary-default'],
+              width: 40,
+              height: 40,
+              justifyContent: 'center',
+              alignItems: 'center',
+            })}>
+            <Icon
+              name="arrowhead-up"
+              fill={theme['color-basic-100']}
+              width={28}
+              height={28}
+            />
+          </Pressable>
+        )}
       </View>
     </KeyboardAvoidingView>
   );
@@ -180,8 +197,9 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     marginRight: 6,
     paddingHorizontal: 18,
-    paddingTop: 8,
+    paddingTop: 10,
     paddingBottom: 8,
     fontSize: 16,
+    minHeight: 40,
   },
 });

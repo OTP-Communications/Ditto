@@ -97,6 +97,7 @@ export default function ChatListItem({chat}) {
     navigation.navigate('Chat', {
       chatId: chat.id,
       chatName: chat.name$.getValue(),
+      chatAvatar: chat.avatar$.getValue(),
     });
   };
 
