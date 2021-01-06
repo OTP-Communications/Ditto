@@ -90,8 +90,8 @@ function ChatStack({navigation}) {
     navigation.navigate('NewChat');
   };
 
-  const navToChatSettings = () => {
-    navigation.navigate('ChatSettings');
+  const navToChatSettings = (chatId) => {
+    navigation.navigate('ChatSettings', {chatId});
   };
 
   return (
@@ -158,7 +158,7 @@ function ChatStack({navigation}) {
           headerStyle: {backgroundColor: theme['background-basic-color-4']},
           headerRight: () => (
             <Pressable
-              onPress={navToChatSettings}
+              onPress={() => navToChatSettings(route.params?.chatId)}
               style={({pressed}) => ({
                 marginRight: 18,
                 opacity: pressed ? 0.6 : 1,
@@ -214,8 +214,11 @@ function SettingsStack() {
             <Pressable
               onPress={navigation.goBack}
               style={({pressed}) => ({
-                marginRight: 18,
                 opacity: pressed ? 0.4 : 1,
+                alignSelf: 'flex-end',
+                padding: Spacing.m,
+                paddingRight: Spacing.l,
+                paddingTop: Spacing.l,
               })}>
               <Text category="s1" style={{fontSize: 18}}>
                 Done

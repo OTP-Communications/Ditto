@@ -12,6 +12,7 @@ import {StyleSheet, View} from 'react-native';
 import {matrix} from '@rn-matrix/core';
 import {useObservableState} from 'observable-hooks';
 import {ThemeContext} from '../../../shared/themes/ThemeProvider';
+import Spacing from '../../../shared/styles/Spacing';
 
 export default function SettingsScreen() {
   const theme = useTheme();
@@ -47,10 +48,34 @@ export default function SettingsScreen() {
         styles.wrapper,
         {backgroundColor: theme['background-basic-color-5']},
       ]}>
-      <Avatar
-        source={{uri: matrix.getHttpUrl(avatar)}}
-        style={{width: 100, height: 100, marginBottom: 12}}
-      />
+      <View
+        style={{
+          position: 'relative',
+          justifyContent: 'center',
+          alignItems: 'center',
+          marginBottom: Spacing.l,
+        }}>
+        <Avatar
+          source={{uri: matrix.getHttpUrl(avatar)}}
+          style={{
+            width: 100,
+            height: 100,
+            backgroundColor: theme['background-basic-color-3'],
+          }}
+        />
+        {!avatar && (
+          <Text
+            category="h1"
+            style={{
+              position: 'absolute',
+              fontSize: 50,
+              opacity: 0.3,
+            }}
+            numberOfLines={1}>
+            {name?.charAt(0)}
+          </Text>
+        )}
+      </View>
       <Text category="h4" style={{maxWidth: 250}} numberOfLines={1}>
         {name}
       </Text>

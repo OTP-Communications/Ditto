@@ -16,7 +16,6 @@ const parseHtml = (html: string) => {
 };
 
 export default function Html({html, isMe = false}) {
-  // const styles = getHtmlStyles(theme)
   const theme: ThemeType = useTheme();
   const {themeId} = useContext(ThemeContext);
   const styles = getHtmlStyles({isMe, theme});
@@ -91,7 +90,6 @@ const replyRenderer = (
   convertedCSSStyles,
   {renderersProps},
 ) => {
-  console.log({htmlAttribs, children, convertedCSSStyles, renderersProps});
   const {theme, parsedHtml, themeId} = renderersProps;
   const senderId = parsedHtml
     ?.slice(parsedHtml.lastIndexOf('@'), parsedHtml.lastIndexOf('</a>'))
