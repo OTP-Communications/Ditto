@@ -6,6 +6,7 @@ and this project adheres to Semantic Versioning.
 [2.0.2 - Unreleased]
 
 Added
+- chat settings screen which shows room avatar, name, and members
 
 Changed
 
@@ -15,6 +16,7 @@ Removed
 
 Fixed
 - you can no longer send an empty message (disable send button appropriately)
+- some random crashes
 
 Security
 

@@ -7,8 +7,9 @@ import ThemeType from '../../../../shared/themes/themeType';
 
 export default function MemberListItem({item}) {
   const theme: ThemeType = useTheme();
-  const name = useObservableState(item.name$);
-  const avatar = useObservableState(item.avatar$);
+  const user = matrix.getUserById(item.userId);
+  const name = useObservableState(user.name$);
+  const avatar = useObservableState(user.avatar$);
 
   const MemberAvatar = (props) => (
     <View
@@ -46,7 +47,7 @@ export default function MemberListItem({item}) {
   return (
     <ListItem
       title={name}
-      description={item.id}
+      description={user.id}
       accessoryLeft={MemberAvatar}
       style={{
         backgroundColor: theme['background-basic-color-4'],

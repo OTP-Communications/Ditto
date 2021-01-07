@@ -1,5 +1,5 @@
 import {Avatar, Layout, List, Text, useTheme} from '@ui-kitten/components';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Pressable, ScrollView, StyleSheet, View} from 'react-native';
 import ThemeType from '../../../shared/themes/themeType';
 import {matrix} from '@rn-matrix/core';
@@ -12,13 +12,32 @@ export default function ChatSettingsScreen({route, navigation}) {
   const chat = matrix.getRoomById(route?.params?.chatId);
   const name = useObservableState(chat.name$);
   const avatar = useObservableState(chat.avatar$);
-  const members = useObservableState(chat.members$);
 
-  console.log({chat});
+  const [members, setMembers] = useState([]);
 
   const renderMemberListItem = ({item}) => {
     return <MemberListItem item={item} />;
   };
+
+  const getMembers = async () => {
+    const client = matrix.getClient();
+    const room = client.getRoom(chat.id);
+    await room.loadMembersIfNeeded();
+    setMembers(room.getJoinedMembers());
+  };
+
+  const clearMembers = () => {
+    const client = matrix.getClient();
+    const room = client.getRoom(chat.id);
+    room.clearLoadedMembersIfNeeded();
+  };
+
+  useEffect(() => {
+    getMembers();
+    return () => {
+      clearMembers();
+    };
+  }, []);
 
   return (
     <Layout
@@ -85,6 +104,7 @@ export default function ChatSettingsScreen({route, navigation}) {
           scrollEnabled={false}
           style={{alignSelf: 'stretch'}}
         />
+        <View style={{height: 200}} />
       </ScrollView>
     </Layout>
   );
