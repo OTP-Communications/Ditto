@@ -88,7 +88,7 @@ const replyRenderer = (
   htmlAttribs,
   children,
   convertedCSSStyles,
-  {renderersProps},
+  {key, renderersProps},
 ) => {
   const {theme, parsedHtml, themeId} = renderersProps;
   const senderId = parsedHtml
@@ -97,6 +97,7 @@ const replyRenderer = (
   const senderName = matrix.getUserById(senderId)?.name$.getValue();
   return (
     <View
+      key={key}
       style={{
         borderLeftWidth: 3,
         borderColor: theme['color-primary-default'],

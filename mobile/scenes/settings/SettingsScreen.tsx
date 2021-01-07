@@ -8,15 +8,20 @@ import {
   useTheme,
 } from '@ui-kitten/components';
 import React, {useContext} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {Alert, StyleSheet, View} from 'react-native';
 import {matrix} from '@rn-matrix/core';
 import {useObservableState} from 'observable-hooks';
 import {ThemeContext} from '../../../shared/themes/ThemeProvider';
 import Spacing from '../../../shared/styles/Spacing';
+import * as Sentry from '@sentry/react-native';
+import {AppContext} from '../../../shared/context/AppContext';
 
 export default function SettingsScreen() {
   const theme = useTheme();
   const {themeId, setTheme} = useContext(ThemeContext);
+  const {errorReportingEnabled, setErrorReportingEnabled} = useContext(
+    AppContext,
+  );
   const myUser = matrix.getMyUser();
 
   const avatar = useObservableState(myUser.avatar$);
@@ -33,13 +38,38 @@ export default function SettingsScreen() {
   );
 
   const DarkModeIcon = (props) => (
-    <Icon {...props} fill={theme['color-primary-500']} name="moon" />
+    <Icon {...props} fill={theme['color-primary-default']} name="moon" />
   );
-  const PersonIcon = (props) => <Icon {...props} name="person" />;
-  const ItemChevron = (props) => <Icon {...props} name="chevron-right" />;
+
+  const ErrorReportingToggle = (props) => (
+    <Toggle
+      checked={errorReportingEnabled}
+      onChange={setErrorReportingEnabled}
+    />
+  );
+
+  const ErrorReportingIcon = (props) => (
+    <Icon
+      {...props}
+      fill={theme['color-danger-default']}
+      name="alert-triangle"
+    />
+  );
 
   const logout = () => {
-    matrix.logout();
+    Alert.alert(
+      'Are you sure you want to log out?',
+      '',
+      [
+        {
+          text: 'Cancel',
+          onPress: () => console.log('Cancel Pressed'),
+          style: 'cancel',
+        },
+        {text: 'Yes, logout', onPress: matrix.logout, style: 'destructive'},
+      ],
+      {cancelable: false},
+    );
   };
 
   return (
@@ -87,7 +117,11 @@ export default function SettingsScreen() {
       </Text>
       <Text
         category="h6"
-        style={{alignSelf: 'flex-start', marginLeft: 16, marginBottom: 12}}>
+        style={{
+          alignSelf: 'flex-start',
+          marginLeft: Spacing.l,
+          marginBottom: Spacing.m,
+        }}>
         Appearance
       </Text>
       <ListItem
@@ -96,22 +130,23 @@ export default function SettingsScreen() {
         accessoryRight={ThemeToggle}
         style={{backgroundColor: theme['background-basic-color-4']}}
       />
-      {/* <Text
+      <Text
         category="h6"
         style={{
           alignSelf: 'flex-start',
-          marginLeft: 16,
-          marginBottom: 12,
-          marginTop: 48,
+          marginLeft: Spacing.l,
+          marginBottom: Spacing.m,
+          marginTop: Spacing.l,
         }}>
-        Account Settings
+        Privacy
       </Text>
       <ListItem
-        title="Avatar and Display Name"
-        accessoryLeft={PersonIcon}
-        accessoryRight={ItemChevron}
+        title="Error Reporting"
+        description="Enable to send bug reports to the developer"
+        accessoryLeft={ErrorReportingIcon}
+        accessoryRight={ErrorReportingToggle}
         style={{backgroundColor: theme['background-basic-color-4']}}
-      /> */}
+      />
       <ListItem
         onPress={logout}
         style={{
@@ -119,6 +154,7 @@ export default function SettingsScreen() {
           width: '100%',
           justifyContent: 'center',
           marginTop: 48,
+          height: 50,
         }}>
         <Text status="danger">Logout</Text>
       </ListItem>

@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, FlatList, ActivityIndicator} from 'react-native';
+import {View, ActivityIndicator} from 'react-native';
 import {matrix} from '@rn-matrix/core';
 import {useObservableState} from 'observable-hooks';
 import ChatListItem from './components/ChatListItem';

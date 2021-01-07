@@ -14,6 +14,9 @@ import AppNavigator from './mobile/AppNavigator';
 import {ThemeContext} from './shared/themes/ThemeProvider';
 import {StatusBar} from 'react-native';
 import r from 'xmlhttp-request';
+import * as Sentry from '@sentry/react-native';
+import {SENTRY_DSN} from '@env';
+import {AppContext} from './shared/context/AppContext';
 
 global.location = {
   protocol: 'file:',
@@ -26,10 +29,30 @@ matrix.initAuth();
 
 const App = () => {
   const {themeId} = useContext(ThemeContext);
+  const {errorReportingEnabled} = useContext(AppContext);
 
   useEffect(() => {
     matrixSdk.request(r);
+
+    Sentry.init({
+      dsn: SENTRY_DSN,
+      beforeSend(event) {
+        console.log('event', event, errorReportingEnabled);
+        if (errorReportingEnabled) return event;
+        return null;
+      },
+    });
   }, []);
+
+  useEffect(() => {
+    Sentry.init({
+      dsn: SENTRY_DSN,
+      beforeSend(event) {
+        if (errorReportingEnabled) return event;
+        return null;
+      },
+    });
+  }, [errorReportingEnabled]);
 
   if (themeId === 'light') {
     StatusBar.setBarStyle('dark-content');
