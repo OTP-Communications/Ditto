@@ -7,6 +7,7 @@ import Reactions from './Reactions';
 import {getNameColor} from '../../../../shared/utilities/misc';
 import {isEmoji} from '../../../../shared/utilities/emoji';
 import {matrix, Message} from '@rn-matrix/core';
+import Spacing from '../../../../shared/styles/Spacing';
 
 export default function MessageWrapper({children, ...props}) {
   const {isMe, message, nextSame, prevSame, chat} = props;
@@ -34,21 +35,24 @@ export default function MessageWrapper({children, ...props}) {
         {
           alignItems: isMe ? 'flex-end' : 'flex-start',
           marginBottom: nextSame ? 3 : 12,
+          marginLeft: Spacing.xs,
         },
       ]}>
       <View
         style={{maxWidth: '85%', flexDirection: 'row', alignItems: 'flex-end'}}>
-        <Avatar
-          size="small"
-          source={{uri: showAvatar ? matrix.getHttpUrl(senderAvatar) : ''}}
-          style={{
-            backgroundColor: showAvatar
-              ? theme['background-basic-color-3']
-              : 'transparent',
-            marginRight: 8,
-            marginBottom: 3,
-          }}
-        />
+        {!isMe && (
+          <Avatar
+            size="small"
+            source={{uri: showAvatar ? matrix.getHttpUrl(senderAvatar) : ''}}
+            style={{
+              backgroundColor: showAvatar
+                ? theme['background-basic-color-3']
+                : 'transparent',
+              marginRight: 8,
+              marginBottom: 3,
+            }}
+          />
+        )}
         <View style={{maxWidth: '85%'}}>
           {showSenderName && (
             <Text

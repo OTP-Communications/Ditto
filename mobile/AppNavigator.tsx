@@ -79,7 +79,7 @@ export default function AppNavigator() {
  ***********************************************/
 
 function ChatStack({navigation}) {
-  const theme = useTheme();
+  const theme: ThemeType = useTheme();
   const myUser = matrix.getMyUser();
   const avatar = useObservableState(myUser?.avatar$);
   const name: string | undefined = useObservableState(myUser?.name$);
@@ -157,6 +157,7 @@ function ChatStack({navigation}) {
         component={ChatScreen}
         options={({route}) => ({
           title: route.params?.chatName || 'Chat',
+          headerTintColor: theme['text-basic-color'],
           headerStyle: {backgroundColor: theme['background-basic-color-4']},
           headerRight: () => (
             <Pressable

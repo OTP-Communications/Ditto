@@ -17,6 +17,7 @@ Removed
 Fixed
 - you can no longer send an empty message (disable send button appropriately)
 - some random crashes
+- weird image layout in the Lightbox
 
 Security
 

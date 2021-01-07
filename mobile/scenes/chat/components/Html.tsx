@@ -90,7 +90,7 @@ const replyRenderer = (
   convertedCSSStyles,
   {key, renderersProps},
 ) => {
-  const {theme, parsedHtml, themeId} = renderersProps;
+  const {theme, parsedHtml, themeId, isMe} = renderersProps;
   const senderId = parsedHtml
     ?.slice(parsedHtml.lastIndexOf('@'), parsedHtml.lastIndexOf('</a>'))
     ?.trim();
@@ -100,7 +100,9 @@ const replyRenderer = (
       key={key}
       style={{
         borderLeftWidth: 3,
-        borderColor: theme['color-primary-default'],
+        borderColor: !isMe
+          ? theme['color-primary-default']
+          : theme['text-basic-color'],
         padding: Spacing.xs,
         paddingLeft: 8,
         marginVertical: Spacing.s,
@@ -117,7 +119,9 @@ const replyRenderer = (
         <Text>
           {parsedHtml
             ?.slice(
-              parsedHtml.indexOf('<br>') + 4,
+              parsedHtml.indexOf('<br>') >= 0
+                ? parsedHtml.indexOf('<br>') + 4
+                : parsedHtml.indexOf('<br />') + 6,
               parsedHtml.indexOf('</blockquote>'),
             )
             ?.trim()}

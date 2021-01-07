@@ -6,6 +6,7 @@ import {useObservableState} from 'observable-hooks';
 import TextMessage from './messages/TextMessage';
 import EventMessage from './messages/EventMessage';
 import ImageMessage from './messages/ImageMessage';
+import Spacing from '../../../../shared/styles/Spacing';
 
 export default function MessageItem({
   chatId,
@@ -17,14 +18,21 @@ export default function MessageItem({
   ...otherProps
 }) {
   const myUser = matrix.getMyUser();
+  const chat = matrix.getRoomById(chatId);
+  const typing = useObservableState(chat?.typing$);
+
   if (messageId === 'loading') {
-    return <ActivityIndicator />;
+    return <ActivityIndicator style={{marginVertical: Spacing.xxl}} />;
   }
-  if (messageId === 'typing') {
+  if (messageId === 'typing' && typing) {
     return (
-      <View style={{marginLeft: 24, marginTop: 10, marginBottom: 30}}>
-        {/* <TypingAnimation dotColor="#ccc" dotAmplitude={2} dotRadius={4} dotMargin={8} /> */}
-        <Text>typing</Text>
+      <View style={{marginVertical: Spacing.xs, marginLeft: Spacing.l}}>
+        <Text style={{fontStyle: 'italic'}} appearance="hint">
+          {typing.length === 1
+            ? matrix.getUserById(typing[0]).name$.getValue()
+            : 'Users'}{' '}
+          {typing.length === 1 ? 'is' : 'are'} typing...
+        </Text>
       </View>
     );
   }
