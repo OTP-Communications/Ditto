@@ -16,6 +16,8 @@ import LightboxScreen from './scenes/chat/LightboxScreen';
 import NewChatScreen from './scenes/newChat/NewChatScreen';
 import Spacing from '../shared/styles/Spacing';
 import ChatSettingsScreen from './scenes/chatSettings/ChatSettingsScreen';
+import LanguageSelectScreen from './scenes/settings/LanguageSelectScreen';
+import ThemeType from '../shared/themes/themeType';
 
 enableScreens();
 
@@ -197,7 +199,7 @@ function ChatStack({navigation}) {
 }
 
 function SettingsStack() {
-  const theme = useTheme();
+  const theme: ThemeType = useTheme();
   return (
     <Stack.Navigator headerMode="screen">
       <Stack.Screen
@@ -227,6 +229,20 @@ function SettingsStack() {
           ),
         })}
         component={SettingsScreen}
+      />
+      <Stack.Screen
+        name="LanguageSelect"
+        options={({navigation}) => ({
+          title: 'Choose Language',
+          headerTintColor: theme['text-basic-color'],
+          headerStyle: {
+            backgroundColor: theme['background-basic-color-5'],
+            borderBottomWidth: 0,
+            elevation: 0,
+            shadowColor: 'transparent',
+          },
+        })}
+        component={LanguageSelectScreen}
       />
     </Stack.Navigator>
   );

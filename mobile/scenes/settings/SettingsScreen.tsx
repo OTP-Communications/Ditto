@@ -1,5 +1,6 @@
 import {
   Avatar,
+  Divider,
   Icon,
   Layout,
   ListItem,
@@ -13,10 +14,9 @@ import {matrix} from '@rn-matrix/core';
 import {useObservableState} from 'observable-hooks';
 import {ThemeContext} from '../../../shared/themes/ThemeProvider';
 import Spacing from '../../../shared/styles/Spacing';
-import * as Sentry from '@sentry/react-native';
 import {AppContext} from '../../../shared/context/AppContext';
 
-export default function SettingsScreen() {
+export default function SettingsScreen({navigation}) {
   const theme = useTheme();
   const {themeId, setTheme} = useContext(ThemeContext);
   const {errorReportingEnabled, setErrorReportingEnabled} = useContext(
@@ -55,6 +55,22 @@ export default function SettingsScreen() {
       name="alert-triangle"
     />
   );
+
+  const LanguageIconRight = (props) => (
+    <Icon
+      {...props}
+      fill={theme['background-basic-color-1']}
+      name="chevron-right"
+    />
+  );
+
+  const LanguageIconLeft = (props) => (
+    <Icon {...props} fill={theme['color-success-default']} name="globe-2" />
+  );
+
+  const navToLanguages = () => {
+    navigation.navigate('LanguageSelect');
+  };
 
   const logout = () => {
     Alert.alert(
@@ -130,13 +146,21 @@ export default function SettingsScreen() {
         accessoryRight={ThemeToggle}
         style={{backgroundColor: theme['background-basic-color-4']}}
       />
+      <Divider />
+      <ListItem
+        onPress={navToLanguages}
+        title="Language"
+        accessoryLeft={LanguageIconLeft}
+        accessoryRight={LanguageIconRight}
+        style={{backgroundColor: theme['background-basic-color-4'], height: 52}}
+      />
       <Text
         category="h6"
         style={{
           alignSelf: 'flex-start',
           marginLeft: Spacing.l,
           marginBottom: Spacing.m,
-          marginTop: Spacing.l,
+          marginTop: Spacing.xxl,
         }}>
         Privacy
       </Text>
@@ -154,7 +178,7 @@ export default function SettingsScreen() {
           width: '100%',
           justifyContent: 'center',
           marginTop: 48,
-          height: 50,
+          height: 52,
         }}>
         <Text status="danger">Logout</Text>
       </ListItem>
