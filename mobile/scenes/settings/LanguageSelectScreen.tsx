@@ -1,5 +1,5 @@
 import {Layout, Radio, RadioGroup, Text, useTheme} from '@ui-kitten/components';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {StyleSheet} from 'react-native';
 import i18n, {supportedLanguages} from '../../../shared/i18n';
 import Spacing from '../../../shared/styles/Spacing';
@@ -17,6 +17,11 @@ export default function LanguageSelectScreen() {
       .changeLanguage(supportedLanguages[index].tag)
       .then(() => setLanguage(supportedLanguages[index].tag));
   };
+  useEffect(() => {
+    const one = i18n.getResourceBundle('en', 'settings');
+    const two = i18n.hasResourceBundle('fr', 'settings');
+    console.log({one, two});
+  }, []);
 
   return (
     <Layout
@@ -24,7 +29,7 @@ export default function LanguageSelectScreen() {
         styles.wrapper,
         {backgroundColor: theme['background-basic-color-5']},
       ]}>
-      <Text>{t('auth:landing.loginButtonLabel')}</Text>
+      <Text>{t('settings:title')}</Text>
       <RadioGroup
         selectedIndex={supportedLanguages.findIndex((i) => i.tag === language)}
         onChange={setNewLanguage}>

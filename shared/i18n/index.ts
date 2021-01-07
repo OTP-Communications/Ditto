@@ -10,7 +10,7 @@ import nl from './locales/nl.json';
 
 export const supportedLanguages = [
   { name: 'English', tag: 'en' },
-  { name: 'French', tag: 'fr' },
+  { name: 'French', tag: 'fr-FR' },
   { name: 'German', tag: 'de' },
   { name: 'Dutch', tag: 'nl' },
   { name: 'Chinese', tag: 'zh-Hans' },
@@ -18,7 +18,7 @@ export const supportedLanguages = [
 
 const resources = {
   en,
-  fr,
+  'fr-FR': fr,
   de,
   nl,
   'zh-Hans': zhHans,
@@ -29,6 +29,8 @@ console.log({ resources })
 const fallback = { languageTag: 'en', isRTL: false };
 const locale =
   RNLocalize.findBestAvailableLanguage(Object.keys(resources)) || fallback;
+
+console.log({ locale, test: RNLocalize.findBestAvailableLanguage(Object.keys(resources)) })
 
 const languageDetector = {
   init: Function.prototype,

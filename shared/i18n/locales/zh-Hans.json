@@ -1,7 +1,7 @@
 {
   "auth": {
     "landing": {
-      "loginButtonLabel": "登录"
+      "loginButtonLabel": "登录 asdf"
     },
     "login": {
       "missingUsernameError": "请输入用户名",
