@@ -12,6 +12,8 @@ import ImageZoom from 'react-native-image-pan-zoom';
 import CameraRoll from '@react-native-community/cameraroll';
 import RNFetchBlob from 'rn-fetch-blob';
 
+const {width: deviceWidth, height: deviceHeight} = Dimensions.get('window');
+
 export default function LightboxScreen({navigation, route}) {
   const message = route.params?.message;
   if (!message) navigation.goBack();
@@ -22,8 +24,6 @@ export default function LightboxScreen({navigation, route}) {
   const [saved, setSaved] = useState(false);
 
   if (!content) return null;
-
-  const {width, height} = content.full;
 
   const saveImage = async () => {
     setSaving(true);
@@ -68,16 +68,21 @@ export default function LightboxScreen({navigation, route}) {
         }}>
         {saving && <SaveToast saved={saved} theme={theme} />}
         <ImageZoom
-          cropWidth={Dimensions.get('window').width}
-          cropHeight={Dimensions.get('window').height - 200}
-          imageWidth={width}
-          imageHeight={height}
+          cropWidth={deviceWidth}
+          cropHeight={deviceHeight - 200}
+          imageWidth={deviceWidth}
+          imageHeight={deviceHeight - 200}
+          enableCenterFocus
           useNativeDriver={true}>
           <Image
-            style={{width, height}}
+            style={{
+              width: deviceWidth,
+              height: deviceHeight - 200,
+            }}
             source={{
               uri: content.full.url,
             }}
+            resizeMode="contain"
           />
         </ImageZoom>
       </View>
