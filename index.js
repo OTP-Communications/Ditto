@@ -1,7 +1,7 @@
 /**
  * @format
  */
-import './shared/i18n';
+import './shared/i18n/index.ts';
 
 import React from 'react';
 import {AppRegistry, Platform} from 'react-native';

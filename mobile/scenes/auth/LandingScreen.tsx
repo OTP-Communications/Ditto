@@ -3,6 +3,7 @@ import {Button, Layout, useTheme} from '@ui-kitten/components';
 import React from 'react';
 import {useTranslation} from 'react-i18next';
 import {StatusBar, StyleSheet, Image, Text} from 'react-native';
+import i18next from '../../../shared/i18n';
 
 import Wordmark from '../../../shared/assets/svg/wordmark.svg';
 
@@ -16,7 +17,8 @@ export default function LandingScreen() {
   const theme = useTheme();
   const navigation = useNavigation();
 
-  const {t} = useTranslation('auth');
+  const {t, i18n} = useTranslation();
+  console.log({i18n, i18next});
 
   const handleLoginPress = () => navigation.navigate('Login');
 
@@ -50,7 +52,7 @@ export default function LandingScreen() {
           width: 200,
           marginTop: 300,
         }}>
-        {t('landing.loginButtonLabel')}
+        {i18next.t('auth:landing.loginButtonLabel')}
       </Button>
     </Layout>
   );

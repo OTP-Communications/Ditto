@@ -1,4 +1,6 @@
 {
+  "hello": "german hello",
+  "change": "german change",
   "auth": {
     "landing": {
       "loginButtonLabel": "Einmelden"

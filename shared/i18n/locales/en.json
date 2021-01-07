@@ -1,4 +1,6 @@
 {
+  "hello": "eng hello",
+  "change": "eng change",
   "auth": {
     "landing": {
       "loginButtonLabel": "Login"

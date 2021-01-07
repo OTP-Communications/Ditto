@@ -1,7 +1,7 @@
 import {createStackNavigator} from '@react-navigation/stack';
 import {matrix} from '@rn-matrix/core';
 import {useObservableState} from 'observable-hooks';
-import React, {useContext} from 'react';
+import React from 'react';
 import {ActivityIndicator, Pressable, View} from 'react-native';
 
 import {Avatar, Icon, Layout, Text, useTheme} from '@ui-kitten/components';
