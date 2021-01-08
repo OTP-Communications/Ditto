@@ -1,11 +1,10 @@
 import {useNavigation} from '@react-navigation/native';
 import {Button, Layout, useTheme} from '@ui-kitten/components';
 import React from 'react';
-import {useTranslation} from 'react-i18next';
 import {StatusBar, StyleSheet, Image, Text} from 'react-native';
-import i18next from '../../../shared/i18n';
 
 import Wordmark from '../../../shared/assets/svg/wordmark.svg';
+import i18n from '../../../shared/i18n';
 
 const middleBlob = require('../../../shared/assets/images/blob1.png');
 const topBlob = require('../../../shared/assets/images/blob2.png');
@@ -16,9 +15,6 @@ StatusBar.setBarStyle('light-content');
 export default function LandingScreen() {
   const theme = useTheme();
   const navigation = useNavigation();
-
-  const {t, i18n} = useTranslation();
-  console.log({i18n, i18next});
 
   const handleLoginPress = () => navigation.navigate('Login');
 
@@ -52,7 +48,7 @@ export default function LandingScreen() {
           width: 200,
           marginTop: 300,
         }}>
-        {i18next.t('auth:landing.loginButtonLabel')}
+        {i18n.t('auth:landing.loginButtonLabel')}
       </Button>
     </Layout>
   );

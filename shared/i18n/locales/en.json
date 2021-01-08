@@ -1,6 +1,4 @@
 {
-  "hello": "eng hello",
-  "change": "eng change",
   "auth": {
     "landing": {
       "loginButtonLabel": "Login"
@@ -64,12 +62,23 @@
   },
   "settings":{
     "chooseAvatarLabel": "Choose avatar",
+    "chooseLanguage": "Choose Language",
     "title": "Settings",
     "displayNameInputPlaceholder": "Set display name",
     "displayNameInputLabel": "Display Name",
     "notificationsEnabledLabel": "Enable Notiifications",
     "androidOnlyDescription": "Android only (for now!)",
     "versionLabel": "{{app}} Version",
+    "appearance": {
+      "title": "Appearance",
+      "darkMode": "Dark Mode",
+      "language": "Language"
+    },
+    "privacy": {
+      "title": "Privacy",
+      "errorReporting": "Error Reporting",
+      "errorReportingDesc": "Enable to send bug reports to the developer",
+    },
     "links": {
       "title": "Links",
       "websiteLinkLabel": "Website",
@@ -96,6 +105,7 @@
     }
   },
   "home": {
+    "title": "Chats",
     "tab": {
       "messages": "Messages",
       "groups": "Groups"

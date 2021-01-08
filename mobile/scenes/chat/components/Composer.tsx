@@ -9,12 +9,10 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
-import {useTranslation} from 'react-i18next';
 import {useHeaderHeight} from '@react-navigation/stack';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {matrix} from '@rn-matrix/core';
 import {TextInput} from 'react-native-gesture-handler';
-import ThemeType from '../../../../shared/themes/themeType';
+import i18n from '../../../../shared/i18n';
 
 type Props = {
   chat: any;
@@ -36,7 +34,6 @@ export default function Composer({
   setIsReplying,
 }: Props) {
   const theme: ThemeType = useTheme();
-  const {t} = useTranslation('messages');
   const headerHeight = useHeaderHeight();
   const [isFocused, setIsFocused] = useState(false);
 
@@ -122,7 +119,7 @@ export default function Composer({
           ]}
           multiline
           textStyle={{paddingBottom: 6}}
-          placeholder={t('composer.placeholder')}
+          placeholder={i18n.t('composer.placeholder')}
           placeholderTextColor={theme['background-basic-color-1']}
           value={value}
           onChangeText={setNewValue}

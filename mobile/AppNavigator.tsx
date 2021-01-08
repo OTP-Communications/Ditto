@@ -18,6 +18,7 @@ import Spacing from '../shared/styles/Spacing';
 import ChatSettingsScreen from './scenes/chatSettings/ChatSettingsScreen';
 import LanguageSelectScreen from './scenes/settings/LanguageSelectScreen';
 import ThemeType from '../shared/themes/themeType';
+import i18n from '../shared/i18n';
 
 enableScreens();
 
@@ -101,7 +102,7 @@ function ChatStack({navigation}) {
       <Stack.Screen
         name="ChatList"
         options={{
-          title: 'Chats',
+          title: i18n.t('home:title'),
           headerStyle: {
             backgroundColor: theme['background-basic-color-4'],
           },
@@ -234,7 +235,7 @@ function SettingsStack() {
       <Stack.Screen
         name="LanguageSelect"
         options={({navigation}) => ({
-          title: 'Choose Language',
+          title: i18n.t('settings:chooseLanguage'),
           headerTintColor: theme['text-basic-color'],
           headerStyle: {
             backgroundColor: theme['background-basic-color-5'],

@@ -15,6 +15,7 @@ import {useObservableState} from 'observable-hooks';
 import {ThemeContext} from '../../../shared/themes/ThemeProvider';
 import Spacing from '../../../shared/styles/Spacing';
 import {AppContext} from '../../../shared/context/AppContext';
+import i18n from '../../../shared/i18n';
 
 export default function SettingsScreen({navigation}) {
   const theme = useTheme();
@@ -138,10 +139,10 @@ export default function SettingsScreen({navigation}) {
           marginLeft: Spacing.l,
           marginBottom: Spacing.m,
         }}>
-        Appearance
+        {i18n.t('settings:appearance.title')}
       </Text>
       <ListItem
-        title="Dark Mode"
+        title={i18n.t('settings:appearance.darkMode')}
         accessoryLeft={DarkModeIcon}
         accessoryRight={ThemeToggle}
         style={{backgroundColor: theme['background-basic-color-4']}}
@@ -149,7 +150,7 @@ export default function SettingsScreen({navigation}) {
       <Divider />
       <ListItem
         onPress={navToLanguages}
-        title="Language"
+        title={i18n.t('settings:appearance.language')}
         accessoryLeft={LanguageIconLeft}
         accessoryRight={LanguageIconRight}
         style={{backgroundColor: theme['background-basic-color-4'], height: 52}}
@@ -162,11 +163,11 @@ export default function SettingsScreen({navigation}) {
           marginBottom: Spacing.m,
           marginTop: Spacing.xxl,
         }}>
-        Privacy
+        {i18n.t('settings:privacy.title')}
       </Text>
       <ListItem
-        title="Error Reporting"
-        description="Enable to send bug reports to the developer"
+        title={i18n.t('settings:privacy.errorReporting')}
+        description={i18n.t('settings:privacy.errorReportingDesc')}
         accessoryLeft={ErrorReportingIcon}
         accessoryRight={ErrorReportingToggle}
         style={{backgroundColor: theme['background-basic-color-4']}}
