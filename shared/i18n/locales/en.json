@@ -77,7 +77,7 @@
     "privacy": {
       "title": "Privacy",
       "errorReporting": "Error Reporting",
-      "errorReportingDesc": "Enable to send bug reports to the developer",
+      "errorReportingDesc": "Enable to send bug reports to the developer"
     },
     "links": {
       "title": "Links",
