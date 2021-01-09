@@ -1,6 +1,6 @@
 import {Avatar, Text, useTheme} from '@ui-kitten/components';
 import {useObservableState} from 'observable-hooks';
-import React, {useContext} from 'react';
+import React, {useCallback, useContext} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {ThemeContext} from '../../../../shared/themes/ThemeProvider';
 import Reactions from './Reactions';
@@ -28,6 +28,44 @@ export default function MessageWrapper({children, ...props}) {
 
   const showAvatar = !isDirect && !isMe && !nextSame;
 
+  const renderAvatar = useCallback(() => {
+    return (
+      <View
+        style={{
+          justifyContent: 'center',
+          alignItems: 'center',
+          position: 'relative',
+          marginRight: Spacing.s,
+          marginBottom: 3,
+        }}>
+        <Avatar
+          size="small"
+          source={
+            showAvatar && senderAvatar
+              ? {uri: matrix.getHttpUrl(senderAvatar)}
+              : null
+          }
+          style={{
+            backgroundColor: showAvatar
+              ? theme['background-basic-color-3']
+              : 'transparent',
+          }}
+        />
+        <Text
+          style={{
+            position: 'absolute',
+            opacity: showAvatar ? 0.4 : 0,
+            textAlign: 'center',
+            fontWeight: 'bold',
+          }}>
+          {senderName?.charAt(0) === '@'
+            ? senderName?.charAt(1).toUpperCase()
+            : senderName?.charAt(0).toUpperCase()}
+        </Text>
+      </View>
+    );
+  }, [senderName, senderAvatar]);
+
   return (
     <View
       style={[
@@ -40,23 +78,7 @@ export default function MessageWrapper({children, ...props}) {
       ]}>
       <View
         style={{maxWidth: '85%', flexDirection: 'row', alignItems: 'flex-end'}}>
-        {!isMe && (
-          <Avatar
-            size="small"
-              source={
-                showAvatar && senderAvatar
-                  ? {uri: matrix.getHttpUrl(senderAvatar)}
-                  : null
-              }
-            style={{
-              backgroundColor: showAvatar
-                ? theme['background-basic-color-3']
-                : 'transparent',
-              marginRight: 8,
-              marginBottom: 3,
-            }}
-          />
-        )}
+        {!isMe && renderAvatar()}
         <View style={{maxWidth: '85%'}}>
           {showSenderName && (
             <Text

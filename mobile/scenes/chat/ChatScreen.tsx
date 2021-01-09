@@ -98,6 +98,8 @@ export default function ChatScreen({navigation, route}) {
           backgroundColor: theme['background-basic-color-5'],
         }}>
         <List
+          initialNumToRender={20}
+          windowSize={20}
           inverted
           keyboardDismissMode={isIos() ? 'interactive' : 'on-drag'}
           keyboardShouldPersistTaps="handled"
