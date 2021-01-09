@@ -117,7 +117,7 @@ function ChatStack({navigation}) {
                 opacity: pressed ? 0.6 : 1,
               })}>
               <Avatar
-                source={{uri: matrix.getHttpUrl(avatar)}}
+                source={avatar ? {uri: matrix.getHttpUrl(avatar)} : null}
                 size="small"
                 style={{
                   backgroundColor: theme['background-basic-color-2'],

@@ -126,7 +126,7 @@ export function BubbleWrapper({
           alignItems: 'center',
         }}>
         <Avatar
-          source={{uri: matrix.getHttpUrl(senderAvatar)}}
+          source={senderAvatar ? {uri: matrix.getHttpUrl(senderAvatar)} : null}
           style={{opacity: !isMe && !nextSame ? 1 : 0}}
         />
         {children}
