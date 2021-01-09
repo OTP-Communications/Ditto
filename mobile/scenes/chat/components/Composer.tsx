@@ -119,7 +119,7 @@ export default function Composer({
           ]}
           multiline
           textStyle={{paddingBottom: 6}}
-          placeholder={i18n.t('composer.placeholder')}
+          placeholder={i18n.t('messages:composer.placeholder')}
           placeholderTextColor={theme['background-basic-color-1']}
           value={value}
           onChangeText={setNewValue}
