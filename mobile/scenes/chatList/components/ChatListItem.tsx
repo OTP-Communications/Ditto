@@ -25,21 +25,18 @@ export default function ChatListItem({chat}) {
       }}>
       <Avatar
         {...props}
-        style={[
-          props.style,
-          {
-            tintColor: null,
-            width: 60,
-            height: 60,
-            backgroundColor: theme['background-basic-color-3'],
-            borderWidth: 2,
-            borderColor:
-              readState === 'unread'
-                ? theme['color-primary-default']
-                : 'transparent',
-          },
-        ]}
-        source={{uri: matrix.getHttpUrl(avatar)}}
+        style={{
+          marginHorizontal: 8,
+          width: 60,
+          height: 60,
+          backgroundColor: theme['background-basic-color-3'],
+          borderWidth: 2,
+          borderColor:
+            readState === 'unread'
+              ? theme['color-primary-default']
+              : 'transparent',
+        }}
+        source={avatar ? {uri: matrix.getHttpUrl(avatar)} : null}
       />
       {!avatar && (
         <Text

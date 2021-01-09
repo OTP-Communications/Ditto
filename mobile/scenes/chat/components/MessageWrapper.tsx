@@ -43,7 +43,11 @@ export default function MessageWrapper({children, ...props}) {
         {!isMe && (
           <Avatar
             size="small"
-            source={{uri: showAvatar ? matrix.getHttpUrl(senderAvatar) : ''}}
+              source={
+                showAvatar && senderAvatar
+                  ? {uri: matrix.getHttpUrl(senderAvatar)}
+                  : null
+              }
             style={{
               backgroundColor: showAvatar
                 ? theme['background-basic-color-3']
