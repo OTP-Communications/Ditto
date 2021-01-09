@@ -66,7 +66,7 @@ export default function ChatSettingsScreen({route, navigation}) {
             marginVertical: Spacing.l,
           }}>
           <Avatar
-            source={{uri: matrix.getHttpUrl(avatar)}}
+            source={avatar ? {uri: matrix.getHttpUrl(avatar)} : null}
             style={{
               width: 100,
               height: 100,
