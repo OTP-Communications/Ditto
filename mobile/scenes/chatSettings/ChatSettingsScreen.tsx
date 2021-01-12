@@ -1,4 +1,11 @@
-import {Avatar, Layout, List, Text, useTheme} from '@ui-kitten/components';
+import {
+  Avatar,
+  Divider,
+  Layout,
+  List,
+  Text,
+  useTheme,
+} from '@ui-kitten/components';
 import React, {useEffect, useState} from 'react';
 import {Pressable, ScrollView, StyleSheet, View} from 'react-native';
 import ThemeType from '../../../shared/themes/themeType';
@@ -14,9 +21,17 @@ export default function ChatSettingsScreen({route, navigation}) {
   const avatar = useObservableState(chat.avatar$);
 
   const [members, setMembers] = useState([]);
+  const [currentOpen, setCurrentOpen] = useState(null); // which swipeable row is open
 
   const renderMemberListItem = ({item}) => {
-    return <MemberListItem item={item} />;
+    return (
+      <MemberListItem
+        chat={chat}
+        item={item}
+        currentOpen={currentOpen}
+        setCurrentOpen={setCurrentOpen}
+      />
+    );
   };
 
   const getMembers = async () => {
@@ -45,25 +60,13 @@ export default function ChatSettingsScreen({route, navigation}) {
         styles.wrapper,
         {backgroundColor: theme['background-basic-color-5']},
       ]}>
-      <Pressable
-        onPress={navigation.goBack}
-        style={({pressed}) => ({
-          opacity: pressed ? 0.4 : 1,
-          alignSelf: 'flex-end',
-          padding: Spacing.l,
-          paddingTop: Spacing.s,
-        })}>
-        <Text category="s1" style={{fontSize: 18}}>
-          Done
-        </Text>
-      </Pressable>
       <ScrollView>
         <View
           style={{
             position: 'relative',
             justifyContent: 'center',
             alignItems: 'center',
-            marginVertical: Spacing.l,
+            marginBottom: Spacing.l,
           }}>
           <Avatar
             source={avatar ? {uri: matrix.getHttpUrl(avatar)} : null}

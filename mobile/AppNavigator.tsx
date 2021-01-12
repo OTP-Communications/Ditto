@@ -19,6 +19,7 @@ import ChatSettingsScreen from './scenes/chatSettings/ChatSettingsScreen';
 import LanguageSelectScreen from './scenes/settings/LanguageSelectScreen';
 import ThemeType from '../shared/themes/themeType';
 import i18n from '../shared/i18n';
+import EditChatScreen from './scenes/chatSettings/EditChatScreen';
 
 enableScreens();
 
@@ -59,10 +60,10 @@ export default function AppNavigator() {
         <NativeStack.Screen name="Lightbox" component={LightboxScreen} />
         <NativeStack.Screen name="Settings" component={SettingsStack} />
         <NativeStack.Screen name="NewChat" component={NewChatScreen} />
-        <NativeStack.Screen
+        {/* <NativeStack.Screen
           name="ChatSettings"
           component={ChatSettingsScreen}
-        />
+        /> */}
       </NativeStack.Navigator>
     );
   } else {
@@ -95,6 +96,10 @@ function ChatStack({navigation}) {
 
   const navToChatSettings = (chatId) => {
     navigation.navigate('ChatSettings', {chatId});
+  };
+
+  const navToEditChat = (chatId) => {
+    navigation.navigate('EditChat', {chatId});
   };
 
   return (
@@ -195,6 +200,52 @@ function ChatStack({navigation}) {
             </Pressable>
           ),
         })}
+      />
+      <Stack.Screen
+        name="ChatSettings"
+        component={ChatSettingsScreen}
+        options={{
+          headerTintColor: theme['color-basic-100'],
+          title: '',
+          headerBackTitle: 'Back',
+          headerRight: () => (
+            <Pressable
+              onPress={navToEditChat}
+              style={({pressed}) => ({
+                opacity: pressed ? 0.4 : 1,
+                alignSelf: 'flex-end',
+                padding: Spacing.m,
+                paddingRight: Spacing.l,
+              })}>
+              <Text category="s1" style={{fontSize: 20}}>
+                Edit
+              </Text>
+            </Pressable>
+          ),
+        }}
+      />
+      <Stack.Screen
+        name="EditChat"
+        component={EditChatScreen}
+        options={{
+          headerTintColor: theme['color-basic-100'],
+          title: '',
+          headerBackTitle: 'Cancel',
+          headerRight: () => (
+            <Pressable
+              onPress={navToEditChat}
+              style={({pressed}) => ({
+                opacity: pressed ? 0.4 : 1,
+                alignSelf: 'flex-end',
+                padding: Spacing.m,
+                paddingRight: Spacing.l,
+              })}>
+              <Text status="primary" category="s1" style={{fontSize: 20}}>
+                Save
+              </Text>
+            </Pressable>
+          ),
+        }}
       />
     </Stack.Navigator>
   );

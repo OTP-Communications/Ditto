@@ -51,17 +51,19 @@ export default function MessageWrapper({children, ...props}) {
               : 'transparent',
           }}
         />
-        <Text
-          style={{
-            position: 'absolute',
-            opacity: showAvatar ? 0.4 : 0,
-            textAlign: 'center',
-            fontWeight: 'bold',
-          }}>
-          {senderName?.charAt(0) === '@'
-            ? senderName?.charAt(1).toUpperCase()
-            : senderName?.charAt(0).toUpperCase()}
-        </Text>
+        {showAvatar && !senderAvatar && (
+          <Text
+            style={{
+              position: 'absolute',
+              opacity: showAvatar ? 0.4 : 0,
+              textAlign: 'center',
+              fontWeight: 'bold',
+            }}>
+            {senderName?.charAt(0) === '@'
+              ? senderName?.charAt(1).toUpperCase()
+              : senderName?.charAt(0).toUpperCase()}
+          </Text>
+        )}
       </View>
     );
   }, [senderName, senderAvatar]);
