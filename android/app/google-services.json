@@ -1,0 +1,98 @@
+{
+  "project_info": {
+    "project_number": "728187752592",
+    "firebase_url": "https://ditto-chat-mobile.firebaseio.com",
+    "project_id": "ditto-chat-mobile",
+    "storage_bucket": "ditto-chat-mobile.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:728187752592:android:3c998cd34ef2f0d1fec815",
+        "android_client_info": {
+          "package_name": "com.elequin.ditto"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "728187752592-0qm6qidg2o1hr49tjad2985b3caameeq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBsIp3UEnzVZn2KnQ20vju1u1BT-iEIRfw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "728187752592-0qm6qidg2o1hr49tjad2985b3caameeq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:728187752592:android:8fb620f9aeb29172fec815",
+        "android_client_info": {
+          "package_name": "com.elequin.ditto.debug"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "728187752592-0qm6qidg2o1hr49tjad2985b3caameeq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBsIp3UEnzVZn2KnQ20vju1u1BT-iEIRfw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "728187752592-0qm6qidg2o1hr49tjad2985b3caameeq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:728187752592:android:8a6218f9a72b9053fec815",
+        "android_client_info": {
+          "package_name": "com.elequin.ditto.nightly"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "728187752592-0qm6qidg2o1hr49tjad2985b3caameeq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBsIp3UEnzVZn2KnQ20vju1u1BT-iEIRfw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "728187752592-0qm6qidg2o1hr49tjad2985b3caameeq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
