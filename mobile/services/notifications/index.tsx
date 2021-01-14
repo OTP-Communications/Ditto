@@ -1,18 +1,22 @@
+import Clipboard from '@react-native-community/clipboard';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
 import PushNotification from 'react-native-push-notification';
 
-// d89d7290e11a9aa6b8e34632d7c75130f99560167ac1e0993bddfce2a2b65b1b
+// sandbox: d89d7290e11a9aa6b8e34632d7c75130f99560167ac1e0993bddfce2a2b65b1b
 
 // Must be outside of any component LifeCycle (such as `componentDidMount`).
 PushNotification.configure({
   // (optional) Called when Token is generated (iOS and Android)
   onRegister: (token) => {
     console.log('TOKEN:', token);
+    Clipboard.setString(token);
+    alert('Token copied.');
   },
 
   // (required) Called when a remote is received or opened, or local notification is opened
   onNotification: (notification) => {
     console.log('NOTIFICATION:', notification);
+    alert('got a notif');
 
     // process the notification
 
