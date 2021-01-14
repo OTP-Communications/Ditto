@@ -3,8 +3,8 @@ const Spacing = {
   s: 6,
   m: 12,
   l: 16,
-  xl: 20,
-  xxl: 28
+  xl: 22,
+  xxl: 48
 }
 
 export default Spacing

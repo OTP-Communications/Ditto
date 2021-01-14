@@ -1,8 +1,10 @@
 import {
   Avatar,
   Divider,
+  Icon,
   Layout,
   List,
+  ListItem,
   Text,
   useTheme,
 } from '@ui-kitten/components';
@@ -13,6 +15,7 @@ import {matrix} from '@rn-matrix/core';
 import {useObservableState} from 'observable-hooks';
 import Spacing from '../../../shared/styles/Spacing';
 import MemberListItem from './components/MemberListItem';
+import i18n from '../../../shared/i18n';
 
 export default function ChatSettingsScreen({route, navigation}) {
   const theme: ThemeType = useTheme();
@@ -45,6 +48,10 @@ export default function ChatSettingsScreen({route, navigation}) {
     const client = matrix.getClient();
     const room = client.getRoom(chat.id);
     room.clearLoadedMembersIfNeeded();
+  };
+
+  const navToRoleEdit = () => {
+    navigation.navigate('RoleEdit', {chatId: chat.id});
   };
 
   useEffect(() => {
@@ -101,6 +108,46 @@ export default function ChatSettingsScreen({route, navigation}) {
           numberOfLines={2}>
           {name}
         </Text>
+
+        <Text
+          category="h6"
+          style={{
+            alignSelf: 'flex-start',
+            marginLeft: Spacing.l,
+            marginBottom: Spacing.m,
+          }}>
+          Security
+        </Text>
+        <ListItem
+          onPress={navToRoleEdit}
+          title={'Roles'}
+          accessoryLeft={(props) => (
+            <Icon {...props} fill={theme['color-info-default']} name="people" />
+          )}
+          accessoryRight={(props) => (
+            <Icon
+              {...props}
+              fill={theme['color-basic-700']}
+              name="chevron-right"
+            />
+          )}
+          style={{
+            backgroundColor: theme['background-basic-color-4'],
+            height: 52,
+          }}
+        />
+
+        <Text
+          category="h6"
+          style={{
+            alignSelf: 'flex-start',
+            marginLeft: Spacing.l,
+            marginBottom: Spacing.m,
+            marginTop: Spacing.xxl,
+          }}>
+          Members
+        </Text>
+
         <List
           data={members}
           renderItem={renderMemberListItem}

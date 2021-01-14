@@ -1,4 +1,4 @@
-import {Avatar, ListItem, Text, useTheme} from '@ui-kitten/components';
+import {Avatar, Divider, ListItem, Text, useTheme} from '@ui-kitten/components';
 import {useObservableState} from 'observable-hooks';
 import React, {useEffect, useRef} from 'react';
 import {Alert, StyleSheet, View} from 'react-native';
@@ -184,11 +184,11 @@ export default function MemberListItem({
           accessoryRight={MemberAdminStatus}
           style={{
             backgroundColor: theme['background-basic-color-4'],
-            paddingVertical: 12,
             zIndex: 2,
           }}
           activeOpacity={0.4}
         />
+        <Divider style={{zIndex: 2}} />
         <View
           style={{
             backgroundColor: theme['background-basic-color-4'],

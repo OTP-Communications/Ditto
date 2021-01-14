@@ -20,6 +20,7 @@ import LanguageSelectScreen from './scenes/settings/LanguageSelectScreen';
 import ThemeType from '../shared/themes/themeType';
 import i18n from '../shared/i18n';
 import EditChatScreen from './scenes/chatSettings/EditChatScreen';
+import RoleEditScreen from './scenes/chatSettings/RoleEditScreen';
 
 enableScreens();
 
@@ -227,6 +228,29 @@ function ChatStack({navigation}) {
       <Stack.Screen
         name="EditChat"
         component={EditChatScreen}
+        options={{
+          headerTintColor: theme['color-basic-100'],
+          title: '',
+          headerBackTitle: 'Cancel',
+          headerRight: () => (
+            <Pressable
+              onPress={navToEditChat}
+              style={({pressed}) => ({
+                opacity: pressed ? 0.4 : 1,
+                alignSelf: 'flex-end',
+                padding: Spacing.m,
+                paddingRight: Spacing.l,
+              })}>
+              <Text status="primary" category="s1" style={{fontSize: 20}}>
+                Save
+              </Text>
+            </Pressable>
+          ),
+        }}
+      />
+      <Stack.Screen
+        name="RoleEdit"
+        component={RoleEditScreen}
         options={{
           headerTintColor: theme['color-basic-100'],
           title: '',
