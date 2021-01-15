@@ -312,6 +312,8 @@ PODS:
     - React
   - RNCMaskedView (0.1.10):
     - React
+  - RNCPushNotificationIOS (1.8.0):
+    - React-Core
   - RNGestureHandler (1.8.0):
     - React
   - RNLocalize (1.4.1):
@@ -389,6 +391,7 @@ DEPENDENCIES:
   - "RNCAsyncStorage (from `../node_modules/@react-native-community/async-storage`)"
   - "RNCClipboard (from `../node_modules/@react-native-community/clipboard`)"
   - "RNCMaskedView (from `../node_modules/@react-native-community/masked-view`)"
+  - "RNCPushNotificationIOS (from `../node_modules/@react-native-community/push-notification-ios`)"
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNLocalize (from `../node_modules/react-native-localize`)
   - RNReactNativeHapticFeedback (from `../node_modules/react-native-haptic-feedback`)
@@ -481,6 +484,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/clipboard"
   RNCMaskedView:
     :path: "../node_modules/@react-native-community/masked-view"
+  RNCPushNotificationIOS:
+    :path: "../node_modules/@react-native-community/push-notification-ios"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
   RNLocalize:
@@ -543,6 +548,7 @@ SPEC CHECKSUMS:
   RNCAsyncStorage: 2a692bcb9b69b76a2f1a95f33db057129700af64
   RNCClipboard: 48eaf27bea3de7c9a265529725434268d47a2ee9
   RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
+  RNCPushNotificationIOS: 61a7c72bd1ebad3568025957d001e0f0e7b32191
   RNGestureHandler: 7a5833d0f788dbd107fbb913e09aa0c1ff333c39
   RNLocalize: 49634a6a605dcdeb319e9c42a5c2f1aec508694b
   RNReactNativeHapticFeedback: 22c5ecf474428766c6b148f96f2ff6155cd7225e

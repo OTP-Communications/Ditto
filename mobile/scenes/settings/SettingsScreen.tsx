@@ -16,6 +16,7 @@ import {ThemeContext} from '../../../shared/themes/ThemeProvider';
 import Spacing from '../../../shared/styles/Spacing';
 import {AppContext} from '../../../shared/context/AppContext';
 import i18n from '../../../shared/i18n';
+import PushNotification from 'react-native-push-notification';
 
 export default function SettingsScreen({navigation}) {
   const theme = useTheme();
@@ -83,7 +84,15 @@ export default function SettingsScreen({navigation}) {
           onPress: () => console.log('Cancel Pressed'),
           style: 'cancel',
         },
-        {text: 'Yes, logout', onPress: matrix.logout, style: 'destructive'},
+        {
+          text: 'Yes, logout',
+          onPress: () => {
+            PushNotification.removeAllDeliveredNotifications();
+            PushNotification.abandonPermissions();
+            matrix.logout();
+          },
+          style: 'destructive',
+        },
       ],
       {cancelable: false},
     );
