@@ -1,7 +1,7 @@
 import {createStackNavigator} from '@react-navigation/stack';
 import {matrix} from '@rn-matrix/core';
 import {useObservableState} from 'observable-hooks';
-import React from 'react';
+import React, {useEffect} from 'react';
 import {ActivityIndicator, Platform, Pressable, View} from 'react-native';
 
 import {
@@ -28,6 +28,7 @@ import ThemeType from '../shared/themes/themeType';
 import i18n from '../shared/i18n';
 import EditChatScreen from './scenes/chatSettings/EditChatScreen';
 import RoleEditScreen from './scenes/chatSettings/RoleEditScreen';
+import RNBootSplash from 'react-native-bootsplash';
 
 enableScreens();
 
@@ -51,6 +52,12 @@ export default function AppNavigator() {
     ' matrixReady ',
     matrixReady,
   );
+
+  useEffect(() => {
+    if (authLoaded) {
+      RNBootSplash.hide({fade: true});
+    }
+  }, [authLoaded]);
 
   if (!authLoaded || (authLoggedIn && !matrixReady)) {
     return (

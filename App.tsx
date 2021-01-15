@@ -28,6 +28,8 @@ console.disableYellowBox = true;
 
 matrix.initAuth();
 
+console.log('hey');
+
 const App = () => {
   const {themeId} = useContext(ThemeContext);
   const {errorReportingEnabled} = useContext(AppContext);
