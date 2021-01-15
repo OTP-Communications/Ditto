@@ -1,10 +1,8 @@
-import {Text, useTheme} from '@ui-kitten/components';
+import {useTheme} from '@ui-kitten/components';
 import {useObservableState} from 'observable-hooks';
-import React, {useContext} from 'react';
+import React from 'react';
 import {Pressable, Image} from 'react-native';
 import MessageWrapper from '../MessageWrapper';
-import {getNameColor} from '../../../../../shared/utilities/misc';
-import {ThemeContext} from '../../../../../shared/themes/ThemeProvider';
 
 export default function ImageMessage(props) {
   const {
@@ -17,9 +15,7 @@ export default function ImageMessage(props) {
   } = props;
 
   const theme = useTheme();
-  const {themeId} = useContext(ThemeContext);
   const content = useObservableState(message.content$);
-  const senderName = useObservableState(message.sender.name$);
 
   if (!content) return null;
 

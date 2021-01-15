@@ -1,22 +1,49 @@
 import Clipboard from '@react-native-community/clipboard';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
 import PushNotification from 'react-native-push-notification';
-
-// sandbox: d89d7290e11a9aa6b8e34632d7c75130f99560167ac1e0993bddfce2a2b65b1b
+import {navPush} from '../navigator';
+import {matrix} from '@rn-matrix/core';
+import base64 from 'base-64';
 
 // Must be outside of any component LifeCycle (such as `componentDidMount`).
 PushNotification.configure({
   // (optional) Called when Token is generated (iOS and Android)
-  onRegister: (token) => {
-    console.log('TOKEN:', token);
+  onRegister: ({token, os}) => {
     Clipboard.setString(token);
-    alert('Token copied.');
+    const pushkey = base64.encode(token);
+    console.log(pushkey);
+    matrix.getClient().setPusher({
+      profile_tag: '',
+      kind: 'http',
+      app_id: os === 'ios' ? 'chat.ditto.ios' : 'chat.ditto.and',
+      app_display_name: 'Ditto',
+      device_display_name: '',
+      pushkey,
+      lang: 'en',
+      data: {
+        default_payload: {
+          aps: {
+            'content-available': 1,
+            'mutable-content': 1,
+          },
+        },
+        format: 'event_id_only',
+        url: 'https://push.ditto.chat/_matrix/push/v1/notify',
+      },
+    });
   },
 
   // (required) Called when a remote is received or opened, or local notification is opened
   onNotification: (notification) => {
     console.log('NOTIFICATION:', notification);
-    alert('got a notif');
+    if (notification.foreground && !notification.userInteraction) return;
+    if (!notification.data.roomId) return;
+    const chat = matrix.getRoomById(notification.data.roomId);
+    navPush('Chat', {
+      chatId: notification.data.roomId,
+      chatName: chat.name$.getValue(),
+      chatAvatar: chat.avatar$.getValue(),
+    });
 
     // process the notification
 

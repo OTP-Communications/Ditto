@@ -19,6 +19,7 @@ import r from 'xmlhttp-request';
 import * as Sentry from '@sentry/react-native';
 import {SENTRY_DSN} from '@env';
 import {AppContext} from './shared/context/AppContext';
+import {navigationRef} from './mobile/services/navigator';
 
 global.location = {
   protocol: 'file:',
@@ -62,7 +63,9 @@ const App = () => {
     StatusBar.setBarStyle('light-content');
   }
   return (
-    <NavigationContainer theme={themeId === 'light' ? DefaultTheme : DarkTheme}>
+    <NavigationContainer
+      ref={navigationRef}
+      theme={themeId === 'light' ? DefaultTheme : DarkTheme}>
       <AppNavigator />
     </NavigationContainer>
   );

@@ -1,18 +1,22 @@
-import {Avatar, ListItem, Text, useTheme} from '@ui-kitten/components';
+import {Avatar, Icon, ListItem, Text, useTheme} from '@ui-kitten/components';
 import {useObservableState} from 'observable-hooks';
 import React from 'react';
 import {View} from 'react-native';
 import {matrix} from '@rn-matrix/core';
 import {useNavigation} from '@react-navigation/native';
 import moment from 'moment';
+import Spacing from '../../../../shared/styles/Spacing';
+import ThemeType from '../../../../shared/themes/themeType';
 
 export default function ChatListItem({chat}) {
-  const theme = useTheme();
+  const theme: ThemeType = useTheme();
 
   const name: string | undefined = useObservableState(chat.name$);
   const snippet: string | undefined = useObservableState(chat.snippet$);
   const avatar = useObservableState(chat.avatar$);
   const readState = useObservableState(chat.readState$);
+
+  console.log({chat});
 
   const navigation = useNavigation();
 
@@ -75,19 +79,53 @@ export default function ChatListItem({chat}) {
   );
 
   const ChatDescription = (props) => (
-    <Text
-      {...props}
-      style={[
-        props.style,
-        {
-          fontSize: 14,
-          marginTop: 3,
-          fontWeight: readState === 'unread' ? '700' : '400',
-        },
-      ]}
-      numberOfLines={2}>
-      {snippet?.content?.trim()}
-    </Text>
+    <View
+      style={{
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+      }}>
+      <Text
+        {...props}
+        style={[
+          props.style,
+          {
+            fontSize: 14,
+            marginTop: 3,
+            fontWeight: readState === 'unread' ? '700' : '400',
+          },
+        ]}
+        numberOfLines={2}>
+        {snippet?.content?.trim()}
+      </Text>
+      {readState === 'unread' ? (
+        <View
+          style={{
+            backgroundColor: theme['color-primary-default'],
+            width: 16,
+            height: 16,
+            borderRadius: 80,
+            marginRight: Spacing.s,
+            marginTop: Spacing.s,
+          }}
+        />
+      ) : readState === 'readByAll' ? (
+        <Icon
+          name="done-all"
+          width={20}
+          height={20}
+          fill={theme['color-info-700']}
+          style={{marginRight: Spacing.s}}
+        />
+      ) : (
+        <Icon
+          name="checkmark"
+          width={20}
+          height={20}
+          fill={theme['color-info-700']}
+          style={{marginRight: Spacing.s}}
+        />
+      )}
+    </View>
   );
 
   const openChat = () => {

@@ -10,6 +10,7 @@ import {lightHaptic} from '../../../shared/utilities/haptic';
 import ChatActionSheet from './components/ChatActionSheet';
 import {Keyboard} from 'react-native';
 import {matrix} from '@rn-matrix/core';
+import PushNotification from 'react-native-push-notification';
 
 export default function ChatScreen({navigation, route}) {
   const chat = matrix.getRoomById(route.params?.chatId);
@@ -68,6 +69,7 @@ export default function ChatScreen({navigation, route}) {
 
   useEffect(() => {
     handleEndReached();
+    PushNotification.setApplicationIconBadgeNumber(0);
   }, []);
 
   useEffect(() => {
