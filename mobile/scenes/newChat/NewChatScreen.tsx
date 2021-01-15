@@ -4,6 +4,7 @@ import {matrix} from '@rn-matrix/core';
 import {FlatList, Pressable, View} from 'react-native';
 import UserListItem from './components/UserListItem';
 import SelectedList from './components/SelectedList';
+import Spacing from '../../../shared/styles/Spacing';
 
 export default function NewChatScreen({navigation}) {
   const [searchTerm, setSearchTerm] = useState('');
@@ -117,8 +118,8 @@ export default function NewChatScreen({navigation}) {
         accessoryLeft={inputIcon}
         selectTextOnFocus
         clearButtonMode="while-editing"
-        textStyle={{padding: 12, fontSize: 18}}
-        style={{borderRadius: 12, margin: 12}}
+        textStyle={{padding: Spacing.s, fontSize: 18}}
+        style={{borderRadius: 12, margin: Spacing.m}}
       />
       {selectedUsers?.length > 0 && (
         <SelectedList
