@@ -9,28 +9,36 @@ import base64 from 'base-64';
 PushNotification.configure({
   // (optional) Called when Token is generated (iOS and Android)
   onRegister: ({token, os}) => {
+    console.log({token});
     Clipboard.setString(token);
     const pushkey = base64.encode(token);
-    console.log(pushkey);
-    matrix.getClient().setPusher({
-      profile_tag: '',
-      kind: 'http',
-      app_id: os === 'ios' ? 'chat.ditto.ios' : 'chat.ditto.and',
-      app_display_name: 'Ditto',
-      device_display_name: '',
-      pushkey,
-      lang: 'en',
-      data: {
-        default_payload: {
-          aps: {
-            'content-available': 1,
-            'mutable-content': 1,
+    const interval = setInterval(() => {
+      console.log('attempt to set pusher ', pushkey);
+      // check for matrix until you can set the pusher
+      if (matrix && matrix.getClient()) {
+        console.log('setting pusher');
+        matrix.getClient().setPusher({
+          profile_tag: '',
+          kind: 'http',
+          app_id: os === 'ios' ? 'chat.ditto.ios' : 'chat.ditto.and',
+          app_display_name: 'Ditto',
+          device_display_name: '',
+          pushkey,
+          lang: 'en',
+          data: {
+            default_payload: {
+              aps: {
+                'content-available': 1,
+                'mutable-content': 1,
+              },
+            },
+            format: 'event_id_only',
+            url: 'https://push.ditto.chat/_matrix/push/v1/notify',
           },
-        },
-        format: 'event_id_only',
-        url: 'https://push.ditto.chat/_matrix/push/v1/notify',
-      },
-    });
+        });
+        clearInterval(interval);
+      }
+    }, 3000);
   },
 
   // (required) Called when a remote is received or opened, or local notification is opened

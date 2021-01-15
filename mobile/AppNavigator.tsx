@@ -2,7 +2,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {matrix} from '@rn-matrix/core';
 import {useObservableState} from 'observable-hooks';
 import React from 'react';
-import {ActivityIndicator, Pressable, View} from 'react-native';
+import {ActivityIndicator, Platform, Pressable, View} from 'react-native';
 
 import {
   Avatar,
@@ -182,9 +182,11 @@ function ChatStack({navigation}) {
                 width={25}
                 height={25}
               />
-              <Text category="s2" style={{fontSize: 18}}>
-                Chats
-              </Text>
+              {Platform.OS === 'ios' && (
+                <Text category="s2" style={{fontSize: 18}}>
+                  Chats
+                </Text>
+              )}
             </Pressable>
           ),
           headerRight: () => (

@@ -8,6 +8,35 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:728187752592:android:f2c3d3a89feca843fec815",
+        "android_client_info": {
+          "package_name": "chat.ditto.and"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "728187752592-0qm6qidg2o1hr49tjad2985b3caameeq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBsIp3UEnzVZn2KnQ20vju1u1BT-iEIRfw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "728187752592-0qm6qidg2o1hr49tjad2985b3caameeq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:728187752592:android:3c998cd34ef2f0d1fec815",
         "android_client_info": {
           "package_name": "com.elequin.ditto"

@@ -70,6 +70,7 @@ export default function ChatScreen({navigation, route}) {
   useEffect(() => {
     handleEndReached();
     PushNotification.setApplicationIconBadgeNumber(0);
+    PushNotification.removeAllDeliveredNotifications();
   }, []);
 
   useEffect(() => {

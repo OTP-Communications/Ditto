@@ -3,8 +3,6 @@ import 'react-native-url-polyfill/auto';
 import 'react-native-gesture-handler';
 import '@rn-matrix/core/shim';
 
-import './mobile/services/notifications';
-
 import React, {useContext, useEffect} from 'react';
 import {matrix, matrixSdk} from '@rn-matrix/core';
 import {

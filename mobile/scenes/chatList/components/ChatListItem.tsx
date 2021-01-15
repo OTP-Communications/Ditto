@@ -16,8 +16,6 @@ export default function ChatListItem({chat}) {
   const avatar = useObservableState(chat.avatar$);
   const readState = useObservableState(chat.readState$);
 
-  console.log({chat});
-
   const navigation = useNavigation();
 
   const ChatAvatar = (props) => (
@@ -92,6 +90,7 @@ export default function ChatListItem({chat}) {
             fontSize: 14,
             marginTop: 3,
             fontWeight: readState === 'unread' ? '700' : '400',
+            flex: 1,
           },
         ]}
         numberOfLines={2}>
