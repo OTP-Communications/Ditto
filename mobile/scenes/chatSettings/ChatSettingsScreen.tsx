@@ -26,6 +26,15 @@ export default function ChatSettingsScreen({route, navigation}) {
   const [members, setMembers] = useState([]);
   const [currentOpen, setCurrentOpen] = useState(null); // which swipeable row is open
 
+  const roleEvent = chat._matrixRoom.currentState.getStateEvents(
+    'm.room.roles',
+    '',
+  );
+  const currentRoles = {
+    ...(roleEvent?.getPrevContent() || {}),
+    ...(roleEvent?.getContent() || {}),
+  };
+
   const renderMemberListItem = ({item}) => {
     return (
       <MemberListItem
@@ -33,6 +42,7 @@ export default function ChatSettingsScreen({route, navigation}) {
         item={item}
         currentOpen={currentOpen}
         setCurrentOpen={setCurrentOpen}
+        currentRoles={currentRoles}
       />
     );
   };
@@ -145,14 +155,33 @@ export default function ChatSettingsScreen({route, navigation}) {
             marginBottom: Spacing.m,
             marginTop: Spacing.xxl,
           }}>
-          Members
+          Members ({members.length})
         </Text>
 
         <List
-          data={members}
+          data={members.slice(0, 10)}
           renderItem={renderMemberListItem}
           scrollEnabled={false}
           style={{alignSelf: 'stretch'}}
+          ListFooterComponent={() =>
+            members.length > 9 ? (
+              <ListItem
+                onPress={() => {}}
+                title={`View all ${members.length} members`}
+                accessoryRight={(props) => (
+                  <Icon name="chevron-right" {...props} />
+                )}
+                style={{
+                  backgroundColor: theme['background-basic-color-4'],
+                  zIndex: 2,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  height: 60,
+                }}
+                activeOpacity={0.4}
+              />
+            ) : null
+          }
         />
         <View style={{height: 200}} />
       </ScrollView>

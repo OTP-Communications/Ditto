@@ -287,13 +287,13 @@ function ChatStack({navigation}) {
       <Stack.Screen
         name="RoleEdit"
         component={RoleEditScreen}
-        options={{
+        options={({route}) => ({
           headerTintColor: theme['color-basic-100'],
-          title: '',
+          title: 'Roles',
           headerBackTitle: 'Cancel',
           headerRight: () => (
             <Pressable
-              onPress={navToEditChat}
+              onPress={route?.params?.saveRoleChanges || undefined}
               style={({pressed}) => ({
                 opacity: pressed ? 0.4 : 1,
                 alignSelf: 'flex-end',
@@ -305,7 +305,7 @@ function ChatStack({navigation}) {
               </Text>
             </Pressable>
           ),
-        }}
+        })}
       />
     </Stack.Navigator>
   );

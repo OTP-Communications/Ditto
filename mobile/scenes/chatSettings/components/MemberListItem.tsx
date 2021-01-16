@@ -15,12 +15,14 @@ export default function MemberListItem({
   item,
   currentOpen,
   setCurrentOpen,
+  currentRoles,
 }) {
   const theme: ThemeType = useTheme();
   const myUserId = matrix.getMyUser().id;
   const user = matrix.getUserById(item.userId);
   const name = useObservableState(user.name$);
   const avatar = useObservableState(user.avatar$);
+  const role = currentRoles[item.powerLevel];
 
   const swipeable = useRef();
 
@@ -100,7 +102,7 @@ export default function MemberListItem({
 
   const MemberAdminStatus = (props) => (
     <Text appearance="hint" style={{fontSize: 14, marginRight: Spacing.s}}>
-      {item.powerLevel === 100 ? 'Admin' : ''}
+      {role || ''}
     </Text>
   );
 
