@@ -88,6 +88,18 @@
     },
     "logoutButtonLabel": "Logout"
   },
+  "profile":{
+    "general": {
+      "message": "Message",
+      "block": "Block"
+    },
+    "header": {
+      "linkedContact": "Linked contact"
+    },
+    "contact": {
+      "linkToContact": "Link to a contact on this device"
+    }
+  },
   "newChat": {
     "title": "New Chat",
     "userSearch": {

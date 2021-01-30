@@ -19,6 +19,7 @@ import ChatSettingsScreen from './scenes/chatSettings/ChatSettingsScreen';
 import LanguageSelectScreen from './scenes/settings/LanguageSelectScreen';
 import ThemeType from '../shared/themes/themeType';
 import i18n from '../shared/i18n';
+import UserProfileScreen from './scenes/user/UserProfileScreen';
 
 enableScreens();
 
@@ -195,6 +196,20 @@ function ChatStack({navigation}) {
             </Pressable>
           ),
         })}
+      />
+      <Stack.Screen
+        name="Profile"
+        options={() => ({
+          title: '',
+          headerShown: false,
+          headerStyle: {
+            backgroundColor: 'transparent',
+            borderBottomWidth: 0,
+            elevation: 0,
+            shadowColor: 'transparent',
+          },
+        })}
+        component={UserProfileScreen}
       />
     </Stack.Navigator>
   );
