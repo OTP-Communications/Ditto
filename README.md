@@ -18,7 +18,7 @@
     <tbody>
         <tr align="center">
             <td>[Testflight](https://testflight.apple.com/join/9M0ERlKd)</td>
-            <td>[Play Store](https://play.google.com/store/apps/details?id=com.elequin.ditto)  &bull;  [APK](https://gitlab.com/ditto-chat/ditto-mobile/raw/dev/android/app/release/ditto.apk)</td>
+            <td>[Play Store](https://play.google.com/store/apps/details?id=chat.ditto.and)  &bull;  [APK](https://gitlab.com/ditto-chat/ditto-mobile/raw/dev/android/app/release/ditto.apk)</td>
         </tr>
     </tbody>
 </table>
