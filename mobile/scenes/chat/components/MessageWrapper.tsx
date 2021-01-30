@@ -1,15 +1,15 @@
-import {Avatar, Text, useTheme} from '@ui-kitten/components';
-import {useObservableState} from 'observable-hooks';
-import React, {useContext} from 'react';
-import {Pressable, StyleSheet, View} from 'react-native';
-import {ThemeContext} from '../../../../shared/themes/ThemeProvider';
-import Reactions from './Reactions';
-import {getNameColor} from '../../../../shared/utilities/misc';
-import {isEmoji} from '../../../../shared/utilities/emoji';
-import {matrix, Message} from '@rn-matrix/core';
-import Spacing from '../../../../shared/styles/Spacing';
+import { Avatar, Text, useTheme } from "@ui-kitten/components";
+import { useObservableState } from "observable-hooks";
+import React, { useCallback, useContext } from "react";
+import { Pressable, StyleSheet, View } from "react-native";
+import { ThemeContext } from "../../../../shared/themes/ThemeProvider";
+import Reactions from "./Reactions";
+import { getNameColor } from "../../../../shared/utilities/misc";
+import { isEmoji } from "../../../../shared/utilities/emoji";
+import { matrix, Message } from "@rn-matrix/core";
+import Spacing from "../../../../shared/styles/Spacing";
 
-function MessageWrapper({children, ...props}) {
+function MessageWrapper({ children, ...props }) {
   const {
     isMe,
     message,
@@ -20,7 +20,7 @@ function MessageWrapper({children, ...props}) {
   } = props;
 
   const theme = useTheme();
-  const {themeId} = useContext(ThemeContext);
+  const { themeId } = useContext(ThemeContext);
 
   const type = useObservableState(message.type$);
   const senderName = useObservableState(message.sender.name$);
@@ -35,46 +35,77 @@ function MessageWrapper({children, ...props}) {
 
   const showAvatar = !isDirect && !isMe && !nextSame;
 
+  const renderAvatar = useCallback(() => {
+    return (
+      <Pressable onPress={() => onAvatarPress(message.sender)}>
+        <View
+          style={{
+            justifyContent: "center",
+            alignItems: "center",
+            position: "relative",
+            marginRight: Spacing.s,
+            marginBottom: 3,
+          }}
+        >
+          <Avatar
+            size="small"
+            source={
+              showAvatar && senderAvatar
+                ? { uri: matrix.getHttpUrl(senderAvatar) }
+                : null
+            }
+            style={{
+              backgroundColor: showAvatar
+                ? theme["background-basic-color-3"]
+                : "transparent",
+            }}
+          />
+          <Text
+            style={{
+              position: "absolute",
+              opacity: showAvatar ? 0.4 : 0,
+              textAlign: "center",
+              fontWeight: "bold",
+            }}
+          >
+            {senderName?.charAt(0) === "@"
+              ? senderName?.charAt(1).toUpperCase()
+              : senderName?.charAt(0).toUpperCase()}
+          </Text>
+        </View>
+      </Pressable>
+    );
+  }, [senderName, senderAvatar]);
+
   return (
     <View
       style={[
         styles.wrapper,
         {
-          alignItems: isMe ? 'flex-end' : 'flex-start',
+          alignItems: isMe ? "flex-end" : "flex-start",
           marginBottom: nextSame ? 3 : 12,
           marginLeft: Spacing.xs,
         },
-      ]}>
+      ]}
+    >
       <View
-        style={{maxWidth: '85%', flexDirection: 'row', alignItems: 'flex-end'}}>
-        {!isMe && (
-          <Pressable onPress={() => onAvatarPress(message.sender)}>
-            <Avatar
-              size="small"
-              source={
-                showAvatar && senderAvatar
-                  ? {uri: matrix.getHttpUrl(senderAvatar)}
-                  : null
-              }
-              style={{
-                backgroundColor: showAvatar
-                  ? theme['background-basic-color-3']
-                  : 'transparent',
-                marginRight: 8,
-                marginBottom: 3,
-              }}
-            />
-          </Pressable>
-        )}
-        <View style={{maxWidth: '85%'}}>
+        style={{
+          maxWidth: "85%",
+          flexDirection: "row",
+          alignItems: "flex-end",
+        }}
+      >
+        {!isMe && renderAvatar()}
+        <View style={{ maxWidth: "85%" }}>
           {showSenderName && (
             <Text
               style={{
-                fontWeight: 'bold',
+                fontWeight: "bold",
                 marginBottom: 3,
                 marginLeft: 18,
                 color: getNameColor(message.sender.id, themeId),
-              }}>
+              }}
+            >
               {senderName}
             </Text>
           )}
@@ -83,9 +114,10 @@ function MessageWrapper({children, ...props}) {
       </View>
       <View
         style={{
-          maxWidth: '85%',
+          maxWidth: "85%",
           marginLeft: !isMe && !isDirect ? 36 : 0,
-        }}>
+        }}
+      >
         <Reactions message={message} isMe={isMe} />
       </View>
     </View>

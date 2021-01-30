@@ -2,9 +2,16 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {matrix} from '@rn-matrix/core';
 import {useObservableState} from 'observable-hooks';
 import React from 'react';
-import {ActivityIndicator, Pressable, View} from 'react-native';
+import {ActivityIndicator, Platform, Pressable, View} from 'react-native';
 
-import {Avatar, Icon, Layout, Text, useTheme} from '@ui-kitten/components';
+import {
+  Avatar,
+  Button,
+  Icon,
+  Layout,
+  Text,
+  useTheme,
+} from '@ui-kitten/components';
 import {enableScreens} from 'react-native-screens';
 import {createNativeStackNavigator} from 'react-native-screens/native-stack';
 import ChatListScreen from './scenes/chatList/ChatListScreen';
@@ -140,12 +147,12 @@ function ChatStack({navigation}) {
                 position: 'relative',
                 justifyContent: 'center',
                 alignItems: 'center',
-                marginRight: 18,
-                opacity: pressed ? 0.6 : 1,
+                marginRight: Spacing.m,
+                opacity: pressed ? 0.4 : 1,
                 padding: 8,
               })}>
               <Icon
-                style={{width: 30, height: 30}}
+                style={{width: 28, height: 28}}
                 fill={theme['color-primary-default']}
                 name="edit-2-outline"
               />
@@ -157,10 +164,32 @@ function ChatStack({navigation}) {
       <Stack.Screen
         name="Chat"
         component={ChatScreen}
-        options={({route}) => ({
+        options={({route, navigation}) => ({
           title: route.params?.chatName || 'Chat',
           headerTintColor: theme['text-basic-color'],
           headerStyle: {backgroundColor: theme['background-basic-color-4']},
+          headerLeft: () => (
+            <Pressable
+              onPress={() => navigation.navigate('ChatList')}
+              style={({pressed}) => ({
+                padding: Spacing.m,
+                flexDirection: 'row',
+                alignItems: 'center',
+                opacity: pressed ? 0.4 : 1,
+              })}>
+              <Icon
+                name="chevron-left"
+                fill={theme['text-basic-color']}
+                width={25}
+                height={25}
+              />
+              {Platform.OS === 'ios' && (
+                <Text category="s2" style={{fontSize: 18}}>
+                  Chats
+                </Text>
+              )}
+            </Pressable>
+          ),
           headerRight: () => (
             <Pressable
               onPress={() => navToChatSettings(route.params?.chatId)}

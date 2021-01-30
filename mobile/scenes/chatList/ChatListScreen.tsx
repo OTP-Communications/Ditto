@@ -6,6 +6,8 @@ import ChatListItem from './components/ChatListItem';
 import {List, useTheme} from '@ui-kitten/components';
 import InviteListItem from './components/InviteListItem';
 
+import '../../services/notifications';
+
 export default function ChatListScreen() {
   const theme = useTheme();
 

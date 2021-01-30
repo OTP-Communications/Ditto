@@ -12,7 +12,7 @@ then
   if [[ $1 == "ios" ]]
   then
     echo "Releasing for iOS Beta..."
-    fastlane ios beta
+    yarn bi && fastlane ios beta
     exit
   elif [[ $1 == "and" ]]
   then
