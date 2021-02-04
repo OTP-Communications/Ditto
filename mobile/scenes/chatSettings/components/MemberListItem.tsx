@@ -99,7 +99,8 @@ export default function MemberListItem({
             color: theme['background-basic-color-1'],
           }}
           category="h5"> 
-          {name.charAt(0) === '@' ? name.charAt(1).match(/[a-zA-Z0-9]/g)?.length > 0 ? name.charAt(1) : item.userId : name.charAt(0).match(/[a-zA-Z0-9]/g)?.length > 0 ? name.charAt(0) : item.userId}
+          {/* This atrocious line is handling names that are emojis. Because the rendering doesn't like those. */}
+          {name.charAt(0) === '@' ? name.charAt(1).match(/[a-zA-Z0-9]/g)?.length > 0 ? name.charAt(1) : item.userId.charAt(1) : name.charAt(0).match(/[a-zA-Z0-9]/g)?.length > 0 ? name.charAt(0) : item.userId.charAt(1)}
         </Text>
       )}
       {!avatar && !name && (
