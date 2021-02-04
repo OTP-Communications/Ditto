@@ -12,7 +12,7 @@ import {
 } from '@react-navigation/native';
 import AppNavigator from './mobile/AppNavigator';
 import {ThemeContext} from './shared/themes/ThemeProvider';
-import {StatusBar} from 'react-native';
+import {StatusBar, LogBox} from 'react-native';
 import r from 'xmlhttp-request';
 import * as Sentry from '@sentry/react-native';
 import {SENTRY_DSN} from '@env';
@@ -24,11 +24,9 @@ global.location = {
   href: '',
 };
 
-console.disableYellowBox = true;
+LogBox.ignoreAllLogs(true)
 
 matrix.initAuth();
-
-console.log('hey');
 
 const App = () => {
   const {themeId} = useContext(ThemeContext);

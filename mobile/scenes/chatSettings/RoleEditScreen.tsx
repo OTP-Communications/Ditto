@@ -1,14 +1,25 @@
 import React, {useEffect, useState} from 'react';
-import {Dimensions, Pressable, TextInput, View} from 'react-native';
+import {Dimensions, Pressable, ScrollView, TextInput, View} from 'react-native';
 import {matrix} from '@rn-matrix/core';
-import {Button, Icon, ListItem, Text, useTheme} from '@ui-kitten/components';
+import {Divider, Icon, ListItem, Text, useTheme} from '@ui-kitten/components';
 import {AutoDragSortableView} from 'react-native-drag-sort';
 import Spacing from '../../../shared/styles/Spacing';
 import ThemeType from '../../../shared/themes/themeType';
+import i18n from '../../../shared/i18n';
+import RolePermissionActionSheet from './components/RolePermissionActionSheet';
 
-const {width, height} = Dimensions.get('screen');
+const {width} = Dimensions.get('screen');
+
+const permissions = [
+  {title: 'Kick', value: 'kick'},
+  {title: 'Ban', value: 'ban'},
+  {title: 'Invite members', value: 'invite'},
+];
 
 export default function RoleEditScreen({route, navigation}) {
+  const [selectedPermission, setSelectedPermission] = useState(null);
+  const [actionSheetVisible, setActionSheetVisible] = useState<boolean>(false);
+
   const chat = matrix.getRoomById(route?.params?.chatId);
 
   const powerLevelEvent = chat._matrixRoom.currentState.getStateEvents(
@@ -29,32 +40,21 @@ export default function RoleEditScreen({route, navigation}) {
     ...(roleEvent?.getContent() || {}),
   };
 
-  console.log({currentPowerLevels, currentRoles});
-
   const theme: ThemeType = useTheme();
   const [roles, setRoles] = useState(currentRoles);
   const [powerLevels, setPowerLevels] = useState(currentPowerLevels);
 
   const saveChanges = (powerLevels, roles) => {
-    console.log('Save.');
-    // const client = matrix.getClient();
-    // const room = client.getRoom(chat.id);
-    // const roomState = room.currentState
-    // room.client.sendState(room.id, EventTypes.RoomPowerLevels, content)
-    // matrix.getClient().sendStateEvent(
-    //   chat.id,
-    //   'm.room.power_levels',
-    //   {
-    //     ...currentPowerLevels,
-    //     ban: 60,
-    //   },
-    //   '',
-    //   (e) => console.log({e}),
-    // );
     if (JSON.stringify(roles) !== JSON.stringify(currentRoles)) {
       matrix
         .getClient()
         .sendStateEvent(chat.id, 'm.room.roles', roles, '', (e) =>
+          console.log({e}),
+        );
+
+      matrix
+        .getClient()
+        .sendStateEvent(chat.id, 'm.room.power_levels', powerLevels, '', (e) =>
           console.log({e}),
         );
     }
@@ -91,6 +91,7 @@ export default function RoleEditScreen({route, navigation}) {
         <TextInput
           value={item ? roles[item] : ''}
           placeholder={!item ? 'Type to add role...' : 'Edit role'}
+          placeholderTextColor={theme['text-hint-color']}
           selectTextOnFocus
           onChangeText={(val) => handleChange(item, val)}
           style={{
@@ -171,24 +172,83 @@ export default function RoleEditScreen({route, navigation}) {
     });
   }, [roles, powerLevels]);
 
-  console.log({roles});
-
   return (
-    <View style={{flex: 1, alignItems: 'center', paddingTop: Spacing.m}}>
-      <AutoDragSortableView
-        dataSource={[
-          ...Object.keys(roles).sort((a, b) => parseInt(b) - parseInt(a)),
-          null,
-        ]}
-        parentWidth={width}
-        childrenWidth={width - Spacing.m * 2}
-        childrenHeight={50}
-        keyExtractor={(i, index) => index}
-        renderItem={renderRoleItem}
-        sortable
-        onDataChange={handleReorder}
-        marginChildrenLeft={Spacing.m}
+    <>
+      <ScrollView>
+        <View
+          style={{
+            height: 50 * (Object.keys(roles).length + 1) + Spacing.m * 2,
+            alignItems: 'center',
+            paddingTop: Spacing.m,
+          }}>
+          <AutoDragSortableView
+            dataSource={[
+              ...Object.keys(roles).sort((a, b) => parseInt(b) - parseInt(a)),
+              null,
+            ]}
+            parentWidth={width}
+            childrenWidth={width - Spacing.m * 2}
+            childrenHeight={50}
+            keyExtractor={(i, index) => index}
+            renderItem={renderRoleItem}
+            sortable
+            onDataChange={handleReorder}
+            marginChildrenLeft={Spacing.m}
+          />
+        </View>
+        <View style={{alignSelf: 'stretch', height: 100}}>
+          <Text
+            category="h6"
+            style={{
+              alignSelf: 'flex-start',
+              marginLeft: Spacing.l,
+              marginBottom: Spacing.xs,
+              marginTop: Spacing.xxl,
+            }}>
+            {i18n.t('chatSettings:rolePermissionsLabel')}
+          </Text>
+          <Text
+            appearance="hint"
+            style={{
+              alignSelf: 'flex-start',
+              marginLeft: Spacing.l,
+              marginBottom: Spacing.m,
+            }}>
+            Tap a row to change permissions
+          </Text>
+          {permissions.map((p) => (
+            <>
+              <ListItem
+                title={p.title}
+                accessoryRight={() => (
+                  <Text appearance="hint">
+                    {powerLevels[p.value] !== undefined ? roles[powerLevels[p.value]] : 50}
+                  </Text>
+                )}
+                style={{
+                  height: 50,
+                  backgroundColor: theme['background-basic-color-3'],
+                }}
+                onPress={() => {
+                  setSelectedPermission(p)
+                  setActionSheetVisible(true)
+                }}
+              />
+              <Divider
+                style={{backgroundColor: theme['background-basic-color-2']}}
+              />
+            </>
+          ))}
+        </View>
+      </ScrollView>
+      <RolePermissionActionSheet
+        visible={actionSheetVisible}
+        setVisible={setActionSheetVisible}
+        selectedPermission={selectedPermission}
+        powerLevels={powerLevels}
+        setPowerLevels={setPowerLevels}
+        roles={roles}
       />
-    </View>
+    </>
   );
 }

@@ -130,7 +130,7 @@ export default function ChatSettingsScreen({route, navigation}) {
         </Text>
         <ListItem
           onPress={navToRoleEdit}
-          title={'Roles'}
+          title={i18n.t('chatSettings:roleAndPermissionsLabel')}
           accessoryLeft={(props) => (
             <Icon {...props} fill={theme['color-info-default']} name="people" />
           )}

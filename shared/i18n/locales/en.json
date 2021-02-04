@@ -117,6 +117,8 @@
   "chatSettings": {
     "insufficientPermissions": "You do not have permission to perform this action.",
     "insufficientPermissionsTitle": "Action Failed",
-    "youLabel": "(you)"
+    "youLabel": "(you)",
+    "roleAndPermissionsLabel": "Roles & Permissions",
+    "rolePermissionsLabel": "Permissions"
   }
 }
