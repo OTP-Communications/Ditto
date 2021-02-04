@@ -244,20 +244,20 @@ function ChatStack({navigation}) {
           },
           title: '',
           headerBackTitle: 'Back',
-          headerRight: () => (
-            <Pressable
-              onPress={navToEditChat}
-              style={({pressed}) => ({
-                opacity: pressed ? 0.4 : 1,
-                alignSelf: 'flex-end',
-                padding: Spacing.m,
-                paddingRight: Spacing.l,
-              })}>
-              <Text category="s1" style={{fontSize: 20}}>
-                Edit
-              </Text>
-            </Pressable>
-          ),
+          // headerRight: () => (
+          //   <Pressable
+          //     onPress={navToEditChat}
+          //     style={({pressed}) => ({
+          //       opacity: pressed ? 0.4 : 1,
+          //       alignSelf: 'flex-end',
+          //       padding: Spacing.m,
+          //       paddingRight: Spacing.l,
+          //     })}>
+          //     <Text category="s1" style={{fontSize: 20}}>
+          //       Edit
+          //     </Text>
+          //   </Pressable>
+          // ),
         }}
       />
       <Stack.Screen
