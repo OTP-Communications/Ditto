@@ -75,10 +75,6 @@ export default function AppNavigator() {
         <NativeStack.Screen name="Lightbox" component={LightboxScreen} />
         <NativeStack.Screen name="Settings" component={SettingsStack} />
         <NativeStack.Screen name="NewChat" component={NewChatScreen} />
-        {/* <NativeStack.Screen
-          name="ChatSettings"
-          component={ChatSettingsScreen}
-        /> */}
       </NativeStack.Navigator>
     );
   } else {
@@ -243,6 +239,9 @@ function ChatStack({navigation}) {
         component={ChatSettingsScreen}
         options={{
           headerTintColor: theme['color-basic-100'],
+          headerStyle: {
+            shadowOpacity: 0
+          },
           title: '',
           headerBackTitle: 'Back',
           headerRight: () => (
