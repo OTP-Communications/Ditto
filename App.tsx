@@ -19,10 +19,12 @@ import {SENTRY_DSN} from '@env';
 import {AppContext} from './shared/context/AppContext';
 import {navigationRef} from './mobile/services/navigator';
 
-global.location = {
-  protocol: 'file:',
-  href: '',
-};
+try {
+  global.location = {
+    protocol: 'file:',
+    href: '',
+  };
+} catch {}
 
 LogBox.ignoreAllLogs(true)
 
