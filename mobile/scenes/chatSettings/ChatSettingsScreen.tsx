@@ -1,6 +1,5 @@
 import {
   Avatar,
-  Divider,
   Icon,
   Layout,
   List,
@@ -9,7 +8,7 @@ import {
   useTheme,
 } from '@ui-kitten/components';
 import React, {useEffect, useState} from 'react';
-import {Pressable, ScrollView, StyleSheet, View} from 'react-native';
+import {ScrollView, StyleSheet, View} from 'react-native';
 import ThemeType from '../../../shared/themes/themeType';
 import {matrix} from '@rn-matrix/core';
 import {useObservableState} from 'observable-hooks';
@@ -24,7 +23,7 @@ export default function ChatSettingsScreen({route, navigation}) {
   const name = useObservableState(chat.name$);
   const avatar = useObservableState(chat.avatar$);
 
-  const myMember = chat._matrixRoom.getMember(matrix.getMyUser().id)
+  const myMember = chat._matrixRoom.getMember(matrix.getMyUser().id);
 
   const [members, setMembers] = useState([]);
   const [currentOpen, setCurrentOpen] = useState(null); // which swipeable row is open
@@ -32,8 +31,6 @@ export default function ChatSettingsScreen({route, navigation}) {
   const {currentRoles, currentPowerLevels} = getRolesAndPermissionsForChat(
     chat,
   );
-
-  console.log({currentRoles, currentPowerLevels})
 
   const renderMemberListItem = ({item, index}) => {
     return (
@@ -64,6 +61,10 @@ export default function ChatSettingsScreen({route, navigation}) {
 
   const navToRoleEdit = () => {
     navigation.navigate('RoleEdit', {chatId: chat.id});
+  };
+
+  const navToMemberListScreen = () => {
+    navigation.navigate('MemberList', {chatId: chat.id});
   };
 
   useEffect(() => {
@@ -168,7 +169,7 @@ export default function ChatSettingsScreen({route, navigation}) {
           ListFooterComponent={() =>
             members.length > 9 ? (
               <ListItem
-                onPress={() => {}}
+                onPress={navToMemberListScreen}
                 title={`View all ${members.length} members`}
                 accessoryRight={(props) => (
                   <Icon name="chevron-right" {...props} />

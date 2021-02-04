@@ -92,14 +92,24 @@ export default function MemberListItem({
         }}
         source={avatar ? {uri: matrix.getHttpUrl(avatar)} : null}
       />
-      {!avatar && (
+      {!avatar && name && (
         <Text
           style={{
             position: 'absolute',
             color: theme['background-basic-color-1'],
           }}
-          category="h5">
-          {name?.charAt(0)}
+          category="h5"> 
+          {name.charAt(0) === '@' ? name.charAt(1).match(/[a-zA-Z0-9]/g)?.length > 0 ? name.charAt(1) : item.userId : name.charAt(0).match(/[a-zA-Z0-9]/g)?.length > 0 ? name.charAt(0) : item.userId}
+        </Text>
+      )}
+      {!avatar && !name && (
+        <Text
+          style={{
+            position: 'absolute',
+            color: theme['background-basic-color-1'],
+          }}
+          category="h5"> 
+          {item.userId.charAt(1)}
         </Text>
       )}
     </View>

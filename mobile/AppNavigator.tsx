@@ -29,6 +29,7 @@ import i18n from '../shared/i18n';
 import EditChatScreen from './scenes/chatSettings/EditChatScreen';
 import RoleEditScreen from './scenes/chatSettings/RoleEditScreen';
 import RNBootSplash from 'react-native-bootsplash';
+import MemberListScreen from './scenes/chatSettings/MemberListScreen';
 
 enableScreens();
 
@@ -281,6 +282,15 @@ function ChatStack({navigation}) {
               </Text>
             </Pressable>
           ),
+        }}
+      />
+      <Stack.Screen
+        name="MemberList"
+        component={MemberListScreen}
+        options={{
+          headerTintColor: theme['color-basic-100'],
+          title: 'Members',
+          headerBackTitle: 'Back',
         }}
       />
       <Stack.Screen
