@@ -215,7 +215,7 @@ function ChatStack({navigation}) {
                 }}>
                 <Avatar
                   source={{
-                    uri: matrix.getHttpUrl(route.params?.chatAvatar),
+                    uri: matrix.getHttpUrl(route.params?.chatAvatar).length > 0 ? matrix.getHttpUrl(route.params?.chatAvatar) : undefined,
                   }}
                   size="small"
                   style={{

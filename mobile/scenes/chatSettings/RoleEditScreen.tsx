@@ -7,10 +7,11 @@ import Spacing from '../../../shared/styles/Spacing';
 import ThemeType from '../../../shared/themes/themeType';
 import i18n from '../../../shared/i18n';
 import RolePermissionActionSheet from './components/RolePermissionActionSheet';
+import {getRolesAndPermissionsForChat} from '../../../shared/utilities/matrix';
 
 const {width} = Dimensions.get('screen');
 
-const permissions = [
+export const supportedPermissions = [
   {title: 'Kick', value: 'kick'},
   {title: 'Ban', value: 'ban'},
   {title: 'Invite members', value: 'invite'},
@@ -21,28 +22,18 @@ export default function RoleEditScreen({route, navigation}) {
   const [actionSheetVisible, setActionSheetVisible] = useState<boolean>(false);
 
   const chat = matrix.getRoomById(route?.params?.chatId);
+  const myMember = chat._matrixRoom.getMember(matrix.getMyUser().id);
 
-  const powerLevelEvent = chat._matrixRoom.currentState.getStateEvents(
-    'm.room.power_levels',
-    '',
+  const {currentRoles, currentPowerLevels} = getRolesAndPermissionsForChat(
+    chat,
   );
-  const currentPowerLevels = {
-    ...powerLevelEvent.getPrevContent(),
-    ...powerLevelEvent.getContent(),
-  };
-
-  const roleEvent = chat._matrixRoom.currentState.getStateEvents(
-    'm.room.roles',
-    '',
-  );
-  const currentRoles = {
-    ...(roleEvent?.getPrevContent() || {}),
-    ...(roleEvent?.getContent() || {}),
-  };
 
   const theme: ThemeType = useTheme();
   const [roles, setRoles] = useState(currentRoles);
   const [powerLevels, setPowerLevels] = useState(currentPowerLevels);
+
+  const canEdit =
+    myMember.powerLevel >= currentPowerLevels.events['m.room.power_levels'];
 
   const saveChanges = (powerLevels, roles) => {
     if (JSON.stringify(roles) !== JSON.stringify(currentRoles)) {
@@ -62,11 +53,12 @@ export default function RoleEditScreen({route, navigation}) {
   };
 
   const renderRoleItem = (item, index) => {
+    if (!item && !canEdit) return null;
     return (
       <View
         style={{
           width: width - Spacing.m * 2,
-          backgroundColor: theme['background-basic-color-3'],
+          backgroundColor: theme['background-basic-color-4'],
           height: 50,
           flexDirection: 'row',
           alignItems: 'center',
@@ -89,6 +81,7 @@ export default function RoleEditScreen({route, navigation}) {
           {item}
         </Text>
         <TextInput
+          editable={canEdit}
           value={item ? roles[item] : ''}
           placeholder={!item ? 'Type to add role...' : 'Edit role'}
           placeholderTextColor={theme['text-hint-color']}
@@ -101,7 +94,8 @@ export default function RoleEditScreen({route, navigation}) {
             fontSize: 16,
           }}
         />
-        {item && (
+
+        {item && canEdit && (
           <Pressable
             style={{padding: Spacing.m}}
             onPress={() => removeRole(item)}>
@@ -166,11 +160,18 @@ export default function RoleEditScreen({route, navigation}) {
   }, [roles]);
 
   useEffect(() => {
+    let change = {}
+    if (!canEdit) {
+      change = {headerRight: () => null}
+    }
     navigation.setParams({
       ...route.params,
       saveRoleChanges: () => saveChanges(powerLevels, roles),
     });
-  }, [roles, powerLevels]);
+    navigation.setOptions({
+      ...change
+    })
+  }, [roles, powerLevels, canEdit]);
 
   return (
     <>
@@ -202,36 +203,42 @@ export default function RoleEditScreen({route, navigation}) {
             style={{
               alignSelf: 'flex-start',
               marginLeft: Spacing.l,
-              marginBottom: Spacing.xs,
+              marginBottom: canEdit ? Spacing.xs : Spacing.m,
               marginTop: Spacing.xxl,
             }}>
             {i18n.t('chatSettings:rolePermissionsLabel')}
           </Text>
-          <Text
-            appearance="hint"
-            style={{
-              alignSelf: 'flex-start',
-              marginLeft: Spacing.l,
-              marginBottom: Spacing.m,
-            }}>
-            Tap a row to change permissions
-          </Text>
-          {permissions.map((p) => (
+          {canEdit && (
+            <Text
+              appearance="hint"
+              style={{
+                alignSelf: 'flex-start',
+                marginLeft: Spacing.l,
+                marginBottom: Spacing.m,
+              }}>
+              Tap a row to change permissions
+            </Text>
+          )}
+
+          {supportedPermissions.map((p) => (
             <>
               <ListItem
+                disabled={!canEdit}
                 title={p.title}
                 accessoryRight={() => (
                   <Text appearance="hint">
-                    {powerLevels[p.value] !== undefined ? roles[powerLevels[p.value]] : 50}
+                    {powerLevels[p.value] !== undefined
+                      ? roles[powerLevels[p.value]]
+                      : 50}
                   </Text>
                 )}
                 style={{
                   height: 50,
-                  backgroundColor: theme['background-basic-color-3'],
+                  backgroundColor: theme['background-basic-color-4'],
                 }}
                 onPress={() => {
-                  setSelectedPermission(p)
-                  setActionSheetVisible(true)
+                  setSelectedPermission(p);
+                  setActionSheetVisible(true);
                 }}
               />
               <Divider

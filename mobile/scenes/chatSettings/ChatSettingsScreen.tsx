@@ -16,6 +16,7 @@ import {useObservableState} from 'observable-hooks';
 import Spacing from '../../../shared/styles/Spacing';
 import MemberListItem from './components/MemberListItem';
 import i18n from '../../../shared/i18n';
+import {getRolesAndPermissionsForChat} from '../../../shared/utilities/matrix';
 
 export default function ChatSettingsScreen({route, navigation}) {
   const theme: ThemeType = useTheme();
@@ -23,26 +24,27 @@ export default function ChatSettingsScreen({route, navigation}) {
   const name = useObservableState(chat.name$);
   const avatar = useObservableState(chat.avatar$);
 
+  const myMember = chat._matrixRoom.getMember(matrix.getMyUser().id)
+
   const [members, setMembers] = useState([]);
   const [currentOpen, setCurrentOpen] = useState(null); // which swipeable row is open
 
-  const roleEvent = chat._matrixRoom.currentState.getStateEvents(
-    'm.room.roles',
-    '',
+  const {currentRoles, currentPowerLevels} = getRolesAndPermissionsForChat(
+    chat,
   );
-  const currentRoles = {
-    ...(roleEvent?.getPrevContent() || {}),
-    ...(roleEvent?.getContent() || {}),
-  };
 
-  const renderMemberListItem = ({item}) => {
+  console.log({currentRoles, currentPowerLevels})
+
+  const renderMemberListItem = ({item, index}) => {
     return (
       <MemberListItem
         chat={chat}
         item={item}
+        myMember={myMember}
         currentOpen={currentOpen}
         setCurrentOpen={setCurrentOpen}
         currentRoles={currentRoles}
+        currentPowerLevels={currentPowerLevels}
       />
     );
   };

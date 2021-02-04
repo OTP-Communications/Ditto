@@ -13,9 +13,11 @@ import Spacing from '../../../../shared/styles/Spacing';
 export default function MemberListItem({
   chat,
   item,
+  myMember,
   currentOpen,
   setCurrentOpen,
   currentRoles,
+  currentPowerLevels
 }) {
   const theme: ThemeType = useTheme();
   const myUserId = matrix.getMyUser().id;
@@ -25,6 +27,9 @@ export default function MemberListItem({
   const role = currentRoles[item.powerLevel];
 
   const swipeable = useRef();
+
+  const meCanKick = myMember.powerLevel >= (currentPowerLevels.kick !== undefined ? currentPowerLevels.kick : 50) && myMember.powerLevel > item.powerLevel;
+  const meCanBan = myMember.powerLevel >= (currentPowerLevels.ban !== undefined ? currentPowerLevels.ban : 50) && myMember.powerLevel > item.powerLevel;
 
   const onPress = () => {
     // navigate to profile page
@@ -102,7 +107,7 @@ export default function MemberListItem({
 
   const MemberAdminStatus = (props) => (
     <Text appearance="hint" style={{fontSize: 14, marginRight: Spacing.s}}>
-      {role || ''}
+      {role ? `${role} (${item.powerLevel})` : item.powerLevel}
     </Text>
   );
 
@@ -130,29 +135,33 @@ export default function MemberListItem({
       </Animated.View>
     );
   };
-  const renderRightActions = (progress) => (
-    <View
-      style={{
-        width: 192,
-        flexDirection: 'row',
-      }}>
-      {item.userId !== myUserId ? (
-        <>
-          {renderRightAction('Kick', theme['color-warning-600'], 64, progress)}
-          {renderRightAction(
-            'Ban',
-            theme['color-danger-default'],
-            64,
-            progress,
-          )}
-        </>
-      ) : (
-        <>
-          {renderRightAction('Leave', theme['color-danger-600'], 64, progress)}
-        </>
-      )}
-    </View>
-  );
+
+  const renderRightActions = (progress) => {
+    if (item.userId !== myUserId && !meCanBan && !meCanKick) return null
+    return (
+      <View
+        style={{
+          width: 192,
+          flexDirection: 'row',
+        }}>
+        {item.userId !== myUserId ? (
+          <>
+            {meCanKick ? renderRightAction('Kick', theme['color-warning-600'], 64, progress) : null}
+            {meCanBan ? renderRightAction(
+              'Ban',
+              theme['color-danger-default'],
+              64,
+              progress,
+            ) : null}
+          </>
+        ) : (
+          <>
+            {renderRightAction('Leave', theme['color-danger-600'], 64, progress)}
+          </>
+        )}
+      </View>
+    )
+  }
 
   const close = () => {
     swipeable.current.close();
