@@ -36,15 +36,6 @@ const App = () => {
 
   useEffect(() => {
     matrixSdk.request(r);
-
-    Sentry.init({
-      dsn: SENTRY_DSN,
-      beforeSend(event) {
-        console.log('event', event, errorReportingEnabled);
-        if (errorReportingEnabled) return event;
-        return null;
-      },
-    });
   }, []);
 
   useEffect(() => {
