@@ -1,21 +1,6 @@
-import {
-  Avatar,
-  Icon,
-  Layout,
-  ListItem,
-  Text,
-  useTheme,
-} from '@ui-kitten/components';
+import {Icon, Layout, ListItem, Text, useTheme} from '@ui-kitten/components';
 import React, {useRef} from 'react';
-import {
-  Animated,
-  Dimensions,
-  Image,
-  StyleSheet,
-  View,
-  ScrollView,
-  Platform,
-} from 'react-native';
+import {Animated, Dimensions, StyleSheet, ScrollView} from 'react-native';
 import {matrix} from '@rn-matrix/core';
 import {useObservableState} from 'observable-hooks';
 import Spacing from '../../../shared/styles/Spacing';
@@ -25,7 +10,6 @@ import AvatarHeader from '../../components/AvatarHeader';
 export default function UserProfileScreen({navigation, route}) {
   const theme = useTheme();
   const user = route.params.user;
-  console.log(user);
 
   const avatar: string | undefined = useObservableState(user.avatar$);
   const name: string | undefined = useObservableState(user.name$);
@@ -35,7 +19,6 @@ export default function UserProfileScreen({navigation, route}) {
     <Icon {...props} name="message-circle-outline" />
   );
   const BlockIcon = (props) => <Icon {...props} name="slash-outline" />;
-  const ItemChevron = (props) => <Icon {...props} name="chevron-right" />;
 
   const HEADER_MAX_HEIGHT = Dimensions.get('screen').height / 2;
 
