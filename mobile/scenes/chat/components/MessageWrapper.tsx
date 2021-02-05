@@ -9,8 +9,15 @@ import {isEmoji} from '../../../../shared/utilities/emoji';
 import {matrix, Message} from '@rn-matrix/core';
 import Spacing from '../../../../shared/styles/Spacing';
 
-export default function MessageWrapper({children, ...props}) {
-  const {isMe, message, nextSame, prevSame, chat} = props;
+function MessageWrapper({children, ...props}) {
+  const {
+    isMe,
+    message,
+    nextSame,
+    prevSame,
+    isDirectObservable,
+    onAvatarPress = () => {},
+  } = props;
 
   const theme = useTheme();
   const {themeId} = useContext(ThemeContext);
@@ -19,14 +26,15 @@ export default function MessageWrapper({children, ...props}) {
   const senderName = useObservableState(message.sender.name$);
   const senderAvatar = useObservableState(message.sender.avatar$);
   const content = useObservableState(message.content$);
-  const isDirect = useObservableState(chat.isDirect$);
+  const isDirect = useObservableState(isDirectObservable);
 
   const showSenderName =
+    !isDirect &&
     !isMe &&
     !prevSame &&
     (!Message.isTextMessage(type) || isEmoji(content?.text));
 
-  const showAvatar = !isDirect && !isMe && !nextSame;
+  const showAvatar = !isMe && !nextSame;
 
   const renderAvatar = useCallback(() => {
     return (
@@ -77,8 +85,12 @@ export default function MessageWrapper({children, ...props}) {
         },
       ]}>
       <View
-        style={{maxWidth: '85%', flexDirection: 'row', alignItems: 'flex-end'}}>
-        {!isMe && renderAvatar()}
+        style={{
+          maxWidth: '85%',
+          flexDirection: 'row',
+          alignItems: 'flex-end',
+        }}>
+        {!isDirect && !isMe && renderAvatar()}
         <View style={{maxWidth: '85%'}}>
           {showSenderName && (
             <Text
@@ -108,3 +120,5 @@ export default function MessageWrapper({children, ...props}) {
 const styles = StyleSheet.create({
   wrapper: {},
 });
+
+export default React.memo(MessageWrapper);

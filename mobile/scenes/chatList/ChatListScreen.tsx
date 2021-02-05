@@ -16,9 +16,7 @@ export default function ChatListScreen() {
   const isReady = useObservableState(matrix.isReady$());
   const isSynced = useObservableState(matrix.isSynced$());
 
-  const renderChatItem = ({item}) => {
-    return <ChatListItem key={item.id} chat={item} />;
-  };
+  const renderChatItem = ({item}) => <ChatListItem key={item.id} chat={item} />;
 
   const InviteList = () => (
     <>
@@ -36,11 +34,14 @@ export default function ChatListScreen() {
     );
   }
 
+  const keyExtractor = (item) => item.id;
+
   return (
     <View>
       <List
         data={chatList}
         renderItem={renderChatItem}
+        keyExtractor={keyExtractor}
         ListHeaderComponent={InviteList}
         ListFooterComponent={<View style={{height: 80}} />}
         style={{

@@ -44,8 +44,9 @@ export default function ChatScreen({navigation, route}) {
       <MessageItem
         key={item}
         chatId={chat.id}
-        chat={chat}
+        isDirectObservable={chat.isDirect$}
         messageId={item}
+        message={matrix.getMessageById(item, chat.id)}
         prevMessageId={messageList[index + 1] ? messageList[index + 1] : null}
         nextMessageId={messageList[index - 1] ? messageList[index - 1] : null}
         onPress={onPress}
@@ -66,6 +67,13 @@ export default function ChatScreen({navigation, route}) {
     setActiveMessage(message);
     setActionSheetVisible(true);
   };
+
+  const onAvatarPress = (user) => {
+    Keyboard.dismiss();
+    navigation.navigate('Profile', {user});
+  };
+
+  const keyExtractor = (item) => item;
 
   useEffect(() => {
     handleEndReached();
@@ -107,6 +115,7 @@ export default function ChatScreen({navigation, route}) {
           keyboardDismissMode={isIos() ? 'interactive' : 'on-drag'}
           keyboardShouldPersistTaps="handled"
           data={timeline}
+          keyExtractor={keyExtractor}
           renderItem={renderMessageItem}
           onEndReached={handleEndReached}
           style={{
