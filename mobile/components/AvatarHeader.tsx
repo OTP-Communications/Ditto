@@ -10,6 +10,8 @@ import {
 } from 'react-native';
 import Spacing from '../../shared/styles/Spacing';
 import {HeaderBackButton} from '@react-navigation/stack';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import ThemeType from '../../shared/themes/themeType';
 type AvatarHeaderProps = {
   name?: string;
   description?: string;
@@ -27,7 +29,8 @@ export default function AvatarHeader({
   maxHeaderSize,
   onBackPress,
 }: AvatarHeaderProps) {
-  const theme = useTheme();
+  const theme: ThemeType = useTheme();
+  const insets = useSafeAreaInsets();
 
   const HEADER_MAX_HEIGHT = maxHeaderSize
     ? maxHeaderSize
@@ -185,8 +188,12 @@ export default function AvatarHeader({
       <View
         style={{
           flexDirection: 'row',
+          paddingTop: insets.top,
         }}>
-        <HeaderBackButton onPress={onBackPress} />
+        <HeaderBackButton
+          tintColor={theme['text-basic-color']}
+          onPress={onBackPress}
+        />
         <Animated.View
           style={{
             opacity: userItemOpacity,
