@@ -16,6 +16,7 @@ function MessageItem({
   nextMessageId,
   onPress,
   onLongPress,
+  onAvatarPress,
   ...otherProps
 }) {
   const myUser = matrix.getMyUser();
@@ -59,6 +60,7 @@ function MessageItem({
     ...otherProps,
     onPress: onMessagePress,
     onLongPress: onMessageLongPress,
+    onAvatarPress,
     message,
     prevSame,
     nextSame,

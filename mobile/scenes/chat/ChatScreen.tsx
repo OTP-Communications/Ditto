@@ -51,6 +51,7 @@ export default function ChatScreen({navigation, route}) {
         nextMessageId={messageList[index - 1] ? messageList[index - 1] : null}
         onPress={onPress}
         onLongPress={onLongPress}
+        onAvatarPress={onAvatarPress}
       />
     );
   };
