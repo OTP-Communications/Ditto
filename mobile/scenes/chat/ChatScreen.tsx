@@ -50,6 +50,7 @@ export default function ChatScreen({navigation, route}) {
         nextMessageId={messageList[index - 1] ? messageList[index - 1] : null}
         onPress={onPress}
         onLongPress={onLongPress}
+        onAvatarPress={onAvatarPress}
       />
     );
   };
@@ -65,6 +66,11 @@ export default function ChatScreen({navigation, route}) {
     Keyboard.dismiss();
     setActiveMessage(message);
     setActionSheetVisible(true);
+  };
+
+  const onAvatarPress = (user) => {
+    Keyboard.dismiss();
+    navigation.navigate('Profile', {user});
   };
 
   useEffect(() => {

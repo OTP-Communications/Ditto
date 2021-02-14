@@ -15,6 +15,7 @@ export default function MessageItem({
   nextMessageId,
   onPress,
   onLongPress,
+  onAvatarPress,
   ...otherProps
 }) {
   const myUser = matrix.getMyUser();
@@ -60,6 +61,7 @@ export default function MessageItem({
     ...otherProps,
     onPress: onMessagePress,
     onLongPress: onMessageLongPress,
+    onAvatarPress,
     message,
     prevSame,
     nextSame,
