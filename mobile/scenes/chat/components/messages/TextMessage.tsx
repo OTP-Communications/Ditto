@@ -29,7 +29,6 @@ function TextMessage(props) {
 
   if (!content) return null;
 
-  console.log('woa wait it ', content);
 
   const bubbleBackground = (pressed) => {
     if (isMe) {
