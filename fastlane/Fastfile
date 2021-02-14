@@ -1,5 +1,5 @@
 fastlane_version '2.151.1'
-xcversion(version: "12.3")
+xcversion(version: "12.4")
 project_name = 'ditto'
 
 before_all do

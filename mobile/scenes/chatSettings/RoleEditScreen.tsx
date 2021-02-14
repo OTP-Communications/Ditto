@@ -33,7 +33,7 @@ export default function RoleEditScreen({route, navigation}) {
   const [powerLevels, setPowerLevels] = useState(currentPowerLevels);
 
   const canEdit =
-    myMember.powerLevel >= currentPowerLevels.events['m.room.power_levels'];
+    currentPowerLevels.events ? (myMember.powerLevel >= currentPowerLevels.events['m.room.power_levels']) : currentPowerLevels['users_default'] ? (myMember.powerLevel >= currentPowerLevels['users_default']) : false;
 
   const saveChanges = (powerLevels, roles) => {
     if (JSON.stringify(roles) !== JSON.stringify(currentRoles)) {
@@ -144,20 +144,17 @@ export default function RoleEditScreen({route, navigation}) {
     setRoles(newRoles);
   };
 
+  console.log(currentPowerLevels)
+
   useEffect(() => {
-    if (roles === {}) {
-      const newRoles = [...Object.keys(roles)];
-      Object.keys(currentPowerLevels).forEach((key) => {
-        const value = currentPowerLevels[key];
-        if (!newRoles[value] && typeof value === 'number') {
-          newRoles[value] = 'Unnamed role';
-        } else {
-          //
-        }
-      });
-      setRoles(newRoles);
+    if (Object.keys(roles).length === 0) {
+      const roles = []
+      roles[100] = 'Admin'
+      roles[50] = 'Moderator'
+      roles[0] = 'Default'
+      setRoles(roles);
     }
-  }, [roles]);
+  }, []);
 
   useEffect(() => {
     let change = {}
@@ -228,8 +225,8 @@ export default function RoleEditScreen({route, navigation}) {
                 accessoryRight={() => (
                   <Text appearance="hint">
                     {powerLevels[p.value] !== undefined
-                      ? roles[powerLevels[p.value]]
-                      : 50}
+                      ? (roles[powerLevels[p.value]] || powerLevels[p.value])
+                      : (currentPowerLevels['users_default'] || 50)}
                   </Text>
                 )}
                 style={{
