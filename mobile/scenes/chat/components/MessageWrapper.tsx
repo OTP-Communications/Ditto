@@ -1,7 +1,7 @@
 import {Avatar, Text, useTheme} from '@ui-kitten/components';
 import {useObservableState} from 'observable-hooks';
 import React, {useCallback, useContext} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {Pressable, StyleSheet, View} from 'react-native';
 import {ThemeContext} from '../../../../shared/themes/ThemeProvider';
 import Reactions from './Reactions';
 import {getNameColor} from '../../../../shared/utilities/misc';
@@ -9,8 +9,15 @@ import {isEmoji} from '../../../../shared/utilities/emoji';
 import {matrix, Message} from '@rn-matrix/core';
 import Spacing from '../../../../shared/styles/Spacing';
 
-export default function MessageWrapper({children, ...props}) {
-  const {isMe, message, nextSame, prevSame, chat} = props;
+function MessageWrapper({children, ...props}) {
+  const {
+    isMe,
+    message,
+    nextSame,
+    prevSame,
+    isDirectObservable,
+    onAvatarPress = () => {},
+  } = props;
 
   const theme = useTheme();
   const {themeId} = useContext(ThemeContext);
@@ -19,39 +26,40 @@ export default function MessageWrapper({children, ...props}) {
   const senderName = useObservableState(message.sender.name$);
   const senderAvatar = useObservableState(message.sender.avatar$);
   const content = useObservableState(message.content$);
-  const isDirect = useObservableState(chat.isDirect$);
+  const isDirect = useObservableState(isDirectObservable);
 
   const showSenderName =
+    !isDirect &&
     !isMe &&
     !prevSame &&
     (!Message.isTextMessage(type) || isEmoji(content?.text));
 
-  const showAvatar = !isDirect && !isMe && !nextSame;
+  const showAvatar = !isMe && !nextSame;
 
   const renderAvatar = useCallback(() => {
     return (
-      <View
-        style={{
-          justifyContent: 'center',
-          alignItems: 'center',
-          position: 'relative',
-          marginRight: Spacing.s,
-          marginBottom: 3,
-        }}>
-        <Avatar
-          size="small"
-          source={
-            showAvatar && senderAvatar
-              ? {uri: matrix.getHttpUrl(senderAvatar)}
-              : null
-          }
+      <Pressable onPress={() => onAvatarPress(message.sender)}>
+        <View
           style={{
-            backgroundColor: showAvatar
-              ? theme['background-basic-color-3']
-              : 'transparent',
-          }}
-        />
-        {showAvatar && !senderAvatar && (
+            justifyContent: 'center',
+            alignItems: 'center',
+            position: 'relative',
+            marginRight: Spacing.s,
+            marginBottom: 3,
+          }}>
+          <Avatar
+            size="small"
+            source={
+              showAvatar && senderAvatar
+                ? {uri: matrix.getHttpUrl(senderAvatar)}
+                : undefined
+            }
+            style={{
+              backgroundColor: showAvatar
+                ? theme['background-basic-color-3']
+                : 'transparent',
+            }}
+          />
           <Text
             style={{
               position: 'absolute',
@@ -63,8 +71,8 @@ export default function MessageWrapper({children, ...props}) {
               ? senderName?.charAt(1).toUpperCase()
               : senderName?.charAt(0).toUpperCase()}
           </Text>
-        )}
-      </View>
+        </View>
+      </Pressable>
     );
   }, [senderName, senderAvatar]);
 
@@ -79,8 +87,12 @@ export default function MessageWrapper({children, ...props}) {
         },
       ]}>
       <View
-        style={{maxWidth: '85%', flexDirection: 'row', alignItems: 'flex-end'}}>
-        {!isMe && renderAvatar()}
+        style={{
+          maxWidth: '85%',
+          flexDirection: 'row',
+          alignItems: 'flex-end',
+        }}>
+        {!isDirect && !isMe && renderAvatar()}
         <View style={{maxWidth: '85%'}}>
           {showSenderName && (
             <Text
@@ -110,3 +122,5 @@ export default function MessageWrapper({children, ...props}) {
 const styles = StyleSheet.create({
   wrapper: {},
 });
+
+export default React.memo(MessageWrapper);

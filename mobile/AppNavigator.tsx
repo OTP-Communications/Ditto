@@ -30,6 +30,7 @@ import EditChatScreen from './scenes/chatSettings/EditChatScreen';
 import RoleEditScreen from './scenes/chatSettings/RoleEditScreen';
 import RNBootSplash from 'react-native-bootsplash';
 import MemberListScreen from './scenes/chatSettings/MemberListScreen';
+import UserProfileScreen from './scenes/user/UserProfileScreen';
 
 enableScreens();
 
@@ -216,7 +217,10 @@ function ChatStack({navigation}) {
                 }}>
                 <Avatar
                   source={{
-                    uri: matrix.getHttpUrl(route.params?.chatAvatar).length > 0 ? matrix.getHttpUrl(route.params?.chatAvatar) : undefined,
+                    uri:
+                      matrix.getHttpUrl(route.params?.chatAvatar).length > 0
+                        ? matrix.getHttpUrl(route.params?.chatAvatar)
+                        : undefined,
                   }}
                   size="small"
                   style={{
@@ -241,7 +245,7 @@ function ChatStack({navigation}) {
         options={{
           headerTintColor: theme['color-basic-100'],
           headerStyle: {
-            shadowOpacity: 0
+            shadowOpacity: 0,
           },
           title: '',
           headerBackTitle: 'Back',
@@ -315,6 +319,20 @@ function ChatStack({navigation}) {
             </Pressable>
           ),
         })}
+      />
+      <Stack.Screen
+        name="Profile"
+        options={() => ({
+          title: '',
+          headerShown: false,
+          headerStyle: {
+            backgroundColor: 'transparent',
+            borderBottomWidth: 0,
+            elevation: 0,
+            shadowColor: 'transparent',
+          },
+        })}
+        component={UserProfileScreen}
       />
     </Stack.Navigator>
   );

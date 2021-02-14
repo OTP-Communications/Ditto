@@ -8,13 +8,15 @@ import EventMessage from './messages/EventMessage';
 import ImageMessage from './messages/ImageMessage';
 import Spacing from '../../../../shared/styles/Spacing';
 
-export default function MessageItem({
+function MessageItem({
   chatId,
   messageId,
+  message,
   prevMessageId,
   nextMessageId,
   onPress,
   onLongPress,
+  onAvatarPress,
   ...otherProps
 }) {
   const myUser = matrix.getMyUser();
@@ -37,8 +39,6 @@ export default function MessageItem({
     );
   }
 
-  const message = matrix.getMessageById(messageId, chatId);
-
   if (!message || !message.type$) return null;
 
   const prevMessage =
@@ -60,6 +60,7 @@ export default function MessageItem({
     ...otherProps,
     onPress: onMessagePress,
     onLongPress: onMessageLongPress,
+    onAvatarPress,
     message,
     prevSame,
     nextSame,
@@ -67,8 +68,9 @@ export default function MessageItem({
   };
 
   const messageType = useObservableState(message.type$);
+  const redacted = useObservableState(message.redacted$);
 
-  if (message.redacted$.getValue()) {
+  if (redacted) {
     return null;
     return <EventMessage {...props} />;
   }
@@ -100,3 +102,14 @@ function isSameSender(messageA, messageB) {
   }
   return true;
 }
+
+const areEqual = (prevProps, nextProps) => {
+  return (
+    prevProps.chatId === nextProps.chatId &&
+    prevProps.messageId === nextProps.messageId &&
+    prevProps.message.type$ === nextProps.message.type$ &&
+    prevProps.message.redacted$ === nextProps.message.redacted$
+  );
+};
+
+export default React.memo(MessageItem, areEqual);
