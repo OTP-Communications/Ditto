@@ -57,10 +57,11 @@
       "typeNotSupport": "Ditto does not support the type \"{{type}}\" yet",
       "eventRedacted": "This event has been redacted",
       "stickersNotSupport": "Ditto does not support stickers yet",
-      "thirdPartyInvite": "{{sender}} sent a third party invite"
+      "thirdPartyInvite": "{{sender}} sent a third party invite",
+      "failedToLoadImage": "Failed to load image"
     }
   },
-  "settings":{
+  "settings": {
     "chooseAvatarLabel": "Choose avatar",
     "chooseLanguage": "Choose Language",
     "title": "Settings",
@@ -88,7 +89,7 @@
     },
     "logoutButtonLabel": "Logout"
   },
-  "profile":{
+  "profile": {
     "general": {
       "message": "Message",
       "block": "Block"

@@ -10,7 +10,7 @@ import {isEmoji} from '../../../../../shared/utilities/emoji';
 import Color from 'color';
 import {ThemeContext} from '../../../../../shared/themes/ThemeProvider';
 
-export default function TextMessage(props) {
+function TextMessage(props) {
   const {
     message,
     prevSame,
@@ -28,6 +28,7 @@ export default function TextMessage(props) {
   const status = useObservableState(message.status$);
 
   if (!content) return null;
+
 
   const bubbleBackground = (pressed) => {
     if (isMe) {
@@ -105,3 +106,10 @@ const styles = StyleSheet.create({
     marginBottom: 3,
   },
 });
+
+const isEqual = (prevProps, nextProps) => {
+  console.log('rerender this? ', prevProps.message === nextProps.message);
+  return false;
+};
+
+export default React.memo(TextMessage, isEqual);

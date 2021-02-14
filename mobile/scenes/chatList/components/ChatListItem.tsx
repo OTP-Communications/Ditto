@@ -8,7 +8,7 @@ import moment from 'moment';
 import Spacing from '../../../../shared/styles/Spacing';
 import ThemeType from '../../../../shared/themes/themeType';
 
-export default function ChatListItem({chat}) {
+function ChatListItem({chat}) {
   const theme: ThemeType = useTheme();
 
   const name: string | undefined = useObservableState(chat.name$);
@@ -151,3 +151,15 @@ export default function ChatListItem({chat}) {
     />
   );
 }
+
+const areEqual = (prevProps, nextProps) => {
+  return (
+    nextProps.chat.name$.getValue() === prevProps.chat.name$.getValue() &&
+    nextProps.chat.snippet$.getValue() === prevProps.chat.snippet$.getValue() &&
+    nextProps.chat.avatar$.getValue() === prevProps.chat.avatar$.getValue() &&
+    nextProps.chat.readState$.getValue() ===
+      prevProps.chat.readState$.getValue()
+  );
+};
+
+export default React.memo(ChatListItem, areEqual);

@@ -15,7 +15,7 @@ function MessageWrapper({children, ...props}) {
     message,
     nextSame,
     prevSame,
-    chat,
+    isDirectObservable,
     onAvatarPress = () => {},
   } = props;
 
@@ -26,14 +26,15 @@ function MessageWrapper({children, ...props}) {
   const senderName = useObservableState(message.sender.name$);
   const senderAvatar = useObservableState(message.sender.avatar$);
   const content = useObservableState(message.content$);
-  const isDirect = useObservableState(chat.isDirect$);
+  const isDirect = useObservableState(isDirectObservable);
 
   const showSenderName =
+    !isDirect &&
     !isMe &&
     !prevSame &&
     (!Message.isTextMessage(type) || isEmoji(content?.text));
 
-  const showAvatar = !isDirect && !isMe && !nextSame;
+  const showAvatar = !isMe && !nextSame;
 
   const renderAvatar = useCallback(() => {
     return (
@@ -91,7 +92,7 @@ function MessageWrapper({children, ...props}) {
           flexDirection: 'row',
           alignItems: 'flex-end',
         }}>
-        {!isMe && renderAvatar()}
+        {!isDirect && !isMe && renderAvatar()}
         <View style={{maxWidth: '85%'}}>
           {showSenderName && (
             <Text
