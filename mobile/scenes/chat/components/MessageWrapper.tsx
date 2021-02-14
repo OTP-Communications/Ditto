@@ -52,7 +52,7 @@ function MessageWrapper({children, ...props}) {
             source={
               showAvatar && senderAvatar
                 ? {uri: matrix.getHttpUrl(senderAvatar)}
-                : null
+                : undefined
             }
             style={{
               backgroundColor: showAvatar

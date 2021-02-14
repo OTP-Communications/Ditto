@@ -56,7 +56,8 @@ export default function UserProfileScreen({navigation, route}) {
           style={{backgroundColor: theme['background-basic-color-4']}}
           onPress={openDirectChat}
         />
-        <ListItem
+        {/* TODO - Just commenting these for now since we haven't implemented that functionality */}
+        {/* <ListItem
           title={(props) => (
             <Text style={[props?.style, {color: 'red'}]}>
               {i18n.t('profile:general.block')}
@@ -64,8 +65,8 @@ export default function UserProfileScreen({navigation, route}) {
           )}
           accessoryLeft={BlockIcon}
           style={{backgroundColor: theme['background-basic-color-4']}}
-        />
-        <Text
+        /> */}
+        {/* <Text
           category="h6"
           style={{
             alignSelf: 'flex-start',
@@ -73,16 +74,17 @@ export default function UserProfileScreen({navigation, route}) {
             marginBottom: Spacing.m,
             marginTop: Spacing.xxl,
           }}>
-          {i18n.t('profile:header.linkedContact')}
+          {i18n.t('profile:header.linkedContact')} 
         </Text>
         <ListItem
+          disabled
           title={i18n.t('profile:contact.linkToContact')}
           accessoryLeft={PersonIcon}
           style={{
             backgroundColor: theme['background-basic-color-4'],
             paddingVertical: 12,
           }}
-        />
+        /> */}
       </Animated.ScrollView>
       <AvatarHeader
         name={name}

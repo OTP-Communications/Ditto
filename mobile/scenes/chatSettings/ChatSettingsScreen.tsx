@@ -1,11 +1,21 @@
-import {Avatar, Layout, List, Text, useTheme} from '@ui-kitten/components';
+import {
+  Avatar,
+  Icon,
+  Layout,
+  List,
+  ListItem,
+  Text,
+  useTheme,
+} from '@ui-kitten/components';
 import React, {useEffect, useState} from 'react';
-import {Pressable, ScrollView, StyleSheet, View} from 'react-native';
+import {ScrollView, StyleSheet, View} from 'react-native';
 import ThemeType from '../../../shared/themes/themeType';
 import {matrix} from '@rn-matrix/core';
 import {useObservableState} from 'observable-hooks';
 import Spacing from '../../../shared/styles/Spacing';
 import MemberListItem from './components/MemberListItem';
+import i18n from '../../../shared/i18n';
+import {getRolesAndPermissionsForChat} from '../../../shared/utilities/matrix';
 
 export default function ChatSettingsScreen({route, navigation}) {
   const theme: ThemeType = useTheme();
@@ -13,10 +23,27 @@ export default function ChatSettingsScreen({route, navigation}) {
   const name = useObservableState(chat.name$);
   const avatar = useObservableState(chat.avatar$);
 
-  const [members, setMembers] = useState([]);
+  const myMember = chat._matrixRoom.getMember(matrix.getMyUser().id);
 
-  const renderMemberListItem = ({item}) => {
-    return <MemberListItem item={item} />;
+  const [members, setMembers] = useState([]);
+  const [currentOpen, setCurrentOpen] = useState(null); // which swipeable row is open
+
+  const {currentRoles, currentPowerLevels} = getRolesAndPermissionsForChat(
+    chat,
+  );
+
+  const renderMemberListItem = ({item, index}) => {
+    return (
+      <MemberListItem
+        chat={chat}
+        item={item}
+        myMember={myMember}
+        currentOpen={currentOpen}
+        setCurrentOpen={setCurrentOpen}
+        currentRoles={currentRoles}
+        currentPowerLevels={currentPowerLevels}
+      />
+    );
   };
 
   const getMembers = async () => {
@@ -32,6 +59,14 @@ export default function ChatSettingsScreen({route, navigation}) {
     room.clearLoadedMembersIfNeeded();
   };
 
+  const navToRoleEdit = () => {
+    navigation.navigate('RoleEdit', {chatId: chat.id});
+  };
+
+  const navToMemberListScreen = () => {
+    navigation.navigate('MemberList', {chatId: chat.id});
+  };
+
   useEffect(() => {
     getMembers();
     return () => {
@@ -45,25 +80,13 @@ export default function ChatSettingsScreen({route, navigation}) {
         styles.wrapper,
         {backgroundColor: theme['background-basic-color-5']},
       ]}>
-      <Pressable
-        onPress={navigation.goBack}
-        style={({pressed}) => ({
-          opacity: pressed ? 0.4 : 1,
-          alignSelf: 'flex-end',
-          padding: Spacing.l,
-          paddingTop: Spacing.s,
-        })}>
-        <Text category="s1" style={{fontSize: 18}}>
-          Done
-        </Text>
-      </Pressable>
       <ScrollView>
         <View
           style={{
             position: 'relative',
             justifyContent: 'center',
             alignItems: 'center',
-            marginVertical: Spacing.l,
+            marginBottom: Spacing.l,
           }}>
           <Avatar
             source={avatar ? {uri: matrix.getHttpUrl(avatar)} : null}
@@ -98,11 +121,70 @@ export default function ChatSettingsScreen({route, navigation}) {
           numberOfLines={2}>
           {name}
         </Text>
+
+        <Text
+          category="h6"
+          style={{
+            alignSelf: 'flex-start',
+            marginLeft: Spacing.l,
+            marginBottom: Spacing.m,
+          }}>
+          Security
+        </Text>
+        <ListItem
+          onPress={navToRoleEdit}
+          title={i18n.t('chatSettings:roleAndPermissionsLabel')}
+          accessoryLeft={(props) => (
+            <Icon {...props} fill={theme['color-info-default']} name="people" />
+          )}
+          accessoryRight={(props) => (
+            <Icon
+              {...props}
+              fill={theme['color-basic-700']}
+              name="chevron-right"
+            />
+          )}
+          style={{
+            backgroundColor: theme['background-basic-color-4'],
+            height: 52,
+          }}
+        />
+
+        <Text
+          category="h6"
+          style={{
+            alignSelf: 'flex-start',
+            marginLeft: Spacing.l,
+            marginBottom: Spacing.m,
+            marginTop: Spacing.xxl,
+          }}>
+          Members ({members.length})
+        </Text>
+
         <List
-          data={members}
+          data={members.slice(0, 10)}
           renderItem={renderMemberListItem}
           scrollEnabled={false}
           style={{alignSelf: 'stretch'}}
+          ListFooterComponent={() =>
+            members.length > 9 ? (
+              <ListItem
+                onPress={navToMemberListScreen}
+                title={`View all ${members.length} members`}
+                accessoryRight={(props) => (
+                  <Icon name="chevron-right" {...props} />
+                )}
+                style={{
+                  backgroundColor: theme['background-basic-color-4'],
+                  zIndex: 2,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  height: 60,
+                }}
+                activeOpacity={0.4}
+              />
+            ) : null
+          }
         />
         <View style={{height: 200}} />
       </ScrollView>

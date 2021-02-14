@@ -44,16 +44,20 @@ PushNotification.configure({
   // (required) Called when a remote is received or opened, or local notification is opened
   onNotification: (notification) => {
     console.log('NOTIFICATION:', notification);
-    if (notification.foreground && !notification.userInteraction) return;
-    if (!notification.data.roomId) return;
+    if (notification.foreground && !notification.userInteraction) {
+      notification.finish(PushNotificationIOS.FetchResult.NoData);
+      return;
+    }
+    if (!notification.data.roomId) {
+      notification.finish(PushNotificationIOS.FetchResult.NoData);
+      return;
+    }
     const chat = matrix.getRoomById(notification.data.roomId);
     navPush('Chat', {
       chatId: notification.data.roomId,
       chatName: chat.name$.getValue(),
       chatAvatar: chat.avatar$.getValue(),
     });
-
-    // process the notification
 
     // (required) Called when a remote is received or opened, or local notification is opened
     notification.finish(PushNotificationIOS.FetchResult.NoData);

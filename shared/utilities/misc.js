@@ -43,3 +43,18 @@ function intToHex(i) {
   const c = (i & 0x00ffffff).toString(16).toUpperCase();
   return '00000'.substring(0, 6 - c.length) + c;
 }
+
+export function debounce(func, wait, immediate) {
+	var timeout;
+	return function() {
+		var context = this, args = arguments;
+		var later = function() {
+			timeout = null;
+			if (!immediate) func.apply(context, args);
+		};
+		var callNow = immediate && !timeout;
+		clearTimeout(timeout);
+		timeout = setTimeout(later, wait);
+		if (callNow) func.apply(context, args);
+	};
+};

@@ -1,7 +1,7 @@
 import {createStackNavigator} from '@react-navigation/stack';
 import {matrix} from '@rn-matrix/core';
 import {useObservableState} from 'observable-hooks';
-import React from 'react';
+import React, {useEffect} from 'react';
 import {ActivityIndicator, Platform, Pressable, View} from 'react-native';
 
 import {
@@ -26,6 +26,10 @@ import ChatSettingsScreen from './scenes/chatSettings/ChatSettingsScreen';
 import LanguageSelectScreen from './scenes/settings/LanguageSelectScreen';
 import ThemeType from '../shared/themes/themeType';
 import i18n from '../shared/i18n';
+import EditChatScreen from './scenes/chatSettings/EditChatScreen';
+import RoleEditScreen from './scenes/chatSettings/RoleEditScreen';
+import RNBootSplash from 'react-native-bootsplash';
+import MemberListScreen from './scenes/chatSettings/MemberListScreen';
 import UserProfileScreen from './scenes/user/UserProfileScreen';
 
 enableScreens();
@@ -51,6 +55,12 @@ export default function AppNavigator() {
     matrixReady,
   );
 
+  useEffect(() => {
+    if (authLoaded) {
+      RNBootSplash.hide({fade: true});
+    }
+  }, [authLoaded]);
+
   if (!authLoaded || (authLoggedIn && !matrixReady)) {
     return (
       <Layout
@@ -67,10 +77,6 @@ export default function AppNavigator() {
         <NativeStack.Screen name="Lightbox" component={LightboxScreen} />
         <NativeStack.Screen name="Settings" component={SettingsStack} />
         <NativeStack.Screen name="NewChat" component={NewChatScreen} />
-        <NativeStack.Screen
-          name="ChatSettings"
-          component={ChatSettingsScreen}
-        />
       </NativeStack.Navigator>
     );
   } else {
@@ -103,6 +109,10 @@ function ChatStack({navigation}) {
 
   const navToChatSettings = (chatId) => {
     navigation.navigate('ChatSettings', {chatId});
+  };
+
+  const navToEditChat = (chatId) => {
+    navigation.navigate('EditChat', {chatId});
   };
 
   return (
@@ -207,7 +217,10 @@ function ChatStack({navigation}) {
                 }}>
                 <Avatar
                   source={{
-                    uri: matrix.getHttpUrl(route.params?.chatAvatar),
+                    uri:
+                      matrix.getHttpUrl(route.params?.chatAvatar).length > 0
+                        ? matrix.getHttpUrl(route.params?.chatAvatar)
+                        : undefined,
                   }}
                   size="small"
                   style={{
@@ -222,6 +235,87 @@ function ChatStack({navigation}) {
                   </Text>
                 )}
               </View>
+            </Pressable>
+          ),
+        })}
+      />
+      <Stack.Screen
+        name="ChatSettings"
+        component={ChatSettingsScreen}
+        options={{
+          headerTintColor: theme['color-basic-100'],
+          headerStyle: {
+            shadowOpacity: 0,
+          },
+          title: '',
+          headerBackTitle: 'Back',
+          // headerRight: () => (
+          //   <Pressable
+          //     onPress={navToEditChat}
+          //     style={({pressed}) => ({
+          //       opacity: pressed ? 0.4 : 1,
+          //       alignSelf: 'flex-end',
+          //       padding: Spacing.m,
+          //       paddingRight: Spacing.l,
+          //     })}>
+          //     <Text category="s1" style={{fontSize: 20}}>
+          //       Edit
+          //     </Text>
+          //   </Pressable>
+          // ),
+        }}
+      />
+      <Stack.Screen
+        name="EditChat"
+        component={EditChatScreen}
+        options={{
+          headerTintColor: theme['color-basic-100'],
+          title: '',
+          headerBackTitle: 'Cancel',
+          headerRight: () => (
+            <Pressable
+              onPress={navToEditChat}
+              style={({pressed}) => ({
+                opacity: pressed ? 0.4 : 1,
+                alignSelf: 'flex-end',
+                padding: Spacing.m,
+                paddingRight: Spacing.l,
+              })}>
+              <Text status="primary" category="s1" style={{fontSize: 20}}>
+                Save
+              </Text>
+            </Pressable>
+          ),
+        }}
+      />
+      <Stack.Screen
+        name="MemberList"
+        component={MemberListScreen}
+        options={{
+          headerTintColor: theme['color-basic-100'],
+          title: 'Members',
+          headerBackTitle: 'Back',
+        }}
+      />
+      <Stack.Screen
+        name="RoleEdit"
+        component={RoleEditScreen}
+        options={({route}) => ({
+          headerTintColor: theme['color-basic-100'],
+          title: 'Roles',
+          headerBackTitle: 'Cancel',
+          headerRight: () => (
+            <Pressable
+              onPress={route?.params?.saveRoleChanges || undefined}
+              style={({pressed}) => ({
+                opacity: pressed ? 0.4 : 1,
+                alignSelf: 'flex-end',
+                padding: Spacing.m,
+                paddingRight: Spacing.l,
+              })}>
+              <Text status="primary" category="s1" style={{fontSize: 20}}>
+                Save
+              </Text>
             </Pressable>
           ),
         })}
