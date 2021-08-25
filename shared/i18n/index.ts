@@ -4,7 +4,7 @@ import * as RNLocalize from 'react-native-localize';
 import {saveItemToStorage, getItemFromStorage} from '../utilities/storage';
 
 import en_US from './locales/en_US.json';
-// import en from './locales/en.json';
+import en from './locales/en.json';
 import zhHans from './locales/zh-Hans.json';
 import fr from './locales/fr.json';
 import de from './locales/de.json';
@@ -14,7 +14,7 @@ const i18n = i18next.createInstance();
 
 export const supportedLanguages = [
   {name: 'US English', tag: 'en_US'},
-  // {name: 'English', tag: 'en'},
+  {name: 'English', tag: 'en'},
   {name: 'German', tag: 'de'},
   {name: 'Dutch', tag: 'nl'},
   {name: 'French', tag: 'fr'},
@@ -23,7 +23,7 @@ export const supportedLanguages = [
 
 const resources = {
   en_US,
-  // en,
+  en,
   de,
   nl,
   fr,
