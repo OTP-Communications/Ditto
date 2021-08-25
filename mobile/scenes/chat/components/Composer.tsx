@@ -12,7 +12,7 @@ import {
 import {useHeaderHeight} from '@react-navigation/stack';
 import {matrix} from '@rn-matrix/core';
 import {TextInput} from 'react-native-gesture-handler';
-import i18n from '../../../../shared/i18n';
+import {_t} from '../../../../shared/i18n';
 
 type Props = {
   chat: any;
@@ -119,7 +119,7 @@ export default function Composer({
           ]}
           multiline
           textStyle={{paddingBottom: 6}}
-          placeholder={i18n.t('messages:composer.placeholder')}
+          placeholder={_t('Type a Message...')}
           placeholderTextColor={theme['background-basic-color-1']}
           value={value}
           onChangeText={setNewValue}

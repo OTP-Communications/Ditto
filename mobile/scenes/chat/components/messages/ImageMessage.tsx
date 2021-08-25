@@ -2,10 +2,10 @@ import {useTheme, Text, Icon} from '@ui-kitten/components';
 import {useObservableState} from 'observable-hooks';
 import React from 'react';
 import {Pressable, Image, View} from 'react-native';
-import i18n from '../../../../../shared/i18n';
+import {_t} from '../../../../../shared/i18n';
 import MessageWrapper from '../MessageWrapper';
 
-function ImageMessage(props) {
+function ImageMessage(props: any) {
   const {
     message,
     prevSame,
@@ -60,7 +60,7 @@ function ImageMessage(props) {
           height: 64,
         }}
       />
-      {showError && <Text>{i18n.t('chat:messages.failedToLoadImage')}</Text>}
+      {showError && <Text>{_t('Failed to load image')}</Text>}
     </View>
   );
 

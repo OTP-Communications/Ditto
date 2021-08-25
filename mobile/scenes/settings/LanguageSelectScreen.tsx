@@ -3,7 +3,7 @@ import React, {useEffect, useState} from 'react';
 import {StyleSheet} from 'react-native';
 import Spacing from '../../../shared/styles/Spacing';
 import ThemeType from '../../../shared/themes/themeType';
-import i18n, {supportedLanguages} from '../../../shared/i18n';
+import {i18n, supportedLanguages, _t} from '../../../shared/i18n';
 
 export default function LanguageSelectScreen() {
   const theme: ThemeType = useTheme();
@@ -22,7 +22,7 @@ export default function LanguageSelectScreen() {
         {backgroundColor: theme['background-basic-color-5']},
       ]}>
       <Text>
-        {language}: {i18n.t('auth:landing.loginButtonLabel')}
+        {language}: {_t('Login')}
       </Text>
       <RadioGroup
         selectedIndex={supportedLanguages.findIndex((i) => i.tag === language)}

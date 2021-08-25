@@ -15,7 +15,7 @@ import {useObservableState} from 'observable-hooks';
 import {ThemeContext} from '../../../shared/themes/ThemeProvider';
 import Spacing from '../../../shared/styles/Spacing';
 import {AppContext} from '../../../shared/context/AppContext';
-import i18n from '../../../shared/i18n';
+import {_t} from '../../../shared/i18n';
 import PushNotification from 'react-native-push-notification';
 
 export default function SettingsScreen({navigation}) {
@@ -148,10 +148,10 @@ export default function SettingsScreen({navigation}) {
           marginLeft: Spacing.l,
           marginBottom: Spacing.m,
         }}>
-        {i18n.t('settings:appearance.title')}
+        {_t('Appearance')}
       </Text>
       <ListItem
-        title={i18n.t('settings:appearance.darkMode')}
+        title={_t('Dark Mode')}
         accessoryLeft={DarkModeIcon}
         accessoryRight={ThemeToggle}
         style={{backgroundColor: theme['background-basic-color-4']}}
@@ -159,7 +159,7 @@ export default function SettingsScreen({navigation}) {
       <Divider />
       <ListItem
         onPress={navToLanguages}
-        title={i18n.t('settings:appearance.language')}
+        title={_t('Language')}
         accessoryLeft={LanguageIconLeft}
         accessoryRight={LanguageIconRight}
         style={{backgroundColor: theme['background-basic-color-4'], height: 52}}
@@ -172,11 +172,11 @@ export default function SettingsScreen({navigation}) {
           marginBottom: Spacing.m,
           marginTop: Spacing.xxl,
         }}>
-        {i18n.t('settings:privacy.title')}
+        {_t('Privacy')}
       </Text>
       <ListItem
-        title={i18n.t('settings:privacy.errorReporting')}
-        description={i18n.t('settings:privacy.errorReportingDesc')}
+        title={_t('Error Reporting')}
+        description={_t('Enable to send bug reports to the developer')}
         accessoryLeft={ErrorReportingIcon}
         accessoryRight={ErrorReportingToggle}
         style={{backgroundColor: theme['background-basic-color-4']}}

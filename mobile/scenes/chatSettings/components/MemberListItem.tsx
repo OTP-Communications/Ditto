@@ -7,7 +7,7 @@ import ThemeType from '../../../../shared/themes/themeType';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import {RectButton} from 'react-native-gesture-handler';
 import {Animated} from 'react-native';
-import i18n from '../../../../shared/i18n';
+import {_t} from '../../../../shared/i18n';
 import Spacing from '../../../../shared/styles/Spacing';
 
 export default function MemberListItem({
@@ -17,7 +17,7 @@ export default function MemberListItem({
   currentOpen,
   setCurrentOpen,
   currentRoles,
-  currentPowerLevels
+  currentPowerLevels,
 }) {
   const theme: ThemeType = useTheme();
   const myUserId = matrix.getMyUser().id;
@@ -28,8 +28,14 @@ export default function MemberListItem({
 
   const swipeable = useRef();
 
-  const meCanKick = myMember.powerLevel >= (currentPowerLevels.kick !== undefined ? currentPowerLevels.kick : 50) && myMember.powerLevel > item.powerLevel;
-  const meCanBan = myMember.powerLevel >= (currentPowerLevels.ban !== undefined ? currentPowerLevels.ban : 50) && myMember.powerLevel > item.powerLevel;
+  const meCanKick =
+    myMember.powerLevel >=
+      (currentPowerLevels.kick !== undefined ? currentPowerLevels.kick : 50) &&
+    myMember.powerLevel > item.powerLevel;
+  const meCanBan =
+    myMember.powerLevel >=
+      (currentPowerLevels.ban !== undefined ? currentPowerLevels.ban : 50) &&
+    myMember.powerLevel > item.powerLevel;
 
   const onPress = () => {
     // navigate to profile page
@@ -53,8 +59,8 @@ export default function MemberListItem({
               chat.kick(item.userId).then((res) => {
                 if (res) {
                   Alert.alert(
-                    i18n.t('chatSettings:insufficientPermissionsTitle'),
-                    i18n.t('chatSettings:insufficientPermissions'),
+                    _t('Action Failed'),
+                    _t('You do not have permission to perform this action.'),
                   );
                 }
               });
@@ -62,8 +68,8 @@ export default function MemberListItem({
               chat.ban(item.userId).then((res) => {
                 if (res) {
                   Alert.alert(
-                    i18n.t('chatSettings:insufficientPermissionsTitle'),
-                    i18n.t('chatSettings:insufficientPermissions'),
+                    _t('Action Failed'),
+                    _t('You do not have permission to perform this action.'),
                   );
                 }
               });
@@ -98,9 +104,15 @@ export default function MemberListItem({
             position: 'absolute',
             color: theme['background-basic-color-1'],
           }}
-          category="h5"> 
+          category="h5">
           {/* This atrocious line is handling names that are emojis. Because the rendering doesn't like those. */}
-          {name.charAt(0) === '@' ? name.charAt(1).match(/[a-zA-Z0-9]/g)?.length > 0 ? name.charAt(1) : item.userId.charAt(1) : name.charAt(0).match(/[a-zA-Z0-9]/g)?.length > 0 ? name.charAt(0) : item.userId.charAt(1)}
+          {name.charAt(0) === '@'
+            ? name.charAt(1).match(/[a-zA-Z0-9]/g)?.length > 0
+              ? name.charAt(1)
+              : item.userId.charAt(1)
+            : name.charAt(0).match(/[a-zA-Z0-9]/g)?.length > 0
+            ? name.charAt(0)
+            : item.userId.charAt(1)}
         </Text>
       )}
       {!avatar && !name && (
@@ -109,7 +121,7 @@ export default function MemberListItem({
             position: 'absolute',
             color: theme['background-basic-color-1'],
           }}
-          category="h5"> 
+          category="h5">
           {item.userId.charAt(1)}
         </Text>
       )}
@@ -148,7 +160,7 @@ export default function MemberListItem({
   };
 
   const renderRightActions = (progress) => {
-    if (item.userId !== myUserId && !meCanBan && !meCanKick) return null
+    if (item.userId !== myUserId && !meCanBan && !meCanKick) return null;
     return (
       <View
         style={{
@@ -157,22 +169,36 @@ export default function MemberListItem({
         }}>
         {item.userId !== myUserId ? (
           <>
-            {meCanKick ? renderRightAction('Kick', theme['color-warning-600'], 64, progress) : null}
-            {meCanBan ? renderRightAction(
-              'Ban',
-              theme['color-danger-default'],
-              64,
-              progress,
-            ) : null}
+            {meCanKick
+              ? renderRightAction(
+                  'Kick',
+                  theme['color-warning-600'],
+                  64,
+                  progress,
+                )
+              : null}
+            {meCanBan
+              ? renderRightAction(
+                  'Ban',
+                  theme['color-danger-default'],
+                  64,
+                  progress,
+                )
+              : null}
           </>
         ) : (
           <>
-            {renderRightAction('Leave', theme['color-danger-600'], 64, progress)}
+            {renderRightAction(
+              'Leave',
+              theme['color-danger-600'],
+              64,
+              progress,
+            )}
           </>
         )}
       </View>
-    )
-  }
+    );
+  };
 
   const close = () => {
     swipeable.current.close();
@@ -196,11 +222,7 @@ export default function MemberListItem({
       <View>
         <ListItem
           onPress={currentOpen ? close : onPress}
-          title={`${name}${
-            item.userId === myUserId
-              ? `  ${i18n.t('chatSettings:youLabel')}`
-              : ''
-          }`}
+          title={`${name}${item.userId === myUserId ? `  ${_t('(you)')}` : ''}`}
           description={user.id}
           accessoryLeft={MemberAvatar}
           accessoryRight={MemberAdminStatus}

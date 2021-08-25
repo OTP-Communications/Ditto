@@ -5,7 +5,7 @@ import {Divider, Icon, ListItem, Text, useTheme} from '@ui-kitten/components';
 import {AutoDragSortableView} from 'react-native-drag-sort';
 import Spacing from '../../../shared/styles/Spacing';
 import ThemeType from '../../../shared/themes/themeType';
-import i18n from '../../../shared/i18n';
+import {_t} from '../../../shared/i18n';
 import RolePermissionActionSheet from './components/RolePermissionActionSheet';
 import {getRolesAndPermissionsForChat} from '../../../shared/utilities/matrix';
 
@@ -32,8 +32,11 @@ export default function RoleEditScreen({route, navigation}) {
   const [roles, setRoles] = useState(currentRoles);
   const [powerLevels, setPowerLevels] = useState(currentPowerLevels);
 
-  const canEdit =
-    currentPowerLevels.events ? (myMember.powerLevel >= currentPowerLevels.events['m.room.power_levels']) : currentPowerLevels['users_default'] ? (myMember.powerLevel >= currentPowerLevels['users_default']) : false;
+  const canEdit = currentPowerLevels.events
+    ? myMember.powerLevel >= currentPowerLevels.events['m.room.power_levels']
+    : currentPowerLevels['users_default']
+    ? myMember.powerLevel >= currentPowerLevels['users_default']
+    : false;
 
   const saveChanges = (powerLevels, roles) => {
     if (JSON.stringify(roles) !== JSON.stringify(currentRoles)) {
@@ -144,30 +147,30 @@ export default function RoleEditScreen({route, navigation}) {
     setRoles(newRoles);
   };
 
-  console.log(currentPowerLevels)
+  console.log(currentPowerLevels);
 
   useEffect(() => {
     if (Object.keys(roles).length === 0) {
-      const roles = []
-      roles[100] = 'Admin'
-      roles[50] = 'Moderator'
-      roles[0] = 'Default'
+      const roles = [];
+      roles[100] = 'Admin';
+      roles[50] = 'Moderator';
+      roles[0] = 'Default';
       setRoles(roles);
     }
   }, []);
 
   useEffect(() => {
-    let change = {}
+    let change = {};
     if (!canEdit) {
-      change = {headerRight: () => null}
+      change = {headerRight: () => null};
     }
     navigation.setParams({
       ...route.params,
       saveRoleChanges: () => saveChanges(powerLevels, roles),
     });
     navigation.setOptions({
-      ...change
-    })
+      ...change,
+    });
   }, [roles, powerLevels, canEdit]);
 
   return (
@@ -203,7 +206,7 @@ export default function RoleEditScreen({route, navigation}) {
               marginBottom: canEdit ? Spacing.xs : Spacing.m,
               marginTop: Spacing.xxl,
             }}>
-            {i18n.t('chatSettings:rolePermissionsLabel')}
+            {_t('Permissions')}
           </Text>
           {canEdit && (
             <Text
@@ -225,8 +228,8 @@ export default function RoleEditScreen({route, navigation}) {
                 accessoryRight={() => (
                   <Text appearance="hint">
                     {powerLevels[p.value] !== undefined
-                      ? (roles[powerLevels[p.value]] || powerLevels[p.value])
-                      : (currentPowerLevels['users_default'] || 50)}
+                      ? roles[powerLevels[p.value]] || powerLevels[p.value]
+                      : currentPowerLevels['users_default'] || 50}
                   </Text>
                 )}
                 style={{

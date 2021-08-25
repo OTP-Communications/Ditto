@@ -4,7 +4,7 @@ import {Animated, Dimensions, StyleSheet, ScrollView} from 'react-native';
 import {matrix} from '@rn-matrix/core';
 import {useObservableState} from 'observable-hooks';
 import Spacing from '../../../shared/styles/Spacing';
-import i18n from '../../../shared/i18n';
+import {_t} from '../../../shared/i18n';
 import AvatarHeader from '../../components/AvatarHeader';
 
 export default function UserProfileScreen({navigation, route}) {
@@ -51,7 +51,7 @@ export default function UserProfileScreen({navigation, route}) {
           {useNativeDriver: true},
         )}>
         <ListItem
-          title={i18n.t('profile:general.message')}
+          title={_t('Message')}
           accessoryLeft={MessageIcon}
           style={{backgroundColor: theme['background-basic-color-4']}}
           onPress={openDirectChat}
@@ -60,7 +60,7 @@ export default function UserProfileScreen({navigation, route}) {
         {/* <ListItem
           title={(props) => (
             <Text style={[props?.style, {color: 'red'}]}>
-              {i18n.t('profile:general.block')}
+              {_t('Block')}
             </Text>
           )}
           accessoryLeft={BlockIcon}
@@ -74,11 +74,11 @@ export default function UserProfileScreen({navigation, route}) {
             marginBottom: Spacing.m,
             marginTop: Spacing.xxl,
           }}>
-          {i18n.t('profile:header.linkedContact')} 
+          {_t('Linked contact')} 
         </Text>
         <ListItem
           disabled
-          title={i18n.t('profile:contact.linkToContact')}
+          title={_t('Link to a contact on this device')}
           accessoryLeft={PersonIcon}
           style={{
             backgroundColor: theme['background-basic-color-4'],

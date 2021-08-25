@@ -14,7 +14,7 @@ import {matrix} from '@rn-matrix/core';
 import {useObservableState} from 'observable-hooks';
 import Spacing from '../../../shared/styles/Spacing';
 import MemberListItem from './components/MemberListItem';
-import i18n from '../../../shared/i18n';
+import i18n, {_t} from '../../../shared/i18n';
 import {getRolesAndPermissionsForChat} from '../../../shared/utilities/matrix';
 
 export default function ChatSettingsScreen({route, navigation}) {
@@ -133,7 +133,7 @@ export default function ChatSettingsScreen({route, navigation}) {
         </Text>
         <ListItem
           onPress={navToRoleEdit}
-          title={i18n.t('chatSettings:roleAndPermissionsLabel')}
+          title={_t('Roles & Permissions')}
           accessoryLeft={(props) => (
             <Icon {...props} fill={theme['color-info-default']} name="people" />
           )}

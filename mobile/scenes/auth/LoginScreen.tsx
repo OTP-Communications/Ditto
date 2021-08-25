@@ -22,7 +22,9 @@ import {
   Image,
   ScrollView,
 } from 'react-native';
-import i18n from '../../../shared/i18n';
+import {_t} from '../../../shared/i18n';
+// import {_t} from '../../../shared/i18n';
+// import i18n from '../../../shared/i18n';
 // import Image from 'react-native-scalable-image'
 // import styled from 'styled-components/native'
 
@@ -60,9 +62,9 @@ export default function LoginScreen({navigation}) {
   const handleLoginPress = async () => {
     Keyboard.dismiss();
     if (usernameValue.length === 0) {
-      setErrorText(i18n.t('auth:login.missingUsernameError'));
+      setErrorText(_t('Missing username'));
     } else if (passwordValue.length === 0) {
-      setErrorText(i18n.t('auth:login.missingPasswordError'));
+      setErrorText(_t('Missing password'));
     } else {
       debug('username: ', usernameValue);
       setErrorText('');
@@ -125,7 +127,7 @@ export default function LoginScreen({navigation}) {
               {...props}
               category="h5"
               style={{color: theme['color-basic-100']}}>
-              {i18n.t('auth:login.title')}
+              {_t('Welcome back!')}
             </Text>
           )}
           alignment="center"
@@ -144,8 +146,8 @@ export default function LoginScreen({navigation}) {
             backgroundColor: theme['color-basic-800'],
           }}
           textStyle={{color: theme['color-basic-100']}}
-          label={i18n.t('auth:login.usernameOrMatrixIdInputLabel')}
-          placeholder={i18n.t('auth:login.usernameOrMatrixIdInputPlaceholder')}
+          label={_t('Username or Matrix ID')}
+          placeholder={_t('Who are you?')}
           autoFocus
           size={'large'}
           onChangeText={setUsernameValue}
@@ -192,8 +194,8 @@ export default function LoginScreen({navigation}) {
             backgroundColor: theme['color-basic-800'],
           }}
           textStyle={{color: theme['color-basic-100']}}
-          label={i18n.t('auth:login.passwordInputLabel')}
-          placeholder={i18n.t('auth:login.passwordInputPlaceholder')}
+          label={_t('Password')}
+          placeholder={_t("Shh don't tell")}
           size={'large'}
           accessoryRight={renderToggleSecureIcon}
           ref={passwordInput}
@@ -212,8 +214,8 @@ export default function LoginScreen({navigation}) {
               backgroundColor: theme['color-basic-800'],
             }}
             textStyle={{color: theme['color-basic-100']}}
-            label={i18n.t('auth:login.homeserverInputLabel')}
-            placeholder={i18n.t('auth:login.homeserverInputPlaceholder')}
+            label={_t('Homeserver')}
+            placeholder={_t('Homeserver')}
             size="large"
             onFocus={() => setHomeserverIsFocused(true)}
             onBlur={() => setHomeserverIsFocused(false)}
@@ -231,14 +233,14 @@ export default function LoginScreen({navigation}) {
             appearance="ghost"
             style={{marginTop: 12, alignSelf: 'center'}}
             onPress={() => setShowAdvanced(false)}>
-            {i18n.t('auth:login.basicLabel')}
+            {_t('Basic')}
           </Button>
         ) : (
           <Button
             appearance="ghost"
             style={{marginTop: 12, alignSelf: 'center'}}
             onPress={() => setShowAdvanced(true)}>
-            {i18n.t('auth:login.advancedLabel')}
+            {_t('Advanced')}
           </Button>
         )}
 
@@ -249,16 +251,19 @@ export default function LoginScreen({navigation}) {
               isLoading ? <Spinner status="basic" /> : null
             }
             onPress={handleLoginPress}
-            size="giant"
+            size="medium"
             status="info"
             style={{borderRadius: 50}}>
-            {i18n.t('auth:login.loginButtonLabel')}
+            {_t('Login')}
           </Button>
         </View>
 
         {errorText.length > 0 && (
           <Text status="danger" style={{textAlign: 'center', marginTop: 15}}>
-            {i18n.t('auth:login.somethingWrongError', {errorText: errorText})}
+            {_t(
+              'Looks like something went wrong: \n\n{{errorText}}\n\n Try again!',
+              {errorText},
+            )}
           </Text>
         )}
         <View style={{height: SCREEN_HEIGHT / 2}} />

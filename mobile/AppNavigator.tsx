@@ -25,7 +25,7 @@ import Spacing from '../shared/styles/Spacing';
 import ChatSettingsScreen from './scenes/chatSettings/ChatSettingsScreen';
 import LanguageSelectScreen from './scenes/settings/LanguageSelectScreen';
 import ThemeType from '../shared/themes/themeType';
-import i18n from '../shared/i18n';
+import {_t} from '../shared/i18n';
 import EditChatScreen from './scenes/chatSettings/EditChatScreen';
 import RoleEditScreen from './scenes/chatSettings/RoleEditScreen';
 import RNBootSplash from 'react-native-bootsplash';
@@ -120,7 +120,7 @@ function ChatStack({navigation}) {
       <Stack.Screen
         name="ChatList"
         options={{
-          title: i18n.t('home:title'),
+          title: _t('Chats'),
           headerStyle: {
             backgroundColor: theme['background-basic-color-4'],
           },
@@ -373,7 +373,7 @@ function SettingsStack() {
       <Stack.Screen
         name="LanguageSelect"
         options={({navigation}) => ({
-          title: i18n.t('settings:chooseLanguage'),
+          title: _t('Choose Language'),
           headerTintColor: theme['text-basic-color'],
           headerStyle: {
             backgroundColor: theme['background-basic-color-5'],

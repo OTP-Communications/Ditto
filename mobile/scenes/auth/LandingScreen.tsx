@@ -4,7 +4,7 @@ import React from 'react';
 import {StatusBar, StyleSheet, Image, Text} from 'react-native';
 
 import Wordmark from '../../../shared/assets/svg/wordmark.svg';
-import i18n from '../../../shared/i18n';
+import {_t} from '../../../shared/i18n';
 
 const middleBlob = require('../../../shared/assets/images/blob1.png');
 const topBlob = require('../../../shared/assets/images/blob2.png');
@@ -48,7 +48,7 @@ export default function LandingScreen() {
           width: 200,
           marginTop: 300,
         }}>
-        {i18n.t('auth:landing.loginButtonLabel')}
+        {_t('Login')}
       </Button>
     </Layout>
   );
