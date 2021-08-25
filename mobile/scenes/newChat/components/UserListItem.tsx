@@ -17,16 +17,13 @@ export default function UserListItem({item, onPress = undefined}) {
       }}>
       <Avatar
         {...props}
-        style={[
-          props.style,
-          {
-            tintColor: null,
-            width: 60,
-            height: 60,
-            backgroundColor: theme['background-basic-color-3'],
-          },
-        ]}
-        source={{uri: matrix.getHttpUrl(avatar)}}
+        style={{
+          marginHorizontal: 8,
+          width: 60,
+          height: 60,
+          backgroundColor: theme['background-basic-color-3'],
+        }}
+        source={avatar ? {uri: matrix.getHttpUrl(avatar)} : null}
       />
       {!avatar && (
         <Text

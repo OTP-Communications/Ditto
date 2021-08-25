@@ -1,11 +1,13 @@
 import {Text, useTheme} from '@ui-kitten/components';
-// import { useTheme } from '@ui-kitten/components'
 import React, {useContext, useEffect, useState} from 'react';
 import {Linking, View} from 'react-native';
 import HtmlRenderer from 'react-native-render-html';
+import Spacing from '../../../../shared/styles/Spacing';
 import {ThemeContext} from '../../../../shared/themes/ThemeProvider';
+import ThemeType from '../../../../shared/themes/themeType';
 import {htmlEmojis} from '../../../../shared/utilities/emoji';
-import {htmlLinks} from '../../../../shared/utilities/misc';
+import {htmlLinks, getNameColor} from '../../../../shared/utilities/misc';
+import {matrix} from '@rn-matrix/core';
 
 // const debug = require('debug')('rnm:scene:chat:message:components:Html')
 
@@ -14,8 +16,8 @@ const parseHtml = (html: string) => {
 };
 
 export default function Html({html, isMe = false}) {
-  // const styles = getHtmlStyles(theme)
-  const theme = useTheme();
+  const theme: ThemeType = useTheme();
+  const {themeId} = useContext(ThemeContext);
   const styles = getHtmlStyles({isMe, theme});
   const [parsedHtml, setParsedHtml] = useState(parseHtml(html));
 
@@ -33,6 +35,7 @@ export default function Html({html, isMe = false}) {
   const renderers = {
     emoji: {renderer: emojiRenderer, wrapper: 'Text'},
     ul: {renderer: unorderedListRenderer, wrapper: 'Text'},
+    'mx-reply': {renderer: replyRenderer, wrapper: 'View'},
   };
 
   //* *******************************************************************************
@@ -49,7 +52,7 @@ export default function Html({html, isMe = false}) {
       html={parsedHtml}
       renderers={renderers}
       onLinkPress={onLinkPress}
-      renderersProps={{isMe}}
+      renderersProps={{isMe, theme, parsedHtml, themeId}}
       {...styles}
     />
   ) : null;
@@ -81,6 +84,53 @@ const unorderedListRenderer = (
   ));
 };
 
+const replyRenderer = (
+  htmlAttribs,
+  children,
+  convertedCSSStyles,
+  {key, renderersProps},
+) => {
+  const {theme, parsedHtml, themeId, isMe} = renderersProps;
+  const senderId = parsedHtml
+    ?.slice(parsedHtml.lastIndexOf('@'), parsedHtml.lastIndexOf('</a>'))
+    ?.trim();
+  const senderName = matrix.getUserById(senderId)?.name$.getValue();
+  return (
+    <View
+      key={key}
+      style={{
+        borderLeftWidth: 3,
+        borderColor: !isMe
+          ? theme['color-primary-default']
+          : theme['text-basic-color'],
+        padding: Spacing.xs,
+        paddingLeft: 8,
+        marginVertical: Spacing.s,
+      }}>
+      <View style={{opacity: 0.75}}>
+        <Text
+          style={{
+            fontWeight: 'bold',
+            marginBottom: 3,
+            color: getNameColor(senderId, themeId),
+          }}>
+          {senderName}
+        </Text>
+        <Text>
+          {parsedHtml
+            ?.slice(
+              parsedHtml.indexOf('<br>') >= 0
+                ? parsedHtml.indexOf('<br>') + 4
+                : parsedHtml.indexOf('<br />') + 6,
+              parsedHtml.indexOf('</blockquote>'),
+            )
+            ?.trim()}
+        </Text>
+      </View>
+    </View>
+  );
+};
+
 const getHtmlStyles = ({isMe, theme}) => ({
   baseFontStyle: {
     color: isMe ? theme['color-basic-100'] : theme['text-basic-color'],
@@ -92,10 +142,11 @@ const getHtmlStyles = ({isMe, theme}) => ({
     blockquote: {
       borderLeftColor: isMe
         ? theme['color-basic-100']
-        : theme['color-primary-500'],
+        : theme['color-primary-default'],
       borderLeftWidth: 3,
-      paddingLeft: 10,
-      marginVertical: 10,
+      padding: Spacing.xs,
+      paddingLeft: 8,
+      marginVertical: Spacing.s,
       opacity: 0.75,
     },
     a: {

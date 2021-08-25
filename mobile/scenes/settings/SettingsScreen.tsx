@@ -1,5 +1,6 @@
 import {
   Avatar,
+  Divider,
   Icon,
   Layout,
   ListItem,
@@ -8,14 +9,21 @@ import {
   useTheme,
 } from '@ui-kitten/components';
 import React, {useContext} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {Alert, StyleSheet, View} from 'react-native';
 import {matrix} from '@rn-matrix/core';
 import {useObservableState} from 'observable-hooks';
 import {ThemeContext} from '../../../shared/themes/ThemeProvider';
+import Spacing from '../../../shared/styles/Spacing';
+import {AppContext} from '../../../shared/context/AppContext';
+import {_t} from '../../../shared/i18n';
+import PushNotification from 'react-native-push-notification';
 
-export default function SettingsScreen() {
+export default function SettingsScreen({navigation}) {
   const theme = useTheme();
   const {themeId, setTheme} = useContext(ThemeContext);
+  const {errorReportingEnabled, setErrorReportingEnabled} = useContext(
+    AppContext,
+  );
   const myUser = matrix.getMyUser();
 
   const avatar = useObservableState(myUser.avatar$);
@@ -32,13 +40,62 @@ export default function SettingsScreen() {
   );
 
   const DarkModeIcon = (props) => (
-    <Icon {...props} fill={theme['color-primary-500']} name="moon" />
+    <Icon {...props} fill={theme['color-primary-default']} name="moon" />
   );
-  const PersonIcon = (props) => <Icon {...props} name="person" />;
-  const ItemChevron = (props) => <Icon {...props} name="chevron-right" />;
+
+  const ErrorReportingToggle = (props) => (
+    <Toggle
+      checked={errorReportingEnabled}
+      onChange={setErrorReportingEnabled}
+    />
+  );
+
+  const ErrorReportingIcon = (props) => (
+    <Icon
+      {...props}
+      fill={theme['color-danger-default']}
+      name="alert-triangle"
+    />
+  );
+
+  const LanguageIconRight = (props) => (
+    <Icon
+      {...props}
+      fill={theme['background-basic-color-1']}
+      name="chevron-right"
+    />
+  );
+
+  const LanguageIconLeft = (props) => (
+    <Icon {...props} fill={theme['color-success-default']} name="globe-2" />
+  );
+
+  const navToLanguages = () => {
+    navigation.navigate('LanguageSelect');
+  };
 
   const logout = () => {
-    matrix.logout();
+    Alert.alert(
+      'Are you sure you want to log out?',
+      '',
+      [
+        {
+          text: 'Cancel',
+          onPress: () => console.log('Cancel Pressed'),
+          style: 'cancel',
+        },
+        {
+          text: 'Yes, logout',
+          onPress: () => {
+            PushNotification.removeAllDeliveredNotifications();
+            PushNotification.abandonPermissions();
+            matrix.logout();
+          },
+          style: 'destructive',
+        },
+      ],
+      {cancelable: false},
+    );
   };
 
   return (
@@ -47,10 +104,34 @@ export default function SettingsScreen() {
         styles.wrapper,
         {backgroundColor: theme['background-basic-color-5']},
       ]}>
-      <Avatar
-        source={{uri: matrix.getHttpUrl(avatar)}}
-        style={{width: 100, height: 100, marginBottom: 12}}
-      />
+      <View
+        style={{
+          position: 'relative',
+          justifyContent: 'center',
+          alignItems: 'center',
+          marginBottom: Spacing.l,
+        }}>
+        <Avatar
+          source={avatar ? {uri: matrix.getHttpUrl(avatar)} : null}
+          style={{
+            width: 100,
+            height: 100,
+            backgroundColor: theme['background-basic-color-3'],
+          }}
+        />
+        {!avatar && (
+          <Text
+            category="h1"
+            style={{
+              position: 'absolute',
+              fontSize: 50,
+              opacity: 0.3,
+            }}
+            numberOfLines={1}>
+            {name?.charAt(0)}
+          </Text>
+        )}
+      </View>
       <Text category="h4" style={{maxWidth: 250}} numberOfLines={1}>
         {name}
       </Text>
@@ -62,31 +143,44 @@ export default function SettingsScreen() {
       </Text>
       <Text
         category="h6"
-        style={{alignSelf: 'flex-start', marginLeft: 16, marginBottom: 12}}>
-        Appearance
+        style={{
+          alignSelf: 'flex-start',
+          marginLeft: Spacing.l,
+          marginBottom: Spacing.m,
+        }}>
+        {_t('Appearance')}
       </Text>
       <ListItem
-        title="Dark Mode"
+        title={_t('Dark Mode')}
         accessoryLeft={DarkModeIcon}
         accessoryRight={ThemeToggle}
         style={{backgroundColor: theme['background-basic-color-4']}}
       />
-      {/* <Text
+      <Divider />
+      <ListItem
+        onPress={navToLanguages}
+        title={_t('Language')}
+        accessoryLeft={LanguageIconLeft}
+        accessoryRight={LanguageIconRight}
+        style={{backgroundColor: theme['background-basic-color-4'], height: 52}}
+      />
+      <Text
         category="h6"
         style={{
           alignSelf: 'flex-start',
-          marginLeft: 16,
-          marginBottom: 12,
-          marginTop: 48,
+          marginLeft: Spacing.l,
+          marginBottom: Spacing.m,
+          marginTop: Spacing.xxl,
         }}>
-        Account Settings
+        {_t('Privacy')}
       </Text>
       <ListItem
-        title="Avatar and Display Name"
-        accessoryLeft={PersonIcon}
-        accessoryRight={ItemChevron}
+        title={_t('Error Reporting')}
+        description={_t('Enable to send bug reports to the developer')}
+        accessoryLeft={ErrorReportingIcon}
+        accessoryRight={ErrorReportingToggle}
         style={{backgroundColor: theme['background-basic-color-4']}}
-      /> */}
+      />
       <ListItem
         onPress={logout}
         style={{
@@ -94,6 +188,7 @@ export default function SettingsScreen() {
           width: '100%',
           justifyContent: 'center',
           marginTop: 48,
+          height: 52,
         }}>
         <Text status="danger">Logout</Text>
       </ListItem>

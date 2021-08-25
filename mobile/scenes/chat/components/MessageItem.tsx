@@ -6,30 +6,38 @@ import {useObservableState} from 'observable-hooks';
 import TextMessage from './messages/TextMessage';
 import EventMessage from './messages/EventMessage';
 import ImageMessage from './messages/ImageMessage';
+import Spacing from '../../../../shared/styles/Spacing';
 
-export default function MessageItem({
+function MessageItem({
   chatId,
   messageId,
+  message,
   prevMessageId,
   nextMessageId,
   onPress,
   onLongPress,
+  onAvatarPress,
   ...otherProps
 }) {
   const myUser = matrix.getMyUser();
+  const chat = matrix.getRoomById(chatId);
+  const typing = useObservableState(chat?.typing$);
+
   if (messageId === 'loading') {
-    return <ActivityIndicator />;
+    return <ActivityIndicator style={{marginVertical: Spacing.xxl}} />;
   }
-  if (messageId === 'typing') {
+  if (messageId === 'typing' && typing) {
     return (
-      <View style={{marginLeft: 24, marginTop: 10, marginBottom: 30}}>
-        {/* <TypingAnimation dotColor="#ccc" dotAmplitude={2} dotRadius={4} dotMargin={8} /> */}
-        <Text>typing</Text>
+      <View style={{marginVertical: Spacing.xs, marginLeft: Spacing.l}}>
+        <Text style={{fontStyle: 'italic'}} appearance="hint">
+          {typing.length === 1
+            ? matrix.getUserById(typing[0]).name$.getValue()
+            : 'Users'}{' '}
+          {typing.length === 1 ? 'is' : 'are'} typing...
+        </Text>
       </View>
     );
   }
-
-  const message = matrix.getMessageById(messageId, chatId);
 
   if (!message || !message.type$) return null;
 
@@ -52,6 +60,7 @@ export default function MessageItem({
     ...otherProps,
     onPress: onMessagePress,
     onLongPress: onMessageLongPress,
+    onAvatarPress,
     message,
     prevSame,
     nextSame,
@@ -59,8 +68,9 @@ export default function MessageItem({
   };
 
   const messageType = useObservableState(message.type$);
+  const redacted = useObservableState(message.redacted$);
 
-  if (message.redacted$.getValue()) {
+  if (redacted) {
     return null;
     return <EventMessage {...props} />;
   }
@@ -92,3 +102,14 @@ function isSameSender(messageA, messageB) {
   }
   return true;
 }
+
+const areEqual = (prevProps, nextProps) => {
+  return (
+    prevProps.chatId === nextProps.chatId &&
+    prevProps.messageId === nextProps.messageId &&
+    prevProps.message.type$ === nextProps.message.type$ &&
+    prevProps.message.redacted$ === nextProps.message.redacted$
+  );
+};
+
+export default React.memo(MessageItem, areEqual);

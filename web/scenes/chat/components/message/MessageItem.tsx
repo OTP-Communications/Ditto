@@ -8,7 +8,7 @@ import {View, ActivityIndicator} from 'react-native';
 import TextMessage from './messageTypes/TextMessage';
 // import { TypingAnimation } from 'react-native-typing-animation';
 import {useObservableState} from 'observable-hooks';
-import {Text} from '@ui-kitten/components';
+import {Avatar, Text} from '@ui-kitten/components';
 // import Swipeable from 'react-native-swipeable';
 // import Icon from './Icon';
 // import ReadReceipts from './ReadReceipts';
@@ -104,6 +104,9 @@ export function BubbleWrapper({
 }) {
   const reactions = message ? useObservableState(message.reactions$) : null;
   const receipts = message ? useObservableState(message.receipts$) : null;
+  const senderAvatar = message
+    ? useObservableState(message.sender.avatar$)
+    : null;
 
   const myUser = matrix.getMyUser();
 
@@ -122,19 +125,10 @@ export function BubbleWrapper({
           flexDirection: isMe ? 'row-reverse' : 'row',
           alignItems: 'center',
         }}>
-        {!isMe && !nextSame && (
-          <View
-            style={{
-              backgroundColor: '#666',
-              width: 40,
-              height: 40,
-              borderRadius: 100,
-              marginRight: 6,
-              marginBottom: 4,
-              alignSelf: 'flex-end',
-            }}
-          />
-        )}
+        <Avatar
+          source={senderAvatar ? {uri: matrix.getHttpUrl(senderAvatar)} : null}
+          style={{opacity: !isMe && !nextSame ? 1 : 0}}
+        />
         {children}
         {/* {receipts && isMe && <ReadReceipts isMe={isMe} receipts={receipts} />} */}
       </View>
@@ -151,7 +145,7 @@ export function BubbleWrapper({
 }
 
 export function SenderText({isMe, children}) {
-  return (
+  return isMe ? null : (
     <Text
       style={{
         fontSize: 14,

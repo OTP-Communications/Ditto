@@ -27,18 +27,15 @@ export default function InviteListItem({invite}) {
       }}>
       <Avatar
         {...props}
-        style={[
-          props.style,
-          {
-            tintColor: null,
-            width: 60,
-            height: 60,
-            backgroundColor: theme['background-basic-color-3'],
-            borderWidth: 2,
-            borderColor: theme['color-primary-default'],
-          },
-        ]}
-        source={{uri: matrix.getHttpUrl(avatar)}}
+        style={{
+          marginHorizontal: 8,
+          width: 60,
+          height: 60,
+          backgroundColor: theme['background-basic-color-3'],
+          borderWidth: 2,
+          borderColor: theme['color-primary-default'],
+        }}
+        source={avatar ? {uri: matrix.getHttpUrl(avatar)} : null}
       />
       {!avatar && (
         <Text

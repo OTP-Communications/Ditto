@@ -1,13 +1,14 @@
 /**
  * @format
  */
-import './shared/i18n';
+import './shared/i18n/index.ts';
 
 import React from 'react';
 import {AppRegistry, Platform} from 'react-native';
 import App from './App';
 import {name as appName} from './app.json';
 import ThemeProvider, {ThemeContext} from './shared/themes/ThemeProvider';
+import AppContextProvider from './shared/context/AppContext';
 import {ApplicationProvider, IconRegistry} from '@ui-kitten/components';
 import {EvaIconsPack} from '@ui-kitten/eva-icons';
 import * as eva from '@eva-design/eva';
@@ -20,13 +21,15 @@ function AppWrapper() {
     <>
       <IconRegistry icons={EvaIconsPack} />
       <ThemeProvider>
-        <ThemeContext.Consumer>
-          {({theme}) => (
-            <ApplicationProvider {...eva} theme={theme}>
-              <App />
-            </ApplicationProvider>
-          )}
-        </ThemeContext.Consumer>
+        <AppContextProvider>
+          <ThemeContext.Consumer>
+            {({theme}) => (
+              <ApplicationProvider {...eva} theme={theme}>
+                <App />
+              </ApplicationProvider>
+            )}
+          </ThemeContext.Consumer>
+        </AppContextProvider>
       </ThemeProvider>
     </>
   );

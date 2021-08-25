@@ -43,8 +43,14 @@
 	<string>This app would like to save images to your device.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>This app would like to save images to your device.</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>fetch</string>
+		<string>processing</string>
+		<string>remote-notification</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
-	<string>LaunchScreen</string>
+	<string>BootSplash</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>
@@ -57,5 +63,9 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+  <key>BGTaskSchedulerPermittedIdentifiers</key>
+  <array>
+      <string>chat.ditto.ios</string>
+  </array>
 </dict>
 </plist>

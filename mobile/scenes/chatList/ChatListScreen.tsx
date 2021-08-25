@@ -1,10 +1,12 @@
 import React from 'react';
-import {View, Text, FlatList, ActivityIndicator} from 'react-native';
+import {View, ActivityIndicator} from 'react-native';
 import {matrix} from '@rn-matrix/core';
 import {useObservableState} from 'observable-hooks';
 import ChatListItem from './components/ChatListItem';
 import {List, useTheme} from '@ui-kitten/components';
 import InviteListItem from './components/InviteListItem';
+
+import '../../services/notifications';
 
 export default function ChatListScreen() {
   const theme = useTheme();
@@ -14,9 +16,7 @@ export default function ChatListScreen() {
   const isReady = useObservableState(matrix.isReady$());
   const isSynced = useObservableState(matrix.isSynced$());
 
-  const renderChatItem = ({item}) => {
-    return <ChatListItem key={item.id} chat={item} />;
-  };
+  const renderChatItem = ({item}) => <ChatListItem key={item.id} chat={item} />;
 
   const InviteList = () => (
     <>
@@ -34,11 +34,14 @@ export default function ChatListScreen() {
     );
   }
 
+  const keyExtractor = (item) => item.id;
+
   return (
     <View>
       <List
         data={chatList}
         renderItem={renderChatItem}
+        keyExtractor={keyExtractor}
         ListHeaderComponent={InviteList}
         ListFooterComponent={<View style={{height: 80}} />}
         style={{

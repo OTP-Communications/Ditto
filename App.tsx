@@ -12,24 +12,41 @@ import {
 } from '@react-navigation/native';
 import AppNavigator from './mobile/AppNavigator';
 import {ThemeContext} from './shared/themes/ThemeProvider';
-import {StatusBar} from 'react-native';
+import {StatusBar, LogBox} from 'react-native';
 import r from 'xmlhttp-request';
+import * as Sentry from '@sentry/react-native';
+import {SENTRY_DSN} from '@env';
+import {AppContext} from './shared/context/AppContext';
+import {navigationRef} from './mobile/services/navigator';
 
-global.location = {
-  protocol: 'file:',
-  href: '',
-};
+try {
+  global.location = {
+    protocol: 'file:',
+    href: '',
+  };
+} catch {}
 
-console.disableYellowBox = true;
+LogBox.ignoreAllLogs(true)
 
 matrix.initAuth();
 
 const App = () => {
   const {themeId} = useContext(ThemeContext);
+  const {errorReportingEnabled} = useContext(AppContext);
 
   useEffect(() => {
     matrixSdk.request(r);
   }, []);
+
+  useEffect(() => {
+    Sentry.init({
+      dsn: SENTRY_DSN,
+      beforeSend(event) {
+        if (errorReportingEnabled) return event;
+        return null;
+      },
+    });
+  }, [errorReportingEnabled]);
 
   if (themeId === 'light') {
     StatusBar.setBarStyle('dark-content');
@@ -37,7 +54,9 @@ const App = () => {
     StatusBar.setBarStyle('light-content');
   }
   return (
-    <NavigationContainer theme={themeId === 'light' ? DefaultTheme : DarkTheme}>
+    <NavigationContainer
+      ref={navigationRef}
+      theme={themeId === 'light' ? DefaultTheme : DarkTheme}>
       <AppNavigator />
     </NavigationContainer>
   );

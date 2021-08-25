@@ -37,7 +37,7 @@ export default function RoomListItem({room, onPress, selected = false}) {
   const unread = readState === 'unread';
 
   return (
-    <Pressable onPress={handleOnPress}>
+    <Pressable onPress={handleOnPress} style={{cursor: 'pointer'}}>
       <View style={[styles.rowWrapper, selected ? styles.selected : {}]}>
         {avatar ? (
           <Image

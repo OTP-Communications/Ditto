@@ -1,4 +1,3 @@
-// import auth from './authService'
 import {matrix} from '@rn-matrix/core';
 import {
   Button,
@@ -14,21 +13,22 @@ import {
   useTheme,
 } from '@ui-kitten/components';
 import React, {useEffect, useRef, useState} from 'react';
-import {useTranslation} from 'react-i18next';
 import {
   Keyboard,
   SafeAreaView,
   StyleSheet,
-  TextInput,
   TouchableWithoutFeedback,
   View,
   Image,
   ScrollView,
 } from 'react-native';
+import {_t} from '../../../shared/i18n';
+// import {_t} from '../../../shared/i18n';
+// import i18n from '../../../shared/i18n';
 // import Image from 'react-native-scalable-image'
 // import styled from 'styled-components/native'
 
-import {SCREEN_HEIGHT, SCREEN_WIDTH, isIos} from '../../../shared/utilities';
+import {SCREEN_HEIGHT, SCREEN_WIDTH} from '../../../shared/utilities';
 
 const topBlob = require('../../../shared/assets/images/blob4.png');
 const bottomBlob = require('../../../shared/assets/images/blob5.png');
@@ -38,7 +38,6 @@ const debug = require('debug')('ditto:scenes:auth:LoginScreen');
 export default function LoginScreen({navigation}) {
   const passwordInput = useRef(null);
   const theme = useTheme();
-  const {t} = useTranslation('auth');
 
   // State
   const [usernameValue, setUsernameValue] = useState('');
@@ -63,9 +62,9 @@ export default function LoginScreen({navigation}) {
   const handleLoginPress = async () => {
     Keyboard.dismiss();
     if (usernameValue.length === 0) {
-      setErrorText(t('login.missingUsernameError'));
+      setErrorText(_t('Missing username'));
     } else if (passwordValue.length === 0) {
-      setErrorText(t('login.missingPasswordError'));
+      setErrorText(_t('Missing password'));
     } else {
       debug('username: ', usernameValue);
       setErrorText('');
@@ -128,7 +127,7 @@ export default function LoginScreen({navigation}) {
               {...props}
               category="h5"
               style={{color: theme['color-basic-100']}}>
-              {t('login.title')}
+              {_t('Welcome back!')}
             </Text>
           )}
           alignment="center"
@@ -147,8 +146,8 @@ export default function LoginScreen({navigation}) {
             backgroundColor: theme['color-basic-800'],
           }}
           textStyle={{color: theme['color-basic-100']}}
-          label={t('login.usernameOrMatrixIdInputLabel')}
-          placeholder={t('login.usernameOrMatrixIdInputPlaceholder')}
+          label={_t('Username or Matrix ID')}
+          placeholder={_t('Who are you?')}
           autoFocus
           size={'large'}
           onChangeText={setUsernameValue}
@@ -195,8 +194,8 @@ export default function LoginScreen({navigation}) {
             backgroundColor: theme['color-basic-800'],
           }}
           textStyle={{color: theme['color-basic-100']}}
-          label={t('login.passwordInputLabel')}
-          placeholder={t('login.passwordInputPlaceholder')}
+          label={_t('Password')}
+          placeholder={_t("Shh don't tell")}
           size={'large'}
           accessoryRight={renderToggleSecureIcon}
           ref={passwordInput}
@@ -215,8 +214,8 @@ export default function LoginScreen({navigation}) {
               backgroundColor: theme['color-basic-800'],
             }}
             textStyle={{color: theme['color-basic-100']}}
-            label={t('login.homeserverInputLabel')}
-            placeholder={t('login.homeserverInputPlaceholder')}
+            label={_t('Homeserver')}
+            placeholder={_t('Homeserver')}
             size="large"
             onFocus={() => setHomeserverIsFocused(true)}
             onBlur={() => setHomeserverIsFocused(false)}
@@ -234,14 +233,14 @@ export default function LoginScreen({navigation}) {
             appearance="ghost"
             style={{marginTop: 12, alignSelf: 'center'}}
             onPress={() => setShowAdvanced(false)}>
-            {t('login.basicLabel')}
+            {_t('Basic')}
           </Button>
         ) : (
           <Button
             appearance="ghost"
             style={{marginTop: 12, alignSelf: 'center'}}
             onPress={() => setShowAdvanced(true)}>
-            {t('login.advancedLabel')}
+            {_t('Advanced')}
           </Button>
         )}
 
@@ -252,16 +251,19 @@ export default function LoginScreen({navigation}) {
               isLoading ? <Spinner status="basic" /> : null
             }
             onPress={handleLoginPress}
-            size="giant"
+            size="medium"
             status="info"
             style={{borderRadius: 50}}>
-            {t('login.loginButtonLabel')}
+            {_t('Login')}
           </Button>
         </View>
 
         {errorText.length > 0 && (
           <Text status="danger" style={{textAlign: 'center', marginTop: 15}}>
-            {t('login.somethingWrongError', {errorText: errorText})}
+            {_t(
+              'Looks like something went wrong: \n\n{{errorText}}\n\n Try again!',
+              {errorText},
+            )}
           </Text>
         )}
         <View style={{height: SCREEN_HEIGHT / 2}} />
@@ -278,25 +280,6 @@ const BackAction = (props) => (
     )}
   />
 );
-
-// const PageMargin = styled.ScrollView`
-//   padding-left: 30;
-//   padding-right: 30;
-//   padding-top: 30;
-// `
-
-// const TopBlob = styled(Image)`
-//   position: absolute;
-//   top: -285;
-//   left: -100;
-//   z-index: -1;
-// `
-
-// const BottomBlob = styled(Image)`
-//   position: absolute;
-//   bottom: -500;
-//   left: -400;
-// `
 
 const styles = StyleSheet.create({
   scrollview: {

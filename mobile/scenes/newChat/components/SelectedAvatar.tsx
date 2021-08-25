@@ -48,14 +48,13 @@ export default function SelectedAvatar({user, remove}) {
       )}
       <Avatar
         style={{
-          tintColor: null,
           width: 55,
           height: 55,
           backgroundColor: theme['background-basic-color-2'],
           borderWidth: 3,
           borderColor: theme['background-basic-color-4'],
         }}
-        source={{uri: matrix.getHttpUrl(avatar)}}
+        source={avatar ? {uri: matrix.getHttpUrl(avatar)} : null}
       />
       {!avatar && (
         <Text

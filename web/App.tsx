@@ -1,8 +1,6 @@
 import React from 'react';
-import {Dimensions, StyleSheet, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import AppNavigator from './AppNavigator';
-
-const {height} = Dimensions.get('screen');
 
 const App = () => {
   return (
@@ -14,7 +12,7 @@ const App = () => {
 
 const styles = StyleSheet.create({
   container: {
-    height,
+    maxHeight: '100vh',
   },
 });
 
