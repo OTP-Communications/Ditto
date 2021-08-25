@@ -57,10 +57,11 @@
       "typeNotSupport": "Ditto does not support the type \"{{type}}\" yet",
       "eventRedacted": "This event has been redacted",
       "stickersNotSupport": "Ditto does not support stickers yet",
-      "thirdPartyInvite": "{{sender}} sent a third party invite"
+      "thirdPartyInvite": "{{sender}} sent a third party invite",
+      "failedToLoadImage": "Failed to load image"
     }
   },
-  "settings":{
+  "settings": {
     "chooseAvatarLabel": "Choose avatar",
     "chooseLanguage": "Choose Language",
     "title": "Settings",
@@ -88,6 +89,18 @@
     },
     "logoutButtonLabel": "Logout"
   },
+  "profile": {
+    "general": {
+      "message": "Message",
+      "block": "Block"
+    },
+    "header": {
+      "linkedContact": "Linked contact"
+    },
+    "contact": {
+      "linkToContact": "Link to a contact on this device"
+    }
+  },
   "newChat": {
     "title": "New Chat",
     "userSearch": {
@@ -113,5 +126,12 @@
     "banner": {
       "syncing": "Syncing..."
     }
+  },
+  "chatSettings": {
+    "insufficientPermissions": "You do not have permission to perform this action.",
+    "insufficientPermissionsTitle": "Action Failed",
+    "youLabel": "(you)",
+    "roleAndPermissionsLabel": "Roles & Permissions",
+    "rolePermissionsLabel": "Permissions"
   }
 }
